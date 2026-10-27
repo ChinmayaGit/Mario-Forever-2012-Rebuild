@@ -1,0 +1,30 @@
+#event create:0
+grawitacja=0
+sekwencja=0
+kierunek=-1
+stream=0
+rozdeptywalny=1
+kill=0
+seened=0
+
+energy=1999999999
+
+do_przodu=0
+dymek=0
+ogonek=0
+rodzaj=0
+szybkosc=3
+
+desdir=0
+steruj=0
+gwiazdker=0
+
+
+
+nagraj_speed=0
+
+
+#event draw:0
+script_enemy_bulletbill_homing()
+
+

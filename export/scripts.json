@@ -1,0 +1,1359 @@
+[
+  {
+    "index": 0,
+    "name": "script_mario_anim"
+  },
+  {
+    "index": 1,
+    "name": "script_anim_tanooki_statue"
+  },
+  {
+    "index": 2,
+    "name": "script_anim_goomba_kick"
+  },
+  {
+    "index": 3,
+    "name": "script_anim_wyrywanie_krzakow"
+  },
+  {
+    "index": 4,
+    "name": "script_anim_odschylanie"
+  },
+  {
+    "index": 5,
+    "name": "script_anim_walljump"
+  },
+  {
+    "index": 6,
+    "name": "script_anim_plywanie"
+  },
+  {
+    "index": 7,
+    "name": "script_anim_stanie"
+  },
+  {
+    "index": 8,
+    "name": "script_anim_hamowanie"
+  },
+  {
+    "index": 9,
+    "name": "script_anim_berserk_i_torpeda"
+  },
+  {
+    "index": 10,
+    "name": "script_anim_schylanie"
+  },
+  {
+    "index": 11,
+    "name": "script_anim_skok"
+  },
+  {
+    "index": 12,
+    "name": "script_anim_trzymanie_sie_liny"
+  },
+  {
+    "index": 13,
+    "name": "script_anim_trzymanie_sie_konca_etapu"
+  },
+  {
+    "index": 14,
+    "name": "script_anim_trzymanie_sie_drazka"
+  },
+  {
+    "index": 15,
+    "name": "script_anim_trzymanie_sie_trampoliny"
+  },
+  {
+    "index": 16,
+    "name": "script_anim_bieg"
+  },
+  {
+    "index": 17,
+    "name": "script_initialize_game"
+  },
+  {
+    "index": 18,
+    "name": "script_initialize_zmienne_gracza"
+  },
+  {
+    "index": 19,
+    "name": "script_keys_init"
+  },
+  {
+    "index": 20,
+    "name": "init_sound_base"
+  },
+  {
+    "index": 21,
+    "name": "script_mario_fireball"
+  },
+  {
+    "index": 22,
+    "name": "script_mario_rzodkiewa"
+  },
+  {
+    "index": 23,
+    "name": "script_mario_boomer"
+  },
+  {
+    "index": 24,
+    "name": "script_mario_hammers"
+  },
+  {
+    "index": 25,
+    "name": "script_przejscie_rurowe"
+  },
+  {
+    "index": 26,
+    "name": "script_player"
+  },
+  {
+    "index": 27,
+    "name": "script_backgrounds"
+  },
+  {
+    "index": 28,
+    "name": "script_scrooling"
+  },
+  {
+    "index": 29,
+    "name": "script_player_wrogowanie"
+  },
+  {
+    "index": 30,
+    "name": "script_zdobywanie_bonusow"
+  },
+  {
+    "index": 31,
+    "name": "script_pluskanie"
+  },
+  {
+    "index": 32,
+    "name": "script_time"
+  },
+  {
+    "index": 33,
+    "name": "script_obsluga_muzyki"
+  },
+  {
+    "index": 34,
+    "name": "script_enemy_cannon"
+  },
+  {
+    "index": 35,
+    "name": "script_enemy_ballcannon"
+  },
+  {
+    "index": 36,
+    "name": "script_enemy_big_cannon"
+  },
+  {
+    "index": 37,
+    "name": "scirpt_enemy_flame_cannon"
+  },
+  {
+    "index": 38,
+    "name": "script_enemy_fireball_cannon"
+  },
+  {
+    "index": 39,
+    "name": "script_enemy_bulletbill"
+  },
+  {
+    "index": 40,
+    "name": "script_enemy_bulletball"
+  },
+  {
+    "index": 41,
+    "name": "script_enemy_bulletball_2"
+  },
+  {
+    "index": 42,
+    "name": "script_enemy_bulletball_3"
+  },
+  {
+    "index": 43,
+    "name": "script_enemy_bullet_cannon_balls"
+  },
+  {
+    "index": 44,
+    "name": "script_enemy_bullet_flame"
+  },
+  {
+    "index": 45,
+    "name": "script_enemy_bulletbill_homing"
+  },
+  {
+    "index": 46,
+    "name": "script_enemy_bulletbill_homing_kolec"
+  },
+  {
+    "index": 47,
+    "name": "script_enemy_lakitu_normal"
+  },
+  {
+    "index": 48,
+    "name": "script_enemy_lakitu_red"
+  },
+  {
+    "index": 49,
+    "name": "script_enemy_lakitu_immortal"
+  },
+  {
+    "index": 50,
+    "name": "script_lakitu_throw"
+  },
+  {
+    "index": 51,
+    "name": "script_bigfat_hammer_bros"
+  },
+  {
+    "index": 52,
+    "name": "script_hammer_bros"
+  },
+  {
+    "index": 53,
+    "name": "script_hammer_bros_fireball"
+  },
+  {
+    "index": 54,
+    "name": "script_hammer_bros_boomerang"
+  },
+  {
+    "index": 55,
+    "name": "script_enemy_boomerang"
+  },
+  {
+    "index": 56,
+    "name": "script_enemy_fireballs"
+  },
+  {
+    "index": 57,
+    "name": "script_enemy_hammers"
+  },
+  {
+    "index": 58,
+    "name": "script_enemy_big_hammers"
+  },
+  {
+    "index": 59,
+    "name": "script_wiatrak_kolec_child"
+  },
+  {
+    "index": 60,
+    "name": "script_wiatrak_kolec_child_2"
+  },
+  {
+    "index": 61,
+    "name": "script_wiatrak_fireball"
+  },
+  {
+    "index": 62,
+    "name": "script_wiatrak_fireball_child"
+  },
+  {
+    "index": 63,
+    "name": "sript_enemy_bujany_wiatrak"
+  },
+  {
+    "index": 64,
+    "name": "sript_enemy_krecony_wiatrak"
+  },
+  {
+    "index": 65,
+    "name": "sript_enemy_krecony_zakolcowany"
+  },
+  {
+    "index": 66,
+    "name": "script_wiatrak_kolec"
+  },
+  {
+    "index": 67,
+    "name": "script_wiatrak_tarczowy"
+  },
+  {
+    "index": 68,
+    "name": "script_enemy_jelectro"
+  },
+  {
+    "index": 69,
+    "name": "script_enemy_sciskacz_maly"
+  },
+  {
+    "index": 70,
+    "name": "script_enemy_sciskacz_mamusia"
+  },
+  {
+    "index": 71,
+    "name": "script_enemy_sciskacz_mamusia_childs"
+  },
+  {
+    "index": 72,
+    "name": "script_enemy_sciskacz"
+  },
+  {
+    "index": 73,
+    "name": "script_enemy_big_fish"
+  },
+  {
+    "index": 74,
+    "name": "script_enemy_Cheep_Chomp"
+  },
+  {
+    "index": 75,
+    "name": "script_enemy_Cheep_Chomp_sterowany"
+  },
+  {
+    "index": 76,
+    "name": "script_enemy_big_fish_wyskocznix"
+  },
+  {
+    "index": 77,
+    "name": "script_enemy_small_fish_dmuchacz"
+  },
+  {
+    "index": 78,
+    "name": "script_enemy_small_fish"
+  },
+  {
+    "index": 79,
+    "name": "script_enemy_porcu"
+  },
+  {
+    "index": 80,
+    "name": "script_enemy_porcu_big"
+  },
+  {
+    "index": 81,
+    "name": "script_enemy_small_fish_wyskocznix"
+  },
+  {
+    "index": 82,
+    "name": "script_enemy_small_fish_skoczek"
+  },
+  {
+    "index": 83,
+    "name": "script_enemy_small_fish_ultra_fast"
+  },
+  {
+    "index": 84,
+    "name": "script_enemy_small_fish_red"
+  },
+  {
+    "index": 85,
+    "name": "script_enemy_small_fish_circle"
+  },
+  {
+    "index": 86,
+    "name": "script_enemy_kolec_wiatrak"
+  },
+  {
+    "index": 87,
+    "name": "script_enemy_pokey"
+  },
+  {
+    "index": 88,
+    "name": "script_enemy_pokey_shooter"
+  },
+  {
+    "index": 89,
+    "name": "script_enemy_pokey_panzer"
+  },
+  {
+    "index": 90,
+    "name": "script_enemy_pokey_panzer_2"
+  },
+  {
+    "index": 91,
+    "name": "script_enemy_pokey_panzer_3"
+  },
+  {
+    "index": 92,
+    "name": "script_enemy_chomp"
+  },
+  {
+    "index": 93,
+    "name": "script_enemy_chomp_2"
+  },
+  {
+    "index": 94,
+    "name": "script_enemy_dry_bones"
+  },
+  {
+    "index": 95,
+    "name": "script_enemy_dry_bones_samestroujacy"
+  },
+  {
+    "index": 96,
+    "name": "script_enemy_troopa"
+  },
+  {
+    "index": 97,
+    "name": "script_enemy_troopa_red"
+  },
+  {
+    "index": 98,
+    "name": "script_enemy_troopa_2"
+  },
+  {
+    "index": 99,
+    "name": "script_enemy_troopa_5"
+  },
+  {
+    "index": 100,
+    "name": "script_enemy_troopa_3"
+  },
+  {
+    "index": 101,
+    "name": "script_enemy_troopa_4"
+  },
+  {
+    "index": 102,
+    "name": "script_koopa_troopa_lezy"
+  },
+  {
+    "index": 103,
+    "name": "script_koopa_troopa_leci"
+  },
+  {
+    "index": 104,
+    "name": "script_enemy_pirania_zwykla"
+  },
+  {
+    "index": 105,
+    "name": "script_enemy_pirania_zwykla_2"
+  },
+  {
+    "index": 106,
+    "name": "script_enemy_pirania_zwykla_3"
+  },
+  {
+    "index": 107,
+    "name": "script_enemy_pirania_zwykla_4"
+  },
+  {
+    "index": 108,
+    "name": "script_enemy_pirania_zwykla_5"
+  },
+  {
+    "index": 109,
+    "name": "script_enemy_pirania_zwykla_6"
+  },
+  {
+    "index": 110,
+    "name": "script_enemy_pirania_zwykla_7"
+  },
+  {
+    "index": 111,
+    "name": "script_enemy_pirania_zwykla_7plus"
+  },
+  {
+    "index": 112,
+    "name": "script_enemy_pirania_zwykla_7plus2"
+  },
+  {
+    "index": 113,
+    "name": "script_enemy_pirania_zwykla_8"
+  },
+  {
+    "index": 114,
+    "name": "script_enemy_pirania_zwykla_9"
+  },
+  {
+    "index": 115,
+    "name": "script_enemy_pirania_rzodkiewa"
+  },
+  {
+    "index": 116,
+    "name": "script_enemy_pirania_rzodkiewa_2"
+  },
+  {
+    "index": 117,
+    "name": "script_enemy_pirania_rzodkiewa_3"
+  },
+  {
+    "index": 118,
+    "name": "script_enemy_monty_mole"
+  },
+  {
+    "index": 119,
+    "name": "script_enemy_rex"
+  },
+  {
+    "index": 120,
+    "name": "script_enemy_rex_mini"
+  },
+  {
+    "index": 121,
+    "name": "script_enemy_goomba"
+  },
+  {
+    "index": 122,
+    "name": "script_enemy_bomb_omb"
+  },
+  {
+    "index": 123,
+    "name": "script_enemy_bomb_omb_lezy"
+  },
+  {
+    "index": 124,
+    "name": "script_enemy_spikey"
+  },
+  {
+    "index": 125,
+    "name": "script_enemy_buzzy_beetle"
+  },
+  {
+    "index": 126,
+    "name": "script_enemy_big_buzzy_beetle"
+  },
+  {
+    "index": 127,
+    "name": "script_enemy_big_buzzy_beetle_2"
+  },
+  {
+    "index": 128,
+    "name": "script_enemy_big_buzzy_beetle_lezy"
+  },
+  {
+    "index": 129,
+    "name": "script_koopa_troopa_leci2"
+  },
+  {
+    "index": 130,
+    "name": "script_enemy_spikey_panzer"
+  },
+  {
+    "index": 131,
+    "name": "script_enemy_spikey_shooter"
+  },
+  {
+    "index": 132,
+    "name": "script_enemy_spikey_jumper"
+  },
+  {
+    "index": 133,
+    "name": "script_enemy_thromb"
+  },
+  {
+    "index": 134,
+    "name": "script_enemy_thromb_2"
+  },
+  {
+    "index": 135,
+    "name": "script_shy_boo_1"
+  },
+  {
+    "index": 136,
+    "name": "script_shy_boo_2"
+  },
+  {
+    "index": 137,
+    "name": "script_enut"
+  },
+  {
+    "index": 138,
+    "name": "script_pumpkiner_1"
+  },
+  {
+    "index": 139,
+    "name": "script_pumpkiner_2"
+  },
+  {
+    "index": 140,
+    "name": "script_pumpkiner_3"
+  },
+  {
+    "index": 141,
+    "name": "Correct_Time"
+  },
+  {
+    "index": 142,
+    "name": "Directory_Get"
+  },
+  {
+    "index": 143,
+    "name": "SXMS_I_Init"
+  },
+  {
+    "index": 144,
+    "name": "SXMS_I_Close"
+  },
+  {
+    "index": 145,
+    "name": "SXMS_I_About"
+  },
+  {
+    "index": 146,
+    "name": "SXMS_I_GetNumHardChan"
+  },
+  {
+    "index": 147,
+    "name": "SXMS_I_SpeakerSet"
+  },
+  {
+    "index": 148,
+    "name": "SXMS_I_NumDrivers"
+  },
+  {
+    "index": 149,
+    "name": "SXMS_I_Driver"
+  },
+  {
+    "index": 150,
+    "name": "SXMS_I_DriverName"
+  },
+  {
+    "index": 151,
+    "name": "SXMS_B_Init"
+  },
+  {
+    "index": 152,
+    "name": "SXMS_B_SetBufferSize"
+  },
+  {
+    "index": 153,
+    "name": "SXMS_B_SetPlayDriver"
+  },
+  {
+    "index": 154,
+    "name": "SXMS_B_SetMaxHardChan"
+  },
+  {
+    "index": 155,
+    "name": "SXMS_B_SetMinHardChan"
+  },
+  {
+    "index": 156,
+    "name": "SXMS_B_SetOutput"
+  },
+  {
+    "index": 157,
+    "name": "SXMS_B_FMODSetHandle"
+  },
+  {
+    "index": 158,
+    "name": "SXMS_C_Stop"
+  },
+  {
+    "index": 159,
+    "name": "SXMS_C_Play"
+  },
+  {
+    "index": 160,
+    "name": "SXMS_C_Pause"
+  },
+  {
+    "index": 161,
+    "name": "SXMS_C_Loop"
+  },
+  {
+    "index": 162,
+    "name": "SXMS_C_Volume"
+  },
+  {
+    "index": 163,
+    "name": "SXMS_C_Pan"
+  },
+  {
+    "index": 164,
+    "name": "SXMS_C_Reserve"
+  },
+  {
+    "index": 165,
+    "name": "SXMS_C_FileType"
+  },
+  {
+    "index": 166,
+    "name": "SXMS_C_IsPlaying"
+  },
+  {
+    "index": 167,
+    "name": "SXMS_C_Time"
+  },
+  {
+    "index": 168,
+    "name": "SXMS_C_Channels"
+  },
+  {
+    "index": 169,
+    "name": "SXMS_C_Frequency"
+  },
+  {
+    "index": 170,
+    "name": "SXMS_C_Surround"
+  },
+  {
+    "index": 171,
+    "name": "SXMS_C_Mute"
+  },
+  {
+    "index": 172,
+    "name": "SXMS_C_PercentComplete"
+  },
+  {
+    "index": 173,
+    "name": "SXMS_C_Current"
+  },
+  {
+    "index": 174,
+    "name": "SXMS_SFX_Load"
+  },
+  {
+    "index": 175,
+    "name": "SXMS_SFX_LoadBank"
+  },
+  {
+    "index": 176,
+    "name": "SXMS_SFX_Play"
+  },
+  {
+    "index": 177,
+    "name": "SXMS_SFX_PlayExt"
+  },
+  {
+    "index": 178,
+    "name": "SXMS_SFX_Pause"
+  },
+  {
+    "index": 179,
+    "name": "SXMS_SFX_Pan"
+  },
+  {
+    "index": 180,
+    "name": "SXMS_SFX_Volume"
+  },
+  {
+    "index": 181,
+    "name": "SXMS_SFX_VolumeAbsolute"
+  },
+  {
+    "index": 182,
+    "name": "SXMS_SFX_Frequency"
+  },
+  {
+    "index": 183,
+    "name": "SXMS_SFX_Stop"
+  },
+  {
+    "index": 184,
+    "name": "SXMS_SFX_LoopMode"
+  },
+  {
+    "index": 185,
+    "name": "SXMS_SFX_Free"
+  },
+  {
+    "index": 186,
+    "name": "SXMS_SFX_MasterSeperation"
+  },
+  {
+    "index": 187,
+    "name": "SXMS_SFX_MasterVolume"
+  },
+  {
+    "index": 188,
+    "name": "SXMS_SFX_Name"
+  },
+  {
+    "index": 189,
+    "name": "SXMS_SFX_GetDefaults"
+  },
+  {
+    "index": 190,
+    "name": "SXMS_SFX_GetLength"
+  },
+  {
+    "index": 191,
+    "name": "SXMS_SFX_Position"
+  },
+  {
+    "index": 192,
+    "name": "SXMS_FX_Enable"
+  },
+  {
+    "index": 193,
+    "name": "SXMS_FX_Chorus"
+  },
+  {
+    "index": 194,
+    "name": "SXMS_FX_Compressor"
+  },
+  {
+    "index": 195,
+    "name": "SXMS_FX_Distortion"
+  },
+  {
+    "index": 196,
+    "name": "SXMS_FX_Echo"
+  },
+  {
+    "index": 197,
+    "name": "SXMS_FX_Flanger"
+  },
+  {
+    "index": 198,
+    "name": "SXMS_FX_Gargle"
+  },
+  {
+    "index": 199,
+    "name": "SXMS_FX_I3DL2Reverb1"
+  },
+  {
+    "index": 200,
+    "name": "SXMS_FX_I3DL2Reverb2"
+  },
+  {
+    "index": 201,
+    "name": "SXMS_FX_ParamEQ"
+  },
+  {
+    "index": 202,
+    "name": "SXMS_FX_WavesReverb"
+  },
+  {
+    "index": 203,
+    "name": "SXMS_FX_Disable"
+  },
+  {
+    "index": 204,
+    "name": "SXMS_M_Order"
+  },
+  {
+    "index": 205,
+    "name": "SXMS_M_Speed"
+  },
+  {
+    "index": 206,
+    "name": "SXMS_M_InfoStatic"
+  },
+  {
+    "index": 207,
+    "name": "SXMS_M_InfoDynamic"
+  },
+  {
+    "index": 208,
+    "name": "SXMS_M_MidiReverb"
+  },
+  {
+    "index": 209,
+    "name": "SXMS_M_Name"
+  },
+  {
+    "index": 210,
+    "name": "SXMS_M_SampName"
+  },
+  {
+    "index": 211,
+    "name": "SXMS_M_Optimize"
+  },
+  {
+    "index": 212,
+    "name": "SXMS_S_NumTags"
+  },
+  {
+    "index": 213,
+    "name": "SXMS_S_GetTag"
+  },
+  {
+    "index": 214,
+    "name": "SXMS_S_Seek"
+  },
+  {
+    "index": 215,
+    "name": "SXMS_S_Position"
+  },
+  {
+    "index": 216,
+    "name": "SXMS_S_Length"
+  },
+  {
+    "index": 217,
+    "name": "SXMS_Net_Buffer"
+  },
+  {
+    "index": 218,
+    "name": "SXMS_Net_Status"
+  },
+  {
+    "index": 219,
+    "name": "SXMS_Net_Server"
+  },
+  {
+    "index": 220,
+    "name": "SXMS_Net_Proxy"
+  },
+  {
+    "index": 221,
+    "name": "SXMS_CD_TrackTime"
+  },
+  {
+    "index": 222,
+    "name": "SXMS_CD_TrackLength"
+  },
+  {
+    "index": 223,
+    "name": "SXMS_CD_Track"
+  },
+  {
+    "index": 224,
+    "name": "SXMS_CD_Eject"
+  },
+  {
+    "index": 225,
+    "name": "SXMS_CD_SetDrive"
+  },
+  {
+    "index": 226,
+    "name": "SXMS_CD_NumTracks"
+  },
+  {
+    "index": 227,
+    "name": "SXMS_CD_Pause"
+  },
+  {
+    "index": 228,
+    "name": "SXMS_CD_Play"
+  },
+  {
+    "index": 229,
+    "name": "SXMS_CD_PlayMode"
+  },
+  {
+    "index": 230,
+    "name": "SXMS_CD_Volume"
+  },
+  {
+    "index": 231,
+    "name": "SXMS_CD_Stop"
+  },
+  {
+    "index": 232,
+    "name": "SXMS_R_Driver"
+  },
+  {
+    "index": 233,
+    "name": "SXMS_R_NumDrivers"
+  },
+  {
+    "index": 234,
+    "name": "SXMS_R_DriverName"
+  },
+  {
+    "index": 235,
+    "name": "SXMS_R_Position"
+  },
+  {
+    "index": 236,
+    "name": "SXMS_R_New"
+  },
+  {
+    "index": 237,
+    "name": "SXMS_R_Load"
+  },
+  {
+    "index": 238,
+    "name": "SXMS_R_Free"
+  },
+  {
+    "index": 239,
+    "name": "SXMS_R_Start"
+  },
+  {
+    "index": 240,
+    "name": "SXMS_R_Stop"
+  },
+  {
+    "index": 241,
+    "name": "SXMS_R_PlayStop"
+  },
+  {
+    "index": 242,
+    "name": "SXMS_R_Play"
+  },
+  {
+    "index": 243,
+    "name": "SXMS_R_Pause"
+  },
+  {
+    "index": 244,
+    "name": "SXMS_R_Defaults"
+  },
+  {
+    "index": 245,
+    "name": "SXMS_R_Save"
+  },
+  {
+    "index": 246,
+    "name": "SXMS_V_Set"
+  },
+  {
+    "index": 247,
+    "name": "SXMS_V_Info"
+  },
+  {
+    "index": 248,
+    "name": "SXMS_V_Levels"
+  },
+  {
+    "index": 249,
+    "name": "SXMS_FMOD_CPU"
+  },
+  {
+    "index": 250,
+    "name": "SXMS_FMOD_Version"
+  },
+  {
+    "index": 251,
+    "name": "SXMS_FMOD_GetHz"
+  },
+  {
+    "index": 252,
+    "name": "SXMS_FMOD_Pause"
+  },
+  {
+    "index": 253,
+    "name": "SXMS_FMOD_DSPState"
+  },
+  {
+    "index": 254,
+    "name": "SXMS_FMOD_DSPPriority"
+  },
+  {
+    "index": 255,
+    "name": "SXMS_WIN_Init"
+  },
+  {
+    "index": 256,
+    "name": "SXMS_WIN_OpenFileDialog"
+  },
+  {
+    "index": 257,
+    "name": "SXMS_WIN_MessageBox"
+  },
+  {
+    "index": 258,
+    "name": "SXMS_WIN_ShowWindow"
+  },
+  {
+    "index": 259,
+    "name": "SXMS_WIN_SetWindowPos"
+  },
+  {
+    "index": 260,
+    "name": "SXMS_WIN_GetActiveWindow"
+  },
+  {
+    "index": 261,
+    "name": "SXMS_WIN_SetDragAccept"
+  },
+  {
+    "index": 262,
+    "name": "SXMS_WIN_GetDrop"
+  },
+  {
+    "index": 263,
+    "name": "SXMS_WIN_ClearDrop"
+  },
+  {
+    "index": 264,
+    "name": "SXMS_WIN_GetCursorPos"
+  },
+  {
+    "index": 265,
+    "name": "SXMS_WAP_Init"
+  },
+  {
+    "index": 266,
+    "name": "SXMS_WAP_LoadPlugIn"
+  },
+  {
+    "index": 267,
+    "name": "SXMS_WAP_LoadPlugOut"
+  },
+  {
+    "index": 268,
+    "name": "SXMS_WAP_Stop"
+  },
+  {
+    "index": 269,
+    "name": "SXMS_WAP_Play"
+  },
+  {
+    "index": 270,
+    "name": "SXMS_WAP_Pause"
+  },
+  {
+    "index": 271,
+    "name": "SXMS_WAP_RemovePlugIn"
+  },
+  {
+    "index": 272,
+    "name": "SXMS_WAP_RemovePlugOut"
+  },
+  {
+    "index": 273,
+    "name": "SXMS_WAP_GetLength"
+  },
+  {
+    "index": 274,
+    "name": "SXMS_WAP_GetOutputTime"
+  },
+  {
+    "index": 275,
+    "name": "SXMS_WAP_SetOutputTime"
+  },
+  {
+    "index": 276,
+    "name": "SXMS_WAP_Volume"
+  },
+  {
+    "index": 277,
+    "name": "SXMS_WAP_SetPan"
+  },
+  {
+    "index": 278,
+    "name": "SXMS_WAP_IsPlaying"
+  },
+  {
+    "index": 279,
+    "name": "SXMS_WAP_Close"
+  },
+  {
+    "index": 280,
+    "name": "script_paralax_create"
+  },
+  {
+    "index": 281,
+    "name": "script_paralax_step"
+  },
+  null,
+  {
+    "index": 283,
+    "name": "script_paralax_step2"
+  },
+  {
+    "index": 284,
+    "name": "script_paralax_step3"
+  },
+  null,
+  {
+    "index": 286,
+    "name": "script_paralax_step4"
+  },
+  {
+    "index": 287,
+    "name": "sript_enemy_bujany_wiatrak2"
+  },
+  {
+    "index": 288,
+    "name": "script_boomboom"
+  },
+  {
+    "index": 289,
+    "name": "draw_radial_blur"
+  },
+  {
+    "index": 290,
+    "name": "script_boss_bowser"
+  },
+  null,
+  {
+    "index": 292,
+    "name": "script_przejscie_rurowe_na_poczatku"
+  },
+  {
+    "index": 293,
+    "name": "script_initialize_map_vars"
+  },
+  {
+    "index": 294,
+    "name": "script_paralax_step_desert"
+  },
+  {
+    "index": 295,
+    "name": "script_enemy_goomba_desert_block"
+  },
+  {
+    "index": 296,
+    "name": "script_enemy_goomba_desert_block2"
+  },
+  {
+    "index": 297,
+    "name": "script_big_movable_blocks"
+  },
+  {
+    "index": 298,
+    "name": "script_enemy_pirania_zwykla_3_bezrurowa"
+  },
+  {
+    "index": 299,
+    "name": "script_enemy_small_fish_skoczek_slowwer"
+  },
+  {
+    "index": 300,
+    "name": "script_paralax_add_glow"
+  },
+  {
+    "index": 301,
+    "name": "script_enemy_goomba2"
+  },
+  {
+    "index": 302,
+    "name": "script_paralax_step22"
+  },
+  {
+    "index": 303,
+    "name": "script_enemy_lakitu_normal_stojacy"
+  },
+  null,
+  {
+    "index": 305,
+    "name": "script_step_sample"
+  },
+  {
+    "index": 306,
+    "name": "script_efektuj_chmury_po_chodzone"
+  },
+  {
+    "index": 307,
+    "name": "script_enemy_kolec_wiatrak2"
+  },
+  {
+    "index": 308,
+    "name": "script_enemy_Cheep_Chomp_sterowany2"
+  },
+  {
+    "index": 309,
+    "name": "script_wiatrak_tarczowy2"
+  },
+  {
+    "index": 310,
+    "name": "script_enemy_big_cannon2"
+  },
+  {
+    "index": 311,
+    "name": "script_enemy_bulletball_3plus"
+  },
+  {
+    "index": 312,
+    "name": "script_paralax_step_lava"
+  },
+  {
+    "index": 313,
+    "name": "script_paralax_step3dark"
+  },
+  {
+    "index": 314,
+    "name": "script_paralax_step3dark2"
+  },
+  {
+    "index": 315,
+    "name": "script_enemy_troopa_2plus"
+  },
+  {
+    "index": 316,
+    "name": "script_enut2"
+  },
+  null,
+  {
+    "index": 318,
+    "name": "script_paralax_step3red"
+  },
+  {
+    "index": 319,
+    "name": "script_enemy_bulletball_3_samoczynny"
+  },
+  {
+    "index": 320,
+    "name": "script_enemy_bulletball_3_samoczynny2"
+  },
+  {
+    "index": 321,
+    "name": "script_paralax_step2_color"
+  },
+  {
+    "index": 322,
+    "name": "script_paralax_step2_darker"
+  },
+  {
+    "index": 323,
+    "name": "script_paralax_step4_statue_bowser"
+  },
+  {
+    "index": 324,
+    "name": "script_enemy_lakitu_normal2"
+  },
+  {
+    "index": 325,
+    "name": "script_map_control"
+  },
+  {
+    "index": 326,
+    "name": "script_game_over"
+  },
+  {
+    "index": 327,
+    "name": "hex_open"
+  },
+  {
+    "index": 328,
+    "name": "hex_read"
+  },
+  {
+    "index": 329,
+    "name": "hex_write"
+  },
+  {
+    "index": 330,
+    "name": "hex_close"
+  },
+  {
+    "index": 331,
+    "name": "hex_create_empty"
+  },
+  {
+    "index": 332,
+    "name": "script_show_level_names"
+  },
+  {
+    "index": 333,
+    "name": "script_paralax_step55"
+  },
+  {
+    "index": 334,
+    "name": "script_paralax_stepTT"
+  },
+  {
+    "index": 335,
+    "name": "script_initialize_game_map"
+  },
+  {
+    "index": 336,
+    "name": "script_initialize_game_gfx"
+  },
+  {
+    "index": 337,
+    "name": "script_KULKO_BETA"
+  },
+  {
+    "index": 338,
+    "name": "script_enemy_porcu_big_nice"
+  },
+  {
+    "index": 339,
+    "name": "script_title_screen"
+  },
+  {
+    "index": 340,
+    "name": "script_wylacz_walce"
+  },
+  {
+    "index": 341,
+    "name": "script_sequence_coding"
+  },
+  {
+    "index": 342,
+    "name": "script_generating_particlering"
+  }
+]

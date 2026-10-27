@@ -1,0 +1,8 @@
+#event create:0
+image_speed=0
+
+
+#event step:0
+image_index+=0.1
+
+

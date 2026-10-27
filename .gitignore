@@ -1,0 +1,15 @@
+.DS_Store
+
+# Original game and tooling clones (not redistributed)
+content/
+decompiled/
+rea/
+tools/OpenGMK/
+tools/bin/
+tools/gm8export/target/
+
+# Image dumps from gm8export; copies live in web/public
+export/sprites/
+export/backgrounds/
+export/gfx/
+export/masks.bin

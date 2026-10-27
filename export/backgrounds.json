@@ -1,0 +1,979 @@
+[
+  {
+    "file": "background3",
+    "height": 459,
+    "index": 0,
+    "name": "background3",
+    "width": 462
+  },
+  {
+    "file": "b_blocks",
+    "height": 40,
+    "index": 1,
+    "name": "b_blocks",
+    "width": 40
+  },
+  {
+    "file": "b_blachy",
+    "height": 240,
+    "index": 2,
+    "name": "b_blachy",
+    "width": 360
+  },
+  {
+    "file": "b_rury_pionowe",
+    "height": 120,
+    "index": 3,
+    "name": "b_rury_pionowe",
+    "width": 320
+  },
+  {
+    "file": "b_rury_poziome",
+    "height": 320,
+    "index": 4,
+    "name": "b_rury_poziome",
+    "width": 120
+  },
+  {
+    "file": "b_rury_ukos",
+    "height": 520,
+    "index": 5,
+    "name": "b_rury_ukos",
+    "width": 520
+  },
+  {
+    "file": "b_rury_zakos",
+    "height": 520,
+    "index": 6,
+    "name": "b_rury_zakos",
+    "width": 520
+  },
+  {
+    "file": "b_murki",
+    "height": 400,
+    "index": 7,
+    "name": "b_murki",
+    "width": 800
+  },
+  {
+    "file": "back_murki_klasyczne_1",
+    "height": 480,
+    "index": 8,
+    "name": "back_murki_klasyczne_1",
+    "width": 480
+  },
+  {
+    "file": "back_murki_klasyczne_2",
+    "height": 480,
+    "index": 9,
+    "name": "back_murki_klasyczne_2",
+    "width": 480
+  },
+  {
+    "file": "back_krzaki_do_klasycznego",
+    "height": 280,
+    "index": 10,
+    "name": "back_krzaki_do_klasycznego",
+    "width": 520
+  },
+  {
+    "file": "back_murki_palacowe",
+    "height": 320,
+    "index": 11,
+    "name": "back_murki_palacowe",
+    "width": 240
+  },
+  {
+    "file": "back_murki_podziemne",
+    "height": 480,
+    "index": 12,
+    "name": "back_murki_podziemne",
+    "width": 560
+  },
+  {
+    "file": "back_krysztaly_podziemne",
+    "height": 300,
+    "index": 13,
+    "name": "back_krysztaly_podziemne",
+    "width": 400
+  },
+  {
+    "file": "back_cienie_kwadratowe",
+    "height": 680,
+    "index": 14,
+    "name": "back_cienie_kwadratowe",
+    "width": 720
+  },
+  null,
+  {
+    "file": "back_murki_skalne_nieuzywane",
+    "height": 480,
+    "index": 16,
+    "name": "back_murki_skalne_nieuzywane",
+    "width": 400
+  },
+  {
+    "file": "back_krysztaly_murki_podziemne_1",
+    "height": 320,
+    "index": 17,
+    "name": "back_krysztaly_murki_podziemne_1",
+    "width": 560
+  },
+  {
+    "file": "back_krysztaly_murki_podziemne_2",
+    "height": 320,
+    "index": 18,
+    "name": "back_krysztaly_murki_podziemne_2",
+    "width": 560
+  },
+  {
+    "file": "back_krysztaly_murki_podziemne_3",
+    "height": 320,
+    "index": 19,
+    "name": "back_krysztaly_murki_podziemne_3",
+    "width": 560
+  },
+  {
+    "file": "back_krysztaly_murki_podziemne_4",
+    "height": 400,
+    "index": 20,
+    "name": "back_krysztaly_murki_podziemne_4",
+    "width": 640
+  },
+  {
+    "file": "b_Statek",
+    "height": 560,
+    "index": 21,
+    "name": "b_Statek",
+    "width": 520
+  },
+  {
+    "file": "b_Statek_2",
+    "height": 200,
+    "index": 22,
+    "name": "b_Statek_2",
+    "width": 400
+  },
+  null,
+  {
+    "file": "b_statek_darkerer_subplatforms",
+    "height": 80,
+    "index": 24,
+    "name": "b_statek_darkerer_subplatforms",
+    "width": 120
+  },
+  {
+    "file": "b_Statek_maszty",
+    "height": 300,
+    "index": 25,
+    "name": "b_Statek_maszty",
+    "width": 400
+  },
+  {
+    "file": "b_Statek_dodatki",
+    "height": 440,
+    "index": 26,
+    "name": "b_Statek_dodatki",
+    "width": 400
+  },
+  {
+    "file": "back_nieuzywane_czerwone_murki_samolotu",
+    "height": 40,
+    "index": 27,
+    "name": "back_nieuzywane_czerwone_murki_samolotu",
+    "width": 80
+  },
+  {
+    "file": "back_swiatlowanie_murkow",
+    "height": 440,
+    "index": 28,
+    "name": "back_swiatlowanie_murkow",
+    "width": 400
+  },
+  {
+    "file": "back_pociemnianie_murkow",
+    "height": 440,
+    "index": 29,
+    "name": "back_pociemnianie_murkow",
+    "width": 400
+  },
+  {
+    "file": "back_duze_pociemniacze_murkow",
+    "height": 400,
+    "index": 30,
+    "name": "back_duze_pociemniacze_murkow",
+    "width": 400
+  },
+  {
+    "file": "b_plotker",
+    "height": 50,
+    "index": 31,
+    "name": "b_plotker",
+    "width": 87
+  },
+  {
+    "file": "b_plotker_2",
+    "height": 81,
+    "index": 32,
+    "name": "b_plotker_2",
+    "width": 91
+  },
+  {
+    "file": "b_caving_2",
+    "height": 600,
+    "index": 33,
+    "name": "b_caving_2",
+    "width": 40
+  },
+  {
+    "file": "b_caving_1",
+    "height": 600,
+    "index": 34,
+    "name": "b_caving_1",
+    "width": 40
+  },
+  {
+    "file": "b_caving_2_DELETE",
+    "height": 600,
+    "index": 35,
+    "name": "b_caving_2_DELETE",
+    "width": 40
+  },
+  {
+    "file": "b_czekoladniki",
+    "height": 200,
+    "index": 36,
+    "name": "b_czekoladniki",
+    "width": 200
+  },
+  {
+    "file": "b_chamaki_1",
+    "height": 240,
+    "index": 37,
+    "name": "b_chamaki_1",
+    "width": 480
+  },
+  {
+    "file": "background_dark_blocks",
+    "height": 60,
+    "index": 38,
+    "name": "background_dark_blocks",
+    "width": 140
+  },
+  {
+    "file": "background_drewno_jaskiniowe",
+    "height": 400,
+    "index": 39,
+    "name": "background_drewno_jaskiniowe",
+    "width": 440
+  },
+  null,
+  {
+    "file": "background_grzyby",
+    "height": 300,
+    "index": 41,
+    "name": "background_grzyby",
+    "width": 400
+  },
+  {
+    "file": "background42",
+    "height": 200,
+    "index": 42,
+    "name": "background42",
+    "width": 440
+  },
+  null,
+  null,
+  null,
+  null,
+  null,
+  {
+    "file": "back_duchostan_1",
+    "height": 640,
+    "index": 48,
+    "name": "back_duchostan_1",
+    "width": 520
+  },
+  {
+    "file": "back_duchostan_2",
+    "height": 240,
+    "index": 49,
+    "name": "back_duchostan_2",
+    "width": 320
+  },
+  {
+    "file": "back_darkerer",
+    "height": 120,
+    "index": 50,
+    "name": "back_darkerer",
+    "width": 40
+  },
+  {
+    "file": "back_murki_palacowe_1",
+    "height": 120,
+    "index": 51,
+    "name": "back_murki_palacowe_1",
+    "width": 120
+  },
+  {
+    "file": "back_throne",
+    "height": 300,
+    "index": 52,
+    "name": "back_throne",
+    "width": 400
+  },
+  {
+    "file": "back_palace_curtain",
+    "height": 189,
+    "index": 53,
+    "name": "back_palace_curtain",
+    "width": 135
+  },
+  {
+    "file": "back_ghost_subplatform",
+    "height": 480,
+    "index": 54,
+    "name": "back_ghost_subplatform",
+    "width": 480
+  },
+  null,
+  {
+    "file": "back_desert_1",
+    "height": 320,
+    "index": 56,
+    "name": "back_desert_1",
+    "width": 640
+  },
+  {
+    "file": "back_desert_2",
+    "height": 400,
+    "index": 57,
+    "name": "back_desert_2",
+    "width": 400
+  },
+  {
+    "file": "back_desert_paralax",
+    "height": 180,
+    "index": 58,
+    "name": "back_desert_paralax",
+    "width": 627
+  },
+  {
+    "file": "back_desert_3",
+    "height": 320,
+    "index": 59,
+    "name": "back_desert_3",
+    "width": 320
+  },
+  {
+    "file": "back_adder_sand",
+    "height": 87,
+    "index": 60,
+    "name": "back_adder_sand",
+    "width": 188
+  },
+  {
+    "file": "back_desert_rock",
+    "height": 64,
+    "index": 61,
+    "name": "back_desert_rock",
+    "width": 64
+  },
+  {
+    "file": "back_desert_rock_2",
+    "height": 64,
+    "index": 62,
+    "name": "back_desert_rock_2",
+    "width": 64
+  },
+  {
+    "file": "back_desert_poprawiacz_zamazywacz_1",
+    "height": 240,
+    "index": 63,
+    "name": "back_desert_poprawiacz_zamazywacz_1",
+    "width": 240
+  },
+  {
+    "file": "back_desert_darkerers",
+    "height": 200,
+    "index": 64,
+    "name": "back_desert_darkerers",
+    "width": 240
+  },
+  {
+    "file": "back_desert_darkerers2",
+    "height": 300,
+    "index": 65,
+    "name": "back_desert_darkerers2",
+    "width": 400
+  },
+  {
+    "file": "back_desert_minis",
+    "height": 400,
+    "index": 66,
+    "name": "back_desert_minis",
+    "width": 400
+  },
+  {
+    "file": "back_desert_cegly_1",
+    "height": 440,
+    "index": 67,
+    "name": "back_desert_cegly_1",
+    "width": 400
+  },
+  {
+    "file": "back_desert_darkerek",
+    "height": 370,
+    "index": 68,
+    "name": "back_desert_darkerek",
+    "width": 370
+  },
+  {
+    "file": "back_desert_cegly",
+    "height": 480,
+    "index": 69,
+    "name": "back_desert_cegly",
+    "width": 600
+  },
+  {
+    "file": "back_desert_cegly_2",
+    "height": 439,
+    "index": 70,
+    "name": "back_desert_cegly_2",
+    "width": 600
+  },
+  {
+    "file": "back_desert_cegly_3",
+    "height": 340,
+    "index": 71,
+    "name": "back_desert_cegly_3",
+    "width": 240
+  },
+  {
+    "file": "back_ship_windows",
+    "height": 200,
+    "index": 72,
+    "name": "back_ship_windows",
+    "width": 360
+  },
+  {
+    "file": "back_bowser_head",
+    "height": 148,
+    "index": 73,
+    "name": "back_bowser_head",
+    "width": 137
+  },
+  {
+    "file": "back_underwater_set",
+    "height": 320,
+    "index": 74,
+    "name": "back_underwater_set",
+    "width": 600
+  },
+  {
+    "file": "back_underwater_set_flood",
+    "height": 200,
+    "index": 75,
+    "name": "back_underwater_set_flood",
+    "width": 200
+  },
+  {
+    "file": "back_mostek",
+    "height": 120,
+    "index": 76,
+    "name": "back_mostek",
+    "width": 160
+  },
+  {
+    "file": "back_mostek2",
+    "height": 120,
+    "index": 77,
+    "name": "back_mostek2",
+    "width": 160
+  },
+  {
+    "file": "back_wiatrak_kulka",
+    "height": 120,
+    "index": 78,
+    "name": "back_wiatrak_kulka",
+    "width": 120
+  },
+  {
+    "file": "back_grassland_2",
+    "height": 240,
+    "index": 79,
+    "name": "back_grassland_2",
+    "width": 240
+  },
+  {
+    "file": "back_grassland_3",
+    "height": 240,
+    "index": 80,
+    "name": "back_grassland_3",
+    "width": 240
+  },
+  {
+    "file": "back_spirala_windowa",
+    "height": 120,
+    "index": 81,
+    "name": "back_spirala_windowa",
+    "width": 200
+  },
+  {
+    "file": "back_spirala_windowa2",
+    "height": 120,
+    "index": 82,
+    "name": "back_spirala_windowa2",
+    "width": 200
+  },
+  {
+    "file": "back_spirala_windowa3",
+    "height": 200,
+    "index": 83,
+    "name": "back_spirala_windowa3",
+    "width": 120
+  },
+  {
+    "file": "back_plat_shadowfing",
+    "height": 80,
+    "index": 84,
+    "name": "back_plat_shadowfing",
+    "width": 300
+  },
+  null,
+  {
+    "file": "back_oil",
+    "height": 120,
+    "index": 86,
+    "name": "back_oil",
+    "width": 200
+  },
+  {
+    "file": "background87",
+    "height": 200,
+    "index": 87,
+    "name": "background87",
+    "width": 400
+  },
+  {
+    "file": "b_caving_4",
+    "height": 600,
+    "index": 88,
+    "name": "b_caving_4",
+    "width": 40
+  },
+  {
+    "file": "back_mushroom",
+    "height": 360,
+    "index": 89,
+    "name": "back_mushroom",
+    "width": 280
+  },
+  {
+    "file": "back_rocky",
+    "height": 400,
+    "index": 90,
+    "name": "back_rocky",
+    "width": 400
+  },
+  {
+    "file": "back_rocky2",
+    "height": 440,
+    "index": 91,
+    "name": "back_rocky2",
+    "width": 440
+  },
+  {
+    "file": "b_ruru_links",
+    "height": 240,
+    "index": 92,
+    "name": "b_ruru_links",
+    "width": 240
+  },
+  {
+    "file": "back_rocky_darky",
+    "height": 400,
+    "index": 93,
+    "name": "back_rocky_darky",
+    "width": 400
+  },
+  {
+    "file": "background94",
+    "height": 160,
+    "index": 94,
+    "name": "background94",
+    "width": 240
+  },
+  {
+    "file": "back_tanks",
+    "height": 600,
+    "index": 95,
+    "name": "back_tanks",
+    "width": 600
+  },
+  {
+    "file": "background96",
+    "height": 120,
+    "index": 96,
+    "name": "background96",
+    "width": 160
+  },
+  {
+    "file": "back_bonus_domes_1",
+    "height": 120,
+    "index": 97,
+    "name": "back_bonus_domes_1",
+    "width": 240
+  },
+  {
+    "file": "background98",
+    "height": 160,
+    "index": 98,
+    "name": "background98",
+    "width": 160
+  },
+  {
+    "file": "background99",
+    "height": 160,
+    "index": 99,
+    "name": "background99",
+    "width": 160
+  },
+  null,
+  {
+    "file": "background101",
+    "height": 159,
+    "index": 101,
+    "name": "background101",
+    "width": 143
+  },
+  {
+    "file": "background8",
+    "height": 500,
+    "index": 102,
+    "name": "background8",
+    "width": 500
+  },
+  {
+    "file": "b_map_tiles_1",
+    "height": 600,
+    "index": 103,
+    "name": "b_map_tiles_1",
+    "width": 800
+  },
+  {
+    "file": "background10",
+    "height": 340,
+    "index": 104,
+    "name": "background10",
+    "width": 454
+  },
+  {
+    "file": "background45",
+    "height": 340,
+    "index": 105,
+    "name": "background45",
+    "width": 454
+  },
+  {
+    "file": "background13",
+    "height": 600,
+    "index": 106,
+    "name": "background13",
+    "width": 600
+  },
+  {
+    "file": "background14",
+    "height": 300,
+    "index": 107,
+    "name": "background14",
+    "width": 400
+  },
+  {
+    "file": "background15",
+    "height": 320,
+    "index": 108,
+    "name": "background15",
+    "width": 320
+  },
+  {
+    "file": "b_tiles_roads",
+    "height": 120,
+    "index": 109,
+    "name": "b_tiles_roads",
+    "width": 80
+  },
+  {
+    "file": "b_tiles_roads_underwater",
+    "height": 120,
+    "index": 110,
+    "name": "b_tiles_roads_underwater",
+    "width": 240
+  },
+  {
+    "file": "b_tiles_roads_LAVA",
+    "height": 80,
+    "index": 111,
+    "name": "b_tiles_roads_LAVA",
+    "width": 80
+  },
+  {
+    "file": "background17",
+    "height": 364,
+    "index": 112,
+    "name": "background17",
+    "width": 326
+  },
+  {
+    "file": "background20",
+    "height": 400,
+    "index": 113,
+    "name": "background20",
+    "width": 400
+  },
+  {
+    "file": "background22",
+    "height": 257,
+    "index": 114,
+    "name": "background22",
+    "width": 254
+  },
+  {
+    "file": "b_map_sand_flood",
+    "height": 80,
+    "index": 115,
+    "name": "b_map_sand_flood",
+    "width": 160
+  },
+  {
+    "file": "b_map_pyramids",
+    "height": 300,
+    "index": 116,
+    "name": "b_map_pyramids",
+    "width": 400
+  },
+  {
+    "file": "b_map_sand_underwater",
+    "height": 176,
+    "index": 117,
+    "name": "b_map_sand_underwater",
+    "width": 174
+  },
+  {
+    "file": "background27",
+    "height": 248,
+    "index": 118,
+    "name": "background27",
+    "width": 248
+  },
+  {
+    "file": "background28",
+    "height": 248,
+    "index": 119,
+    "name": "background28",
+    "width": 248
+  },
+  {
+    "file": "b_ghost_houses",
+    "height": 300,
+    "index": 120,
+    "name": "b_ghost_houses",
+    "width": 400
+  },
+  {
+    "file": "background30",
+    "height": 300,
+    "index": 121,
+    "name": "background30",
+    "width": 400
+  },
+  {
+    "file": "background31",
+    "height": 128,
+    "index": 122,
+    "name": "background31",
+    "width": 128
+  },
+  {
+    "file": "background32",
+    "height": 120,
+    "index": 123,
+    "name": "background32",
+    "width": 120
+  },
+  {
+    "file": "background33",
+    "height": 300,
+    "index": 124,
+    "name": "background33",
+    "width": 400
+  },
+  {
+    "file": "background34",
+    "height": 40,
+    "index": 125,
+    "name": "background34",
+    "width": 69
+  },
+  {
+    "file": "background35",
+    "height": 300,
+    "index": 126,
+    "name": "background35",
+    "width": 400
+  },
+  {
+    "file": "background38",
+    "height": 120,
+    "index": 127,
+    "name": "background38",
+    "width": 120
+  },
+  {
+    "file": "background_water_hill",
+    "height": 275,
+    "index": 128,
+    "name": "background_water_hill",
+    "width": 90
+  },
+  {
+    "file": "background_water_hill_1",
+    "height": 217,
+    "index": 129,
+    "name": "background_water_hill_1",
+    "width": 90
+  },
+  {
+    "file": "back_grounds",
+    "height": 400,
+    "index": 130,
+    "name": "back_grounds",
+    "width": 120
+  },
+  {
+    "file": "background48",
+    "height": 272,
+    "index": 131,
+    "name": "background48",
+    "width": 350
+  },
+  {
+    "file": "background49",
+    "height": 480,
+    "index": 132,
+    "name": "background49",
+    "width": 400
+  },
+  {
+    "file": "background51",
+    "height": 80,
+    "index": 133,
+    "name": "background51",
+    "width": 320
+  },
+  {
+    "file": "background134",
+    "height": 248,
+    "index": 134,
+    "name": "background134",
+    "width": 248
+  },
+  null,
+  {
+    "file": "back_stoners_1",
+    "height": 120,
+    "index": 136,
+    "name": "back_stoners_1",
+    "width": 600
+  },
+  null,
+  null,
+  {
+    "file": "back_murki_podziemne_2",
+    "height": 240,
+    "index": 139,
+    "name": "back_murki_podziemne_2",
+    "width": 120
+  },
+  {
+    "file": "back_murki_podziemne_3",
+    "height": 120,
+    "index": 140,
+    "name": "back_murki_podziemne_3",
+    "width": 240
+  },
+  {
+    "file": "back_statues_desert",
+    "height": 560,
+    "index": 141,
+    "name": "back_statues_desert",
+    "width": 560
+  },
+  {
+    "file": "back_sandy",
+    "height": 120,
+    "index": 142,
+    "name": "back_sandy",
+    "width": 120
+  },
+  {
+    "file": "back_castle_outside_2",
+    "height": 200,
+    "index": 143,
+    "name": "back_castle_outside_2",
+    "width": 160
+  },
+  {
+    "file": "back_castle_outside_1",
+    "height": 80,
+    "index": 144,
+    "name": "back_castle_outside_1",
+    "width": 160
+  },
+  {
+    "file": "back_castle_outside_1_plus",
+    "height": 80,
+    "index": 145,
+    "name": "back_castle_outside_1_plus",
+    "width": 160
+  },
+  {
+    "file": "back_castle_outside_2_plus",
+    "height": 200,
+    "index": 146,
+    "name": "back_castle_outside_2_plus",
+    "width": 160
+  },
+  null,
+  null,
+  {
+    "file": "back_castle_glow",
+    "height": 160,
+    "index": 149,
+    "name": "back_castle_glow",
+    "width": 40
+  },
+  null,
+  {
+    "file": "back_castle_1",
+    "height": 400,
+    "index": 151,
+    "name": "back_castle_1",
+    "width": 600
+  },
+  {
+    "file": "back_castle_2",
+    "height": 400,
+    "index": 152,
+    "name": "back_castle_2",
+    "width": 600
+  },
+  null,
+  {
+    "file": "back_castle_kratka",
+    "height": 200,
+    "index": 154,
+    "name": "back_castle_kratka",
+    "width": 200
+  }
+]

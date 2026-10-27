@@ -1,0 +1,2639 @@
+[
+  null,
+  {
+    "file": "game_initialize",
+    "height": 600,
+    "index": 1,
+    "instances": 1,
+    "name": "game_initialize",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "room_initialize_and_loading",
+    "height": 600,
+    "index": 2,
+    "instances": 2,
+    "name": "room_initialize_and_loading",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "room_level_1_1",
+    "height": 1200,
+    "index": 3,
+    "instances": 773,
+    "name": "room_level_1_1",
+    "tiles": 641,
+    "width": 25000
+  },
+  {
+    "file": "room_level_1_2_part1",
+    "height": 1200,
+    "index": 4,
+    "instances": 63,
+    "name": "room_level_1_2_part1",
+    "tiles": 20,
+    "width": 10000
+  },
+  null,
+  null,
+  null,
+  null,
+  null,
+  {
+    "file": "COPY_ME_TO_EDIT",
+    "height": 1200,
+    "index": 10,
+    "instances": 1,
+    "name": "COPY_ME_TO_EDIT",
+    "tiles": 13,
+    "width": 10000
+  },
+  {
+    "file": "room_level_1_2_part2",
+    "height": 800,
+    "index": 11,
+    "instances": 630,
+    "name": "room_level_1_2_part2",
+    "tiles": 424,
+    "width": 15000
+  },
+  {
+    "file": "room_level_1_2_part3",
+    "height": 1200,
+    "index": 12,
+    "instances": 100,
+    "name": "room_level_1_2_part3",
+    "tiles": 71,
+    "width": 10000
+  },
+  {
+    "file": "room_level_1_3",
+    "height": 1200,
+    "index": 13,
+    "instances": 639,
+    "name": "room_level_1_3",
+    "tiles": 413,
+    "width": 15000
+  },
+  {
+    "file": "room_level_1_4",
+    "height": 1200,
+    "index": 14,
+    "instances": 458,
+    "name": "room_level_1_4",
+    "tiles": 622,
+    "width": 14000
+  },
+  null,
+  null,
+  {
+    "file": "room_level_1_4_boss",
+    "height": 600,
+    "index": 17,
+    "instances": 26,
+    "name": "room_level_1_4_boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  null,
+  {
+    "file": "room_level_1_5",
+    "height": 2000,
+    "index": 19,
+    "instances": 728,
+    "name": "room_level_1_5",
+    "tiles": 317,
+    "width": 15000
+  },
+  {
+    "file": "room_level_1_6",
+    "height": 1200,
+    "index": 20,
+    "instances": 144,
+    "name": "room_level_1_6",
+    "tiles": 105,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_level_1_6_part2",
+    "height": 1200,
+    "index": 22,
+    "instances": 193,
+    "name": "room_level_1_6_part2",
+    "tiles": 117,
+    "width": 10000
+  },
+  {
+    "file": "room_level_1_6_part3",
+    "height": 1200,
+    "index": 23,
+    "instances": 222,
+    "name": "room_level_1_6_part3",
+    "tiles": 139,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_level_1_6_part4",
+    "height": 1200,
+    "index": 25,
+    "instances": 62,
+    "name": "room_level_1_6_part4",
+    "tiles": 68,
+    "width": 10000
+  },
+  {
+    "file": "room_battle_goomba",
+    "height": 1200,
+    "index": 26,
+    "instances": 79,
+    "name": "room_battle_goomba",
+    "tiles": 33,
+    "width": 1000
+  },
+  {
+    "file": "room_level_palace_1",
+    "height": 800,
+    "index": 27,
+    "instances": 84,
+    "name": "room_level_palace_1",
+    "tiles": 139,
+    "width": 2000
+  },
+  {
+    "file": "room_level_ship_sequence_jump_1",
+    "height": 1200,
+    "index": 28,
+    "instances": 103,
+    "name": "room_level_ship_sequence_jump_1",
+    "tiles": 118,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_desert_1_8_ghost_house_part_2",
+    "height": 800,
+    "index": 30,
+    "instances": 450,
+    "name": "room_desert_1_8_ghost_house_part_2",
+    "tiles": 403,
+    "width": 18000
+  },
+  {
+    "file": "room_roslinker_6_6_ghost_part_1",
+    "height": 1200,
+    "index": 31,
+    "instances": 99,
+    "name": "room_roslinker_6_6_ghost_part_1",
+    "tiles": 39,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_roslinker_6_6_ghost_part_2",
+    "height": 1200,
+    "index": 33,
+    "instances": 589,
+    "name": "room_roslinker_6_6_ghost_part_2",
+    "tiles": 1061,
+    "width": 17000
+  },
+  {
+    "file": "room_underwater_3_5_ghost_house_1",
+    "height": 1200,
+    "index": 34,
+    "instances": 389,
+    "name": "room_underwater_3_5_ghost_house_1",
+    "tiles": 239,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_3_5_ghost_house_2",
+    "height": 1200,
+    "index": 35,
+    "instances": 430,
+    "name": "room_underwater_3_5_ghost_house_2",
+    "tiles": 184,
+    "width": 15000
+  },
+  {
+    "file": "room_underwater_3_5_ghost_house_3",
+    "height": 4000,
+    "index": 36,
+    "instances": 461,
+    "name": "room_underwater_3_5_ghost_house_3",
+    "tiles": 422,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_3_5_ghost_house_4",
+    "height": 1200,
+    "index": 37,
+    "instances": 65,
+    "name": "room_underwater_3_5_ghost_house_4",
+    "tiles": 79,
+    "width": 10000
+  },
+  {
+    "file": "room_level_battleship_1",
+    "height": 1200,
+    "index": 38,
+    "instances": 587,
+    "name": "room_level_battleship_1",
+    "tiles": 659,
+    "width": 15000
+  },
+  null,
+  {
+    "file": "room_level_battleship_1_boss",
+    "height": 600,
+    "index": 40,
+    "instances": 29,
+    "name": "room_level_battleship_1_boss",
+    "tiles": 91,
+    "width": 2400
+  },
+  {
+    "file": "room_desert_1_1",
+    "height": 1200,
+    "index": 41,
+    "instances": 751,
+    "name": "room_desert_1_1",
+    "tiles": 548,
+    "width": 20000
+  },
+  {
+    "file": "room_desert_1_2_part_2",
+    "height": 1200,
+    "index": 42,
+    "instances": 513,
+    "name": "room_desert_1_2_part_2",
+    "tiles": 977,
+    "width": 20000
+  },
+  {
+    "file": "ready_to_edit_desert_COPY_ME",
+    "height": 1200,
+    "index": 43,
+    "instances": 34,
+    "name": "ready_to_edit_desert_COPY_ME",
+    "tiles": 55,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_desert_1_3",
+    "height": 1200,
+    "index": 45,
+    "instances": 901,
+    "name": "room_desert_1_3",
+    "tiles": 1077,
+    "width": 20000
+  },
+  {
+    "file": "room_desert_1_4_castle",
+    "height": 1200,
+    "index": 46,
+    "instances": 462,
+    "name": "room_desert_1_4_castle",
+    "tiles": 249,
+    "width": 15000
+  },
+  {
+    "file": "room_desert_1_4_castle_boss",
+    "height": 600,
+    "index": 47,
+    "instances": 25,
+    "name": "room_desert_1_4_castle_boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_desert_1_5",
+    "height": 1200,
+    "index": 48,
+    "instances": 815,
+    "name": "room_desert_1_5",
+    "tiles": 337,
+    "width": 20000
+  },
+  {
+    "file": "room_desert_1_6_water",
+    "height": 1200,
+    "index": 49,
+    "instances": 408,
+    "name": "room_desert_1_6_water",
+    "tiles": 274,
+    "width": 20000
+  },
+  {
+    "file": "room_desert_1_7",
+    "height": 1200,
+    "index": 50,
+    "instances": 768,
+    "name": "room_desert_1_7",
+    "tiles": 608,
+    "width": 18000
+  },
+  {
+    "file": "room_desert_1_8_ghost_house_part_1",
+    "height": 1200,
+    "index": 51,
+    "instances": 61,
+    "name": "room_desert_1_8_ghost_house_part_1",
+    "tiles": 59,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_1_8_ghost_house_part_3",
+    "height": 1200,
+    "index": 52,
+    "instances": 45,
+    "name": "room_desert_1_8_ghost_house_part_3",
+    "tiles": 65,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_1_9_Castle",
+    "height": 1200,
+    "index": 53,
+    "instances": 393,
+    "name": "room_desert_1_9_Castle",
+    "tiles": 340,
+    "width": 15000
+  },
+  {
+    "file": "room_desert_1_9_Castle_part_2",
+    "height": 1200,
+    "index": 54,
+    "instances": 110,
+    "name": "room_desert_1_9_Castle_part_2",
+    "tiles": 112,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_1_9_Castle_part_3",
+    "height": 3000,
+    "index": 55,
+    "instances": 574,
+    "name": "room_desert_1_9_Castle_part_3",
+    "tiles": 163,
+    "width": 12000
+  },
+  {
+    "file": "room_desert_1_9_Castle_part_4_boss",
+    "height": 600,
+    "index": 56,
+    "instances": 25,
+    "name": "room_desert_1_9_Castle_part_4_boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_desert_1_10_Pirate_Ship",
+    "height": 1200,
+    "index": 57,
+    "instances": 780,
+    "name": "room_desert_1_10_Pirate_Ship",
+    "tiles": 419,
+    "width": 17000
+  },
+  {
+    "file": "room_desert_battleship_2",
+    "height": 3000,
+    "index": 58,
+    "instances": 674,
+    "name": "room_desert_battleship_2",
+    "tiles": 867,
+    "width": 15000
+  },
+  {
+    "file": "ready_to_edit_fly_ship_COPY_ME",
+    "height": 3000,
+    "index": 59,
+    "instances": 2,
+    "name": "ready_to_edit_fly_ship_COPY_ME",
+    "tiles": 9,
+    "width": 15000
+  },
+  {
+    "file": "room_desert_battleship_sequence_2",
+    "height": 1200,
+    "index": 60,
+    "instances": 57,
+    "name": "room_desert_battleship_sequence_2",
+    "tiles": 59,
+    "width": 10000
+  },
+  {
+    "file": "room_level_battleship_2_boss_2",
+    "height": 600,
+    "index": 61,
+    "instances": 29,
+    "name": "room_level_battleship_2_boss_2",
+    "tiles": 91,
+    "width": 2400
+  },
+  {
+    "file": "room_level_palace_2",
+    "height": 800,
+    "index": 62,
+    "instances": 47,
+    "name": "room_level_palace_2",
+    "tiles": 90,
+    "width": 2000
+  },
+  {
+    "file": "room_underwater_3_1",
+    "height": 8000,
+    "index": 63,
+    "instances": 838,
+    "name": "room_underwater_3_1",
+    "tiles": 540,
+    "width": 10000
+  },
+  {
+    "file": "room_UNDERWATER_COPY_ME",
+    "height": 8000,
+    "index": 64,
+    "instances": 33,
+    "name": "room_UNDERWATER_COPY_ME",
+    "tiles": 0,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_underwater_3_2",
+    "height": 8000,
+    "index": 66,
+    "instances": 912,
+    "name": "room_underwater_3_2",
+    "tiles": 1601,
+    "width": 20000
+  },
+  {
+    "file": "room_UNDERWATER_BEZ_WODY_COPY_ME",
+    "height": 8000,
+    "index": 67,
+    "instances": 7,
+    "name": "room_UNDERWATER_BEZ_WODY_COPY_ME",
+    "tiles": 0,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_3_3_secret_hill_level",
+    "height": 8000,
+    "index": 68,
+    "instances": 627,
+    "name": "room_underwater_3_3_secret_hill_level",
+    "tiles": 78,
+    "width": 4720
+  },
+  {
+    "file": "room_underwater_3_3_secret_hill_level_2",
+    "height": 8000,
+    "index": 69,
+    "instances": 217,
+    "name": "room_underwater_3_3_secret_hill_level_2",
+    "tiles": 111,
+    "width": 4720
+  },
+  null,
+  null,
+  {
+    "file": "room_underwater_3_9_pirate_ship_medusas",
+    "height": 8000,
+    "index": 72,
+    "instances": 1382,
+    "name": "room_underwater_3_9_pirate_ship_medusas",
+    "tiles": 1649,
+    "width": 17000
+  },
+  {
+    "file": "room_underwater_3_4",
+    "height": 8000,
+    "index": 73,
+    "instances": 510,
+    "name": "room_underwater_3_4",
+    "tiles": 408,
+    "width": 15000
+  },
+  {
+    "file": "room_underwater_castle_3_5",
+    "height": 8000,
+    "index": 74,
+    "instances": 455,
+    "name": "room_underwater_castle_3_5",
+    "tiles": 392,
+    "width": 5800
+  },
+  {
+    "file": "room_underwater_castle_3_5_boss",
+    "height": 600,
+    "index": 75,
+    "instances": 25,
+    "name": "room_underwater_castle_3_5_boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_underwater_3_5_ghost_house_11",
+    "height": 1200,
+    "index": 76,
+    "instances": 372,
+    "name": "room_underwater_3_5_ghost_house_11",
+    "tiles": 239,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_3_6_additional_level_1",
+    "height": 8000,
+    "index": 77,
+    "instances": 183,
+    "name": "room_underwater_3_6_additional_level_1",
+    "tiles": 109,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_3_7_podwodny",
+    "height": 8000,
+    "index": 78,
+    "instances": 923,
+    "name": "room_underwater_3_7_podwodny",
+    "tiles": 1986,
+    "width": 20000
+  },
+  {
+    "file": "room_underwater_3_8_platforms",
+    "height": 1200,
+    "index": 79,
+    "instances": 880,
+    "name": "room_underwater_3_8_platforms",
+    "tiles": 2149,
+    "width": 20000
+  },
+  {
+    "file": "room_underwater_3_10_palace",
+    "height": 800,
+    "index": 80,
+    "instances": 48,
+    "name": "room_underwater_3_10_palace",
+    "tiles": 70,
+    "width": 2000
+  },
+  {
+    "file": "room_underwater_3_11_Ship_sequence",
+    "height": 1200,
+    "index": 81,
+    "instances": 31,
+    "name": "room_underwater_3_11_Ship_sequence",
+    "tiles": 67,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_3_12_Flying_Ship",
+    "height": 3000,
+    "index": 82,
+    "instances": 949,
+    "name": "room_underwater_3_12_Flying_Ship",
+    "tiles": 1360,
+    "width": 15000
+  },
+  {
+    "file": "room_underwater_3_12_Flying_Ship_boss",
+    "height": 600,
+    "index": 83,
+    "instances": 29,
+    "name": "room_underwater_3_12_Flying_Ship_boss",
+    "tiles": 91,
+    "width": 2400
+  },
+  {
+    "file": "room_rocky_4_1_part1",
+    "height": 1200,
+    "index": 84,
+    "instances": 45,
+    "name": "room_rocky_4_1_part1",
+    "tiles": 20,
+    "width": 10000
+  },
+  {
+    "file": "room_rocky_4_1_part3",
+    "height": 1200,
+    "index": 85,
+    "instances": 92,
+    "name": "room_rocky_4_1_part3",
+    "tiles": 71,
+    "width": 10000
+  },
+  {
+    "file": "room_rocky_4_1_part2",
+    "height": 800,
+    "index": 86,
+    "instances": 1066,
+    "name": "room_rocky_4_1_part2",
+    "tiles": 451,
+    "width": 25000
+  },
+  null,
+  {
+    "file": "room_rocky_4_2_Lakitus",
+    "height": 1200,
+    "index": 88,
+    "instances": 548,
+    "name": "room_rocky_4_2_Lakitus",
+    "tiles": 793,
+    "width": 17480
+  },
+  null,
+  {
+    "file": "room_rocky_4_3",
+    "height": 1200,
+    "index": 90,
+    "instances": 724,
+    "name": "room_rocky_4_3",
+    "tiles": 982,
+    "width": 20000
+  },
+  {
+    "file": "room_COPY_ME_CAVE",
+    "height": 800,
+    "index": 91,
+    "instances": 69,
+    "name": "room_COPY_ME_CAVE",
+    "tiles": 0,
+    "width": 15000
+  },
+  {
+    "file": "room_rocky_4_4_ghost_cave",
+    "height": 800,
+    "index": 92,
+    "instances": 302,
+    "name": "room_rocky_4_4_ghost_cave",
+    "tiles": 241,
+    "width": 15000
+  },
+  {
+    "file": "room_rocky_4_4_ghost_cave_2",
+    "height": 8000,
+    "index": 93,
+    "instances": 342,
+    "name": "room_rocky_4_4_ghost_cave_2",
+    "tiles": 88,
+    "width": 10000
+  },
+  {
+    "file": "room_rocky_4_4_ghost_cave_3",
+    "height": 8000,
+    "index": 94,
+    "instances": 511,
+    "name": "room_rocky_4_4_ghost_cave_3",
+    "tiles": 126,
+    "width": 10000
+  },
+  {
+    "file": "room_rocky_4_4_ghost_cave_4",
+    "height": 1200,
+    "index": 95,
+    "instances": 74,
+    "name": "room_rocky_4_4_ghost_cave_4",
+    "tiles": 71,
+    "width": 10000
+  },
+  {
+    "file": "room_GRASSLAND_COPY_ME",
+    "height": 1600,
+    "index": 96,
+    "instances": 6,
+    "name": "room_GRASSLAND_COPY_ME",
+    "tiles": 0,
+    "width": 15000
+  },
+  {
+    "file": "room_rocky_4_5_scrooler_stage",
+    "height": 1600,
+    "index": 97,
+    "instances": 714,
+    "name": "room_rocky_4_5_scrooler_stage",
+    "tiles": 675,
+    "width": 16000
+  },
+  {
+    "file": "room_rocky_4_6_Battle_Ship",
+    "height": 3000,
+    "index": 98,
+    "instances": 505,
+    "name": "room_rocky_4_6_Battle_Ship",
+    "tiles": 692,
+    "width": 15000
+  },
+  {
+    "file": "room_rocky_4_6_Battle_Ship_Boss",
+    "height": 600,
+    "index": 99,
+    "instances": 29,
+    "name": "room_rocky_4_6_Battle_Ship_Boss",
+    "tiles": 91,
+    "width": 2400
+  },
+  {
+    "file": "room_cloudy_5_1",
+    "height": 1600,
+    "index": 100,
+    "instances": 742,
+    "name": "room_cloudy_5_1",
+    "tiles": 720,
+    "width": 20000
+  },
+  {
+    "file": "room_cloudy_5_2",
+    "height": 16000,
+    "index": 101,
+    "instances": 827,
+    "name": "room_cloudy_5_2",
+    "tiles": 328,
+    "width": 2000
+  },
+  {
+    "file": "room_cloudy_5_2_part_2",
+    "height": 15000,
+    "index": 102,
+    "instances": 270,
+    "name": "room_cloudy_5_2_part_2",
+    "tiles": 4,
+    "width": 1200
+  },
+  {
+    "file": "room_cloudy_5_2_part_3",
+    "height": 15000,
+    "index": 103,
+    "instances": 562,
+    "name": "room_cloudy_5_2_part_3",
+    "tiles": 116,
+    "width": 1200
+  },
+  {
+    "file": "room_cloudy_5_3",
+    "height": 1600,
+    "index": 104,
+    "instances": 895,
+    "name": "room_cloudy_5_3",
+    "tiles": 338,
+    "width": 20000
+  },
+  {
+    "file": "room_cloudy_5_4",
+    "height": 1600,
+    "index": 105,
+    "instances": 1034,
+    "name": "room_cloudy_5_4",
+    "tiles": 321,
+    "width": 20000
+  },
+  {
+    "file": "room_cloudy_5_5_Castle_Umiesc_klucz",
+    "height": 50000,
+    "index": 106,
+    "instances": 597,
+    "name": "room_cloudy_5_5_Castle_Umiesc_klucz",
+    "tiles": 1334,
+    "width": 1200
+  },
+  {
+    "file": "room_cloudy_5_6",
+    "height": 1600,
+    "index": 107,
+    "instances": 718,
+    "name": "room_cloudy_5_6",
+    "tiles": 371,
+    "width": 22000
+  },
+  {
+    "file": "room_cloudy_5_7_Castle_2",
+    "height": 1600,
+    "index": 108,
+    "instances": 447,
+    "name": "room_cloudy_5_7_Castle_2",
+    "tiles": 840,
+    "width": 15000
+  },
+  {
+    "file": "room_cloudy_5_7_Castle_2_boss",
+    "height": 600,
+    "index": 109,
+    "instances": 28,
+    "name": "room_cloudy_5_7_Castle_2_boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_roslinker_6_1",
+    "height": 1600,
+    "index": 110,
+    "instances": 666,
+    "name": "room_roslinker_6_1",
+    "tiles": 1173,
+    "width": 17000
+  },
+  {
+    "file": "room_roslinker_6_2_part_1",
+    "height": 1600,
+    "index": 111,
+    "instances": 595,
+    "name": "room_roslinker_6_2_part_1",
+    "tiles": 415,
+    "width": 13000
+  },
+  {
+    "file": "room_roslinker_6_2_part_2",
+    "height": 1600,
+    "index": 112,
+    "instances": 87,
+    "name": "room_roslinker_6_2_part_2",
+    "tiles": 19,
+    "width": 4000
+  },
+  {
+    "file": "room_roslinker_6_2_part_3",
+    "height": 1600,
+    "index": 113,
+    "instances": 544,
+    "name": "room_roslinker_6_2_part_3",
+    "tiles": 366,
+    "width": 16000
+  },
+  {
+    "file": "room_roslinker_6_2_part_4",
+    "height": 1200,
+    "index": 114,
+    "instances": 96,
+    "name": "room_roslinker_6_2_part_4",
+    "tiles": 71,
+    "width": 10000
+  },
+  {
+    "file": "room_roslinker_6_3_UMIESC_KLUCZ",
+    "height": 1600,
+    "index": 115,
+    "instances": 487,
+    "name": "room_roslinker_6_3_UMIESC_KLUCZ",
+    "tiles": 427,
+    "width": 12400
+  },
+  {
+    "file": "room_roslinker_6_4_run",
+    "height": 1600,
+    "index": 116,
+    "instances": 559,
+    "name": "room_roslinker_6_4_run",
+    "tiles": 801,
+    "width": 11720
+  },
+  {
+    "file": "debug_mode_for_development",
+    "height": 600,
+    "index": 117,
+    "instances": 1,
+    "name": "debug_mode_for_development",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "room_roslinker_5_4_Duch_Cave_Part_2",
+    "height": 800,
+    "index": 118,
+    "instances": 515,
+    "name": "room_roslinker_5_4_Duch_Cave_Part_2",
+    "tiles": 223,
+    "width": 15000
+  },
+  {
+    "file": "room_roslinker_5_4_Duch_Cave_Part_1",
+    "height": 1200,
+    "index": 119,
+    "instances": 82,
+    "name": "room_roslinker_5_4_Duch_Cave_Part_1",
+    "tiles": 20,
+    "width": 10000
+  },
+  {
+    "file": "room_roslinker_5_5_Duch_Cave_Part_3",
+    "height": 800,
+    "index": 120,
+    "instances": 535,
+    "name": "room_roslinker_5_5_Duch_Cave_Part_3",
+    "tiles": 198,
+    "width": 15000
+  },
+  {
+    "file": "room_roslinker_5_5_Duch_Cave_Part_4",
+    "height": 1200,
+    "index": 121,
+    "instances": 78,
+    "name": "room_roslinker_5_5_Duch_Cave_Part_4",
+    "tiles": 68,
+    "width": 10000
+  },
+  {
+    "file": "room_CASTLE_COPY_ME",
+    "height": 1200,
+    "index": 122,
+    "instances": 15,
+    "name": "room_CASTLE_COPY_ME",
+    "tiles": 16,
+    "width": 10000
+  },
+  {
+    "file": "room_roslinker_6_7_Castle",
+    "height": 1200,
+    "index": 123,
+    "instances": 573,
+    "name": "room_roslinker_6_7_Castle",
+    "tiles": 457,
+    "width": 20000
+  },
+  {
+    "file": "room_roslinker_6_7_Castle_Boss",
+    "height": 600,
+    "index": 124,
+    "instances": 44,
+    "name": "room_roslinker_6_7_Castle_Boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_roslinker_6_8",
+    "height": 1600,
+    "index": 125,
+    "instances": 721,
+    "name": "room_roslinker_6_8",
+    "tiles": 553,
+    "width": 15000
+  },
+  {
+    "file": "room_roslinker_6_9_palace",
+    "height": 800,
+    "index": 126,
+    "instances": 51,
+    "name": "room_roslinker_6_9_palace",
+    "tiles": 33,
+    "width": 2000
+  },
+  {
+    "file": "room_rocky_4_6_Palace",
+    "height": 800,
+    "index": 127,
+    "instances": 60,
+    "name": "room_rocky_4_6_Palace",
+    "tiles": 64,
+    "width": 2000
+  },
+  {
+    "file": "room_roslinker_6_9_Ship_Part_1",
+    "height": 15000,
+    "index": 128,
+    "instances": 646,
+    "name": "room_roslinker_6_9_Ship_Part_1",
+    "tiles": 586,
+    "width": 2000
+  },
+  {
+    "file": "room_roslinker_6_9_sequence",
+    "height": 1200,
+    "index": 129,
+    "instances": 52,
+    "name": "room_roslinker_6_9_sequence",
+    "tiles": 118,
+    "width": 10000
+  },
+  {
+    "file": "room_roslinker_6_9_Ship_Part_2",
+    "height": 15000,
+    "index": 130,
+    "instances": 799,
+    "name": "room_roslinker_6_9_Ship_Part_2",
+    "tiles": 484,
+    "width": 2000
+  },
+  {
+    "file": "room_roslinker_6_9_Ship_Part_2_boss",
+    "height": 600,
+    "index": 131,
+    "instances": 47,
+    "name": "room_roslinker_6_9_Ship_Part_2_boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  null,
+  {
+    "file": "room_ghostly_11_FlyShip",
+    "height": 3000,
+    "index": 133,
+    "instances": 543,
+    "name": "room_ghostly_11_FlyShip",
+    "tiles": 391,
+    "width": 18000
+  },
+  {
+    "file": "room134",
+    "height": 600,
+    "index": 134,
+    "instances": 46,
+    "name": "room134",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_ghostly_11_FlyShip_Boss",
+    "height": 600,
+    "index": 135,
+    "instances": 38,
+    "name": "room_ghostly_11_FlyShip_Boss",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_ghostly_8",
+    "height": 3000,
+    "index": 136,
+    "instances": 1070,
+    "name": "room_ghostly_8",
+    "tiles": 1142,
+    "width": 25000
+  },
+  null,
+  {
+    "file": "room_ghostly_1",
+    "height": 1600,
+    "index": 138,
+    "instances": 617,
+    "name": "room_ghostly_1",
+    "tiles": 1891,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_2_Ghost_House_Part_1",
+    "height": 1000,
+    "index": 139,
+    "instances": 186,
+    "name": "room_ghostly_2_Ghost_House_Part_1",
+    "tiles": 164,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_2_Ghost_House_Part_2",
+    "height": 8000,
+    "index": 140,
+    "instances": 382,
+    "name": "room_ghostly_2_Ghost_House_Part_2",
+    "tiles": 136,
+    "width": 2000
+  },
+  {
+    "file": "room_COPY_ME_GHOSTHOUSE",
+    "height": 1000,
+    "index": 141,
+    "instances": 3,
+    "name": "room_COPY_ME_GHOSTHOUSE",
+    "tiles": 0,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_2_Ghost_House_Part_3",
+    "height": 1000,
+    "index": 142,
+    "instances": 358,
+    "name": "room_ghostly_2_Ghost_House_Part_3",
+    "tiles": 21,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_2_Ghost_House_Part_4",
+    "height": 1200,
+    "index": 143,
+    "instances": 63,
+    "name": "room_ghostly_2_Ghost_House_Part_4",
+    "tiles": 78,
+    "width": 10000
+  },
+  {
+    "file": "room_ghostly_3_lavas_part_1",
+    "height": 1000,
+    "index": 144,
+    "instances": 343,
+    "name": "room_ghostly_3_lavas_part_1",
+    "tiles": 180,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_3_lavas_part_2",
+    "height": 1000,
+    "index": 145,
+    "instances": 541,
+    "name": "room_ghostly_3_lavas_part_2",
+    "tiles": 337,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_4_Part_1",
+    "height": 1000,
+    "index": 146,
+    "instances": 55,
+    "name": "room_ghostly_4_Part_1",
+    "tiles": 191,
+    "width": 4000
+  },
+  {
+    "file": "room_level_1_6_after",
+    "height": 1600,
+    "index": 147,
+    "instances": 38,
+    "name": "room_level_1_6_after",
+    "tiles": 63,
+    "width": 15000
+  },
+  {
+    "file": "room_underwater_3_5_ghost_house_AFTER",
+    "height": 1600,
+    "index": 148,
+    "instances": 29,
+    "name": "room_underwater_3_5_ghost_house_AFTER",
+    "tiles": 63,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_4_Part_2",
+    "height": 1000,
+    "index": 149,
+    "instances": 57,
+    "name": "room_ghostly_4_Part_2",
+    "tiles": 191,
+    "width": 4000
+  },
+  {
+    "file": "room_ghostly_4_Part_3",
+    "height": 1000,
+    "index": 150,
+    "instances": 59,
+    "name": "room_ghostly_4_Part_3",
+    "tiles": 191,
+    "width": 4000
+  },
+  {
+    "file": "room_ghostly_4_Part_4",
+    "height": 1000,
+    "index": 151,
+    "instances": 51,
+    "name": "room_ghostly_4_Part_4",
+    "tiles": 191,
+    "width": 4000
+  },
+  {
+    "file": "room_ghostly_4_Part_5",
+    "height": 1000,
+    "index": 152,
+    "instances": 61,
+    "name": "room_ghostly_4_Part_5",
+    "tiles": 39,
+    "width": 4000
+  },
+  {
+    "file": "room_ghostly_5",
+    "height": 1000,
+    "index": 153,
+    "instances": 330,
+    "name": "room_ghostly_5",
+    "tiles": 338,
+    "width": 16800
+  },
+  {
+    "file": "room_ghostly_6_part_1",
+    "height": 1000,
+    "index": 154,
+    "instances": 189,
+    "name": "room_ghostly_6_part_1",
+    "tiles": 103,
+    "width": 4500
+  },
+  {
+    "file": "room_ghostly_6_part_2",
+    "height": 15000,
+    "index": 155,
+    "instances": 706,
+    "name": "room_ghostly_6_part_2",
+    "tiles": 537,
+    "width": 2500
+  },
+  {
+    "file": "room_ghostly_6_part_3",
+    "height": 1600,
+    "index": 156,
+    "instances": 76,
+    "name": "room_ghostly_6_part_3",
+    "tiles": 57,
+    "width": 2240
+  },
+  {
+    "file": "room_ghostly_7",
+    "height": 1600,
+    "index": 157,
+    "instances": 561,
+    "name": "room_ghostly_7",
+    "tiles": 362,
+    "width": 20000
+  },
+  {
+    "file": "room_ghostly_8_part_2",
+    "height": 1000,
+    "index": 158,
+    "instances": 1001,
+    "name": "room_ghostly_8_part_2",
+    "tiles": 421,
+    "width": 20000
+  },
+  {
+    "file": "room_ghostly_8_part_1",
+    "height": 1600,
+    "index": 159,
+    "instances": 38,
+    "name": "room_ghostly_8_part_1",
+    "tiles": 63,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_8_part_3",
+    "height": 1200,
+    "index": 160,
+    "instances": 85,
+    "name": "room_ghostly_8_part_3",
+    "tiles": 68,
+    "width": 10000
+  },
+  {
+    "file": "room_ghostly_9_Part_1",
+    "height": 1600,
+    "index": 161,
+    "instances": 53,
+    "name": "room_ghostly_9_Part_1",
+    "tiles": 63,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_9_Part_2",
+    "height": 1600,
+    "index": 162,
+    "instances": 90,
+    "name": "room_ghostly_9_Part_2",
+    "tiles": 59,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_9_Part_3",
+    "height": 1600,
+    "index": 163,
+    "instances": 42,
+    "name": "room_ghostly_9_Part_3",
+    "tiles": 65,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_9_Part_4",
+    "height": 1600,
+    "index": 164,
+    "instances": 46,
+    "name": "room_ghostly_9_Part_4",
+    "tiles": 76,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_9_Part_5",
+    "height": 1600,
+    "index": 165,
+    "instances": 59,
+    "name": "room_ghostly_9_Part_5",
+    "tiles": 77,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_9_Part_6",
+    "height": 1600,
+    "index": 166,
+    "instances": 32,
+    "name": "room_ghostly_9_Part_6",
+    "tiles": 7,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_9_Part_7",
+    "height": 1600,
+    "index": 167,
+    "instances": 298,
+    "name": "room_ghostly_9_Part_7",
+    "tiles": 187,
+    "width": 15000
+  },
+  null,
+  {
+    "file": "COPY_ME_LAVA_LEVEL",
+    "height": 1600,
+    "index": 169,
+    "instances": 6,
+    "name": "COPY_ME_LAVA_LEVEL",
+    "tiles": 0,
+    "width": 15000
+  },
+  {
+    "file": "room_lavas_1",
+    "height": 1600,
+    "index": 170,
+    "instances": 406,
+    "name": "room_lavas_1",
+    "tiles": 364,
+    "width": 20000
+  },
+  {
+    "file": "room_lavas_2",
+    "height": 1000,
+    "index": 171,
+    "instances": 464,
+    "name": "room_lavas_2",
+    "tiles": 302,
+    "width": 12600
+  },
+  {
+    "file": "room_lavas_2_end",
+    "height": 1600,
+    "index": 172,
+    "instances": 60,
+    "name": "room_lavas_2_end",
+    "tiles": 49,
+    "width": 3000
+  },
+  {
+    "file": "room_lavas_3",
+    "height": 1600,
+    "index": 173,
+    "instances": 733,
+    "name": "room_lavas_3",
+    "tiles": 789,
+    "width": 20000
+  },
+  {
+    "file": "room_lavas_3_end",
+    "height": 1600,
+    "index": 174,
+    "instances": 67,
+    "name": "room_lavas_3_end",
+    "tiles": 49,
+    "width": 3000
+  },
+  {
+    "file": "room_lavas_4_Castle",
+    "height": 1200,
+    "index": 175,
+    "instances": 371,
+    "name": "room_lavas_4_Castle",
+    "tiles": 141,
+    "width": 8000
+  },
+  {
+    "file": "room_lavas_4_Castle_Part_2",
+    "height": 1000,
+    "index": 176,
+    "instances": 81,
+    "name": "room_lavas_4_Castle_Part_2",
+    "tiles": 17,
+    "width": 5000
+  },
+  {
+    "file": "room_lavas_4_Castle_Part_3",
+    "height": 1600,
+    "index": 177,
+    "instances": 87,
+    "name": "room_lavas_4_Castle_Part_3",
+    "tiles": 49,
+    "width": 3000
+  },
+  {
+    "file": "room_lavas_5_Jumping_on_Cliffs",
+    "height": 1600,
+    "index": 178,
+    "instances": 542,
+    "name": "room_lavas_5_Jumping_on_Cliffs",
+    "tiles": 240,
+    "width": 13200
+  },
+  {
+    "file": "room_lavas_5_Jumping_on_Clift_Part_2",
+    "height": 1600,
+    "index": 179,
+    "instances": 573,
+    "name": "room_lavas_5_Jumping_on_Clift_Part_2",
+    "tiles": 440,
+    "width": 15000
+  },
+  null,
+  {
+    "file": "room_lavas_5_Jumping_on_Clift_Part_3",
+    "height": 1600,
+    "index": 181,
+    "instances": 67,
+    "name": "room_lavas_5_Jumping_on_Clift_Part_3",
+    "tiles": 49,
+    "width": 3000
+  },
+  {
+    "file": "room_lavas_6_Lava_Run",
+    "height": 16000,
+    "index": 182,
+    "instances": 713,
+    "name": "room_lavas_6_Lava_Run",
+    "tiles": 564,
+    "width": 1000
+  },
+  {
+    "file": "room_lavas_6_Lava_Run_2",
+    "height": 1600,
+    "index": 183,
+    "instances": 67,
+    "name": "room_lavas_6_Lava_Run_2",
+    "tiles": 49,
+    "width": 3000
+  },
+  {
+    "file": "room_lavas_7_Tanks_2",
+    "height": 1000,
+    "index": 184,
+    "instances": 621,
+    "name": "room_lavas_7_Tanks_2",
+    "tiles": 440,
+    "width": 12600
+  },
+  {
+    "file": "room_lavas_7_Tanks_2_end",
+    "height": 1600,
+    "index": 185,
+    "instances": 60,
+    "name": "room_lavas_7_Tanks_2_end",
+    "tiles": 49,
+    "width": 3000
+  },
+  {
+    "file": "room_desert_1_2_part_1",
+    "height": 1200,
+    "index": 186,
+    "instances": 252,
+    "name": "room_desert_1_2_part_1",
+    "tiles": 145,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_1_11_BIG_SHOOTAS_part_1",
+    "height": 1200,
+    "index": 187,
+    "instances": 306,
+    "name": "room_desert_1_11_BIG_SHOOTAS_part_1",
+    "tiles": 184,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_1_11_BIG_SHOOTAS_part_2",
+    "height": 1200,
+    "index": 188,
+    "instances": 467,
+    "name": "room_desert_1_11_BIG_SHOOTAS_part_2",
+    "tiles": 159,
+    "width": 10000
+  },
+  null,
+  null,
+  {
+    "file": "room_desert_1_13_Tanks",
+    "height": 1000,
+    "index": 191,
+    "instances": 461,
+    "name": "room_desert_1_13_Tanks",
+    "tiles": 276,
+    "width": 12600
+  },
+  {
+    "file": "room_desert_1_13_Tanks_Part_2",
+    "height": 1200,
+    "index": 192,
+    "instances": 56,
+    "name": "room_desert_1_13_Tanks_Part_2",
+    "tiles": 65,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_8_Fly_Ships",
+    "height": 3000,
+    "index": 193,
+    "instances": 832,
+    "name": "room_lavas_8_Fly_Ships",
+    "tiles": 467,
+    "width": 18000
+  },
+  null,
+  {
+    "file": "room_lavas_8_Fly_Ships_Part_2",
+    "height": 1200,
+    "index": 195,
+    "instances": 83,
+    "name": "room_lavas_8_Fly_Ships_Part_2",
+    "tiles": 67,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_9_Las_Ships_Part_1",
+    "height": 1600,
+    "index": 196,
+    "instances": 839,
+    "name": "room_lavas_9_Las_Ships_Part_1",
+    "tiles": 756,
+    "width": 15000
+  },
+  {
+    "file": "room_lavas_9_Las_Ships_Part_2",
+    "height": 1200,
+    "index": 197,
+    "instances": 78,
+    "name": "room_lavas_9_Las_Ships_Part_2",
+    "tiles": 67,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_9_Lastship_exit",
+    "height": 1200,
+    "index": 198,
+    "instances": 78,
+    "name": "room_lavas_9_Lastship_exit",
+    "tiles": 67,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_2",
+    "height": 1200,
+    "index": 199,
+    "instances": 144,
+    "name": "room_lavas_10_Last_Castle_2",
+    "tiles": 72,
+    "width": 4000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_1",
+    "height": 1200,
+    "index": 200,
+    "instances": 157,
+    "name": "room_lavas_10_Last_Castle_1",
+    "tiles": 160,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_lavas_10_Last_Castle_3",
+    "height": 1200,
+    "index": 202,
+    "instances": 100,
+    "name": "room_lavas_10_Last_Castle_3",
+    "tiles": 57,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_4",
+    "height": 1200,
+    "index": 203,
+    "instances": 97,
+    "name": "room_lavas_10_Last_Castle_4",
+    "tiles": 57,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_5",
+    "height": 1200,
+    "index": 204,
+    "instances": 107,
+    "name": "room_lavas_10_Last_Castle_5",
+    "tiles": 57,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_BOWSER",
+    "height": 1200,
+    "index": 205,
+    "instances": 49,
+    "name": "room_lavas_10_Last_Castle_BOWSER",
+    "tiles": 23,
+    "width": 1600
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_6",
+    "height": 1200,
+    "index": 206,
+    "instances": 89,
+    "name": "room_lavas_10_Last_Castle_6",
+    "tiles": 57,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_7",
+    "height": 1200,
+    "index": 207,
+    "instances": 214,
+    "name": "room_lavas_10_Last_Castle_7",
+    "tiles": 234,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_8",
+    "height": 1200,
+    "index": 208,
+    "instances": 234,
+    "name": "room_lavas_10_Last_Castle_8",
+    "tiles": 59,
+    "width": 10000
+  },
+  {
+    "file": "room_lavas_10_Last_Castle_9",
+    "height": 1200,
+    "index": 209,
+    "instances": 105,
+    "name": "room_lavas_10_Last_Castle_9",
+    "tiles": 187,
+    "width": 10000
+  },
+  {
+    "file": "room_battle_goomba_2",
+    "height": 1200,
+    "index": 210,
+    "instances": 106,
+    "name": "room_battle_goomba_2",
+    "tiles": 27,
+    "width": 1500
+  },
+  null,
+  {
+    "file": "room_BATTLE_goomba",
+    "height": 1200,
+    "index": 212,
+    "instances": 89,
+    "name": "room_BATTLE_goomba",
+    "tiles": 30,
+    "width": 1400
+  },
+  null,
+  null,
+  {
+    "file": "room_BATTLE_troopa",
+    "height": 1200,
+    "index": 215,
+    "instances": 172,
+    "name": "room_BATTLE_troopa",
+    "tiles": 28,
+    "width": 1200
+  },
+  {
+    "file": "room_BATTLE_hammerbross",
+    "height": 1200,
+    "index": 216,
+    "instances": 126,
+    "name": "room_BATTLE_hammerbross",
+    "tiles": 30,
+    "width": 1400
+  },
+  {
+    "file": "room_BATTLE_Kaktuser_1",
+    "height": 1200,
+    "index": 217,
+    "instances": 123,
+    "name": "room_BATTLE_Kaktuser_1",
+    "tiles": 30,
+    "width": 1400
+  },
+  {
+    "file": "room_BATTLE_Kaktuser_2",
+    "height": 1200,
+    "index": 218,
+    "instances": 193,
+    "name": "room_BATTLE_Kaktuser_2",
+    "tiles": 30,
+    "width": 1400
+  },
+  {
+    "file": "room_BATTLE_bummerang_bros_1",
+    "height": 1100,
+    "index": 219,
+    "instances": 71,
+    "name": "room_BATTLE_bummerang_bros_1",
+    "tiles": 20,
+    "width": 1300
+  },
+  {
+    "file": "room_BATTLE_bummerang_bros_2",
+    "height": 1100,
+    "index": 220,
+    "instances": 139,
+    "name": "room_BATTLE_bummerang_bros_2",
+    "tiles": 35,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_fire_bros_on_water",
+    "height": 1100,
+    "index": 221,
+    "instances": 101,
+    "name": "room_BATTLE_fire_bros_on_water",
+    "tiles": 18,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_LAND_lakitus_1",
+    "height": 1100,
+    "index": 222,
+    "instances": 136,
+    "name": "room_BATTLE_LAND_lakitus_1",
+    "tiles": 20,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_fire_bros_on_sand_1",
+    "height": 1200,
+    "index": 223,
+    "instances": 103,
+    "name": "room_BATTLE_fire_bros_on_sand_1",
+    "tiles": 30,
+    "width": 1400
+  },
+  {
+    "file": "room_BATTLE_fire_bros_on_sand_2",
+    "height": 1200,
+    "index": 224,
+    "instances": 222,
+    "name": "room_BATTLE_fire_bros_on_sand_2",
+    "tiles": 30,
+    "width": 1400
+  },
+  {
+    "file": "room_BATTLE_Big_Bros_rocky_1",
+    "height": 1100,
+    "index": 225,
+    "instances": 65,
+    "name": "room_BATTLE_Big_Bros_rocky_1",
+    "tiles": 26,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_Big_Bros_rocky_2",
+    "height": 1100,
+    "index": 226,
+    "instances": 105,
+    "name": "room_BATTLE_Big_Bros_rocky_2",
+    "tiles": 27,
+    "width": 1600
+  },
+  null,
+  {
+    "file": "room_BATTLE_big_hammer_1",
+    "height": 1100,
+    "index": 228,
+    "instances": 169,
+    "name": "room_BATTLE_big_hammer_1",
+    "tiles": 78,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_LAND_lakitus_2",
+    "height": 1100,
+    "index": 229,
+    "instances": 92,
+    "name": "room_BATTLE_LAND_lakitus_2",
+    "tiles": 20,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_CLOUDY_lakitus_1",
+    "height": 2000,
+    "index": 230,
+    "instances": 180,
+    "name": "room_BATTLE_CLOUDY_lakitus_1",
+    "tiles": 21,
+    "width": 1500
+  },
+  {
+    "file": "room_BATTLE_CLOUDY_lakitus_2",
+    "height": 2000,
+    "index": 231,
+    "instances": 249,
+    "name": "room_BATTLE_CLOUDY_lakitus_2",
+    "tiles": 0,
+    "width": 1500
+  },
+  {
+    "file": "room_BATTLE_big_hammer_2",
+    "height": 1100,
+    "index": 232,
+    "instances": 82,
+    "name": "room_BATTLE_big_hammer_2",
+    "tiles": 20,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_Big_Hammer_1",
+    "height": 1600,
+    "index": 233,
+    "instances": 51,
+    "name": "room_BATTLE_Big_Hammer_1",
+    "tiles": 34,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_Lakitus_1",
+    "height": 1600,
+    "index": 234,
+    "instances": 62,
+    "name": "room_BATTLE_Lakitus_1",
+    "tiles": 34,
+    "width": 1600
+  },
+  null,
+  null,
+  {
+    "file": "room_BATTLE_Lakitus_2_Harder",
+    "height": 1600,
+    "index": 237,
+    "instances": 97,
+    "name": "room_BATTLE_Lakitus_2_Harder",
+    "tiles": 34,
+    "width": 1600
+  },
+  {
+    "file": "room_BATTLE_Big_Hammer_2_Harder",
+    "height": 1600,
+    "index": 238,
+    "instances": 64,
+    "name": "room_BATTLE_Big_Hammer_2_Harder",
+    "tiles": 34,
+    "width": 1600
+  },
+  null,
+  {
+    "file": "room_DOME_2xMUSHROOM_1xFLOWER",
+    "height": 1200,
+    "index": 240,
+    "instances": 182,
+    "name": "room_DOME_2xMUSHROOM_1xFLOWER",
+    "tiles": 256,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_1xMUSHROOM_1xFLOWER_1xLISTEK",
+    "height": 1200,
+    "index": 241,
+    "instances": 188,
+    "name": "room_DOME_1xMUSHROOM_1xFLOWER_1xLISTEK",
+    "tiles": 264,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_1xFLOWER_2xLISTEK",
+    "height": 1200,
+    "index": 242,
+    "instances": 182,
+    "name": "room_DOME_1xFLOWER_2xLISTEK",
+    "tiles": 264,
+    "width": 2400
+  },
+  null,
+  {
+    "file": "room_DOME_3xBURAK",
+    "height": 1200,
+    "index": 244,
+    "instances": 177,
+    "name": "room_DOME_3xBURAK",
+    "tiles": 273,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_1xBURAK_1xGWIAZDKA_1xBUDZIK",
+    "height": 1200,
+    "index": 245,
+    "instances": 177,
+    "name": "room_DOME_1xBURAK_1xGWIAZDKA_1xBUDZIK",
+    "tiles": 275,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_1xBURAK_1xHAMMER_1xBOMMER",
+    "height": 1200,
+    "index": 246,
+    "instances": 194,
+    "name": "room_DOME_1xBURAK_1xHAMMER_1xBOMMER",
+    "tiles": 274,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_ONLY_TANOOKI",
+    "height": 1200,
+    "index": 247,
+    "instances": 176,
+    "name": "room_DOME_ONLY_TANOOKI",
+    "tiles": 252,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_ONLY_STAR",
+    "height": 1200,
+    "index": 248,
+    "instances": 176,
+    "name": "room_DOME_ONLY_STAR",
+    "tiles": 252,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_2xSTAR_1xLATAC_1xKWIATEK",
+    "height": 1200,
+    "index": 249,
+    "instances": 181,
+    "name": "room_DOME_2xSTAR_1xLATAC_1xKWIATEK",
+    "tiles": 273,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_2xDUCH_2xBOMBER",
+    "height": 1200,
+    "index": 250,
+    "instances": 180,
+    "name": "room_DOME_2xDUCH_2xBOMBER",
+    "tiles": 252,
+    "width": 2400
+  },
+  {
+    "file": "room_DOME_ONLY_LATACZ",
+    "height": 1200,
+    "index": 251,
+    "instances": 176,
+    "name": "room_DOME_ONLY_LATACZ",
+    "tiles": 252,
+    "width": 2400
+  },
+  {
+    "file": "room_BONUS_STAGE_ARMATA_1",
+    "height": 1500,
+    "index": 252,
+    "instances": 85,
+    "name": "room_BONUS_STAGE_ARMATA_1",
+    "tiles": 130,
+    "width": 1500
+  },
+  {
+    "file": "room_cloudy_5_8_Ostatni_Etap",
+    "height": 1600,
+    "index": 253,
+    "instances": 1090,
+    "name": "room_cloudy_5_8_Ostatni_Etap",
+    "tiles": 326,
+    "width": 30000
+  },
+  {
+    "file": "room_cloudy_PALACE",
+    "height": 800,
+    "index": 254,
+    "instances": 75,
+    "name": "room_cloudy_PALACE",
+    "tiles": 57,
+    "width": 2000
+  },
+  {
+    "file": "room_cloudy_PALACE_SEQUENCE",
+    "height": 1200,
+    "index": 255,
+    "instances": 83,
+    "name": "room_cloudy_PALACE_SEQUENCE",
+    "tiles": 118,
+    "width": 10000
+  },
+  {
+    "file": "room_cloudy_PALACE_SHIP",
+    "height": 3000,
+    "index": 256,
+    "instances": 355,
+    "name": "room_cloudy_PALACE_SHIP",
+    "tiles": 387,
+    "width": 15000
+  },
+  {
+    "file": "room_ghostly_PALACE",
+    "height": 800,
+    "index": 257,
+    "instances": 55,
+    "name": "room_ghostly_PALACE",
+    "tiles": 57,
+    "width": 2000
+  },
+  {
+    "file": "room_ghostly_SEQUENCE",
+    "height": 1200,
+    "index": 258,
+    "instances": 79,
+    "name": "room_ghostly_SEQUENCE",
+    "tiles": 118,
+    "width": 10000
+  },
+  {
+    "file": "room_rocky_4_6_Palace_Sequence",
+    "height": 1200,
+    "index": 259,
+    "instances": 54,
+    "name": "room_rocky_4_6_Palace_Sequence",
+    "tiles": 118,
+    "width": 10000
+  },
+  {
+    "file": "room_cloudy_PALACE_SHIP_Part_2",
+    "height": 3000,
+    "index": 260,
+    "instances": 749,
+    "name": "room_cloudy_PALACE_SHIP_Part_2",
+    "tiles": 64,
+    "width": 15000
+  },
+  {
+    "file": "room_cloudy_PALACE_BOSS",
+    "height": 600,
+    "index": 261,
+    "instances": 47,
+    "name": "room_cloudy_PALACE_BOSS",
+    "tiles": 149,
+    "width": 2400
+  },
+  {
+    "file": "room_title_screen_and_options",
+    "height": 15000,
+    "index": 262,
+    "instances": 969,
+    "name": "room_title_screen_and_options",
+    "tiles": 559,
+    "width": 15000
+  },
+  {
+    "file": "save_game_room",
+    "height": 1600,
+    "index": 263,
+    "instances": 572,
+    "name": "save_game_room",
+    "tiles": 325,
+    "width": 20000
+  },
+  {
+    "file": "room_FIRST_FIRST_LEVEL",
+    "height": 1600,
+    "index": 264,
+    "instances": 497,
+    "name": "room_FIRST_FIRST_LEVEL",
+    "tiles": 356,
+    "width": 15000
+  },
+  {
+    "file": "initialize_maps_values",
+    "height": 600,
+    "index": 265,
+    "instances": 1,
+    "name": "initialize_maps_values",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "room_map_2",
+    "height": 3000,
+    "index": 266,
+    "instances": 357,
+    "name": "room_map_2",
+    "tiles": 684,
+    "width": 4500
+  },
+  {
+    "file": "room_map_8",
+    "height": 6000,
+    "index": 267,
+    "instances": 338,
+    "name": "room_map_8",
+    "tiles": 1713,
+    "width": 7000
+  },
+  {
+    "file": "room_map_7",
+    "height": 4000,
+    "index": 268,
+    "instances": 421,
+    "name": "room_map_7",
+    "tiles": 1402,
+    "width": 4000
+  },
+  {
+    "file": "room_map_6",
+    "height": 4000,
+    "index": 269,
+    "instances": 424,
+    "name": "room_map_6",
+    "tiles": 1027,
+    "width": 4000
+  },
+  {
+    "file": "room_map_5",
+    "height": 5000,
+    "index": 270,
+    "instances": 434,
+    "name": "room_map_5",
+    "tiles": 541,
+    "width": 5000
+  },
+  {
+    "file": "room_map_4",
+    "height": 4000,
+    "index": 271,
+    "instances": 257,
+    "name": "room_map_4",
+    "tiles": 932,
+    "width": 4000
+  },
+  {
+    "file": "room_map_3",
+    "height": 4000,
+    "index": 272,
+    "instances": 333,
+    "name": "room_map_3",
+    "tiles": 589,
+    "width": 4000
+  },
+  {
+    "file": "room_map_1",
+    "height": 4000,
+    "index": 273,
+    "instances": 408,
+    "name": "room_map_1",
+    "tiles": 710,
+    "width": 4000
+  },
+  {
+    "file": "room_end_map",
+    "height": 600,
+    "index": 274,
+    "instances": 0,
+    "name": "room_end_map",
+    "tiles": 0,
+    "width": 800
+  },
+  null,
+  {
+    "file": "room_DOME_ONLY_BUDZIKI",
+    "height": 1200,
+    "index": 276,
+    "instances": 176,
+    "name": "room_DOME_ONLY_BUDZIKI",
+    "tiles": 252,
+    "width": 2400
+  },
+  null,
+  {
+    "file": "room_desert_SKROT_1",
+    "height": 1200,
+    "index": 278,
+    "instances": 122,
+    "name": "room_desert_SKROT_1",
+    "tiles": 107,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_desert_SKROT_2",
+    "height": 1200,
+    "index": 280,
+    "instances": 106,
+    "name": "room_desert_SKROT_2",
+    "tiles": 97,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_SKROT_3",
+    "height": 1200,
+    "index": 281,
+    "instances": 115,
+    "name": "room_desert_SKROT_3",
+    "tiles": 109,
+    "width": 3000
+  },
+  {
+    "file": "room_desert_SKROT_4",
+    "height": 1200,
+    "index": 282,
+    "instances": 89,
+    "name": "room_desert_SKROT_4",
+    "tiles": 47,
+    "width": 10000
+  },
+  {
+    "file": "room_underwater_RURA_1",
+    "height": 8000,
+    "index": 283,
+    "instances": 140,
+    "name": "room_underwater_RURA_1",
+    "tiles": 112,
+    "width": 3000
+  },
+  {
+    "file": "room_underwater_RURA_2",
+    "height": 8000,
+    "index": 284,
+    "instances": 181,
+    "name": "room_underwater_RURA_2",
+    "tiles": 223,
+    "width": 3000
+  },
+  {
+    "file": "room_underwater_RURA_3",
+    "height": 8000,
+    "index": 285,
+    "instances": 143,
+    "name": "room_underwater_RURA_3",
+    "tiles": 87,
+    "width": 3000
+  },
+  {
+    "file": "room_underwater_RURA_4",
+    "height": 8000,
+    "index": 286,
+    "instances": 121,
+    "name": "room_underwater_RURA_4",
+    "tiles": 23,
+    "width": 3000
+  },
+  {
+    "file": "room_rocky_PRZEJSCIE_1",
+    "height": 1200,
+    "index": 287,
+    "instances": 57,
+    "name": "room_rocky_PRZEJSCIE_1",
+    "tiles": 20,
+    "width": 10000
+  },
+  {
+    "file": "room_rocky_PRZEJSCIE_2",
+    "height": 1200,
+    "index": 288,
+    "instances": 63,
+    "name": "room_rocky_PRZEJSCIE_2",
+    "tiles": 21,
+    "width": 10000
+  },
+  {
+    "file": "room_cloudy_5_5_Klucz",
+    "height": 1200,
+    "index": 289,
+    "instances": 59,
+    "name": "room_cloudy_5_5_Klucz",
+    "tiles": 26,
+    "width": 10000
+  },
+  {
+    "file": "room_LAVAS_RURA_1",
+    "height": 1600,
+    "index": 290,
+    "instances": 65,
+    "name": "room_LAVAS_RURA_1",
+    "tiles": 122,
+    "width": 15000
+  },
+  {
+    "file": "room_LAVAS_RURA_2",
+    "height": 1600,
+    "index": 291,
+    "instances": 75,
+    "name": "room_LAVAS_RURA_2",
+    "tiles": 111,
+    "width": 15000
+  },
+  {
+    "file": "room_level_1_10_Additional_Grassland",
+    "height": 1600,
+    "index": 292,
+    "instances": 567,
+    "name": "room_level_1_10_Additional_Grassland",
+    "tiles": 516,
+    "width": 15000
+  },
+  {
+    "file": "room_Klucz_Za_Rura_Etap_PART_1",
+    "height": 1600,
+    "index": 293,
+    "instances": 497,
+    "name": "room_Klucz_Za_Rura_Etap_PART_1",
+    "tiles": 410,
+    "width": 15000
+  },
+  {
+    "file": "room_Klucz_Za_Rura_Etap_PART_2",
+    "height": 10000,
+    "index": 294,
+    "instances": 670,
+    "name": "room_Klucz_Za_Rura_Etap_PART_2",
+    "tiles": 660,
+    "width": 15000
+  },
+  {
+    "file": "room_Klucz_Za_Rura_Etap_PART_3",
+    "height": 10000,
+    "index": 295,
+    "instances": 161,
+    "name": "room_Klucz_Za_Rura_Etap_PART_3",
+    "tiles": 72,
+    "width": 3000
+  },
+  null,
+  {
+    "file": "room_grassland_1_11_Platanie_Nog",
+    "height": 1600,
+    "index": 297,
+    "instances": 460,
+    "name": "room_grassland_1_11_Platanie_Nog",
+    "tiles": 149,
+    "width": 15000
+  },
+  {
+    "file": "room_underwater_castle_3_5_part2",
+    "height": 8000,
+    "index": 298,
+    "instances": 597,
+    "name": "room_underwater_castle_3_5_part2",
+    "tiles": 596,
+    "width": 10000
+  },
+  null,
+  null,
+  null,
+  null,
+  {
+    "file": "room_level_1_4_Part_2",
+    "height": 1200,
+    "index": 303,
+    "instances": 118,
+    "name": "room_level_1_4_Part_2",
+    "tiles": 105,
+    "width": 3500
+  },
+  {
+    "file": "room_rozdzielacz_gdzie_isc",
+    "height": 600,
+    "index": 304,
+    "instances": 1,
+    "name": "room_rozdzielacz_gdzie_isc",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "o_start_animation_game_room",
+    "height": 1600,
+    "index": 305,
+    "instances": 301,
+    "name": "o_start_animation_game_room",
+    "tiles": 185,
+    "width": 5600
+  },
+  {
+    "file": "o_mario_house",
+    "height": 1600,
+    "index": 306,
+    "instances": 337,
+    "name": "o_mario_house",
+    "tiles": 187,
+    "width": 5600
+  },
+  {
+    "file": "room_grassland_castle_1_part_3",
+    "height": 1200,
+    "index": 307,
+    "instances": 149,
+    "name": "room_grassland_castle_1_part_3",
+    "tiles": 89,
+    "width": 5000
+  },
+  {
+    "file": "room_grassland_castle_1_part_4",
+    "height": 1200,
+    "index": 308,
+    "instances": 321,
+    "name": "room_grassland_castle_1_part_4",
+    "tiles": 377,
+    "width": 7000
+  },
+  {
+    "file": "room_rocky_4_1_UP_UP",
+    "height": 15000,
+    "index": 309,
+    "instances": 831,
+    "name": "room_rocky_4_1_UP_UP",
+    "tiles": 89,
+    "width": 1800
+  },
+  {
+    "file": "room_END_GAME_ANIM_1",
+    "height": 2000,
+    "index": 310,
+    "instances": 51,
+    "name": "room_END_GAME_ANIM_1",
+    "tiles": 78,
+    "width": 2000
+  },
+  {
+    "file": "room_END_GAME_ANIM_2",
+    "height": 1600,
+    "index": 311,
+    "instances": 339,
+    "name": "room_END_GAME_ANIM_2",
+    "tiles": 185,
+    "width": 5600
+  },
+  {
+    "file": "room_grassland_Additional_Stage",
+    "height": 1600,
+    "index": 312,
+    "instances": 822,
+    "name": "room_grassland_Additional_Stage",
+    "tiles": 406,
+    "width": 20000
+  },
+  {
+    "file": "room_grassland_Additional_Stage_2",
+    "height": 1600,
+    "index": 313,
+    "instances": 1081,
+    "name": "room_grassland_Additional_Stage_2",
+    "tiles": 756,
+    "width": 15000
+  },
+  {
+    "file": "room_grassland_Additional_Stage_3",
+    "height": 1200,
+    "index": 314,
+    "instances": 93,
+    "name": "room_grassland_Additional_Stage_3",
+    "tiles": 23,
+    "width": 10000
+  },
+  {
+    "file": "room_grassland_Additional_Stage_4",
+    "height": 1200,
+    "index": 315,
+    "instances": 134,
+    "name": "room_grassland_Additional_Stage_4",
+    "tiles": 76,
+    "width": 10000
+  },
+  {
+    "file": "room_grassland_Banikowo_1",
+    "height": 1600,
+    "index": 316,
+    "instances": 491,
+    "name": "room_grassland_Banikowo_1",
+    "tiles": 145,
+    "width": 15000
+  },
+  {
+    "file": "room_grassland_Banikowo_2",
+    "height": 1600,
+    "index": 317,
+    "instances": 743,
+    "name": "room_grassland_Banikowo_2",
+    "tiles": 232,
+    "width": 15000
+  },
+  {
+    "file": "room_grassland_Banikowo_3",
+    "height": 1200,
+    "index": 318,
+    "instances": 93,
+    "name": "room_grassland_Banikowo_3",
+    "tiles": 33,
+    "width": 10000
+  },
+  null,
+  {
+    "file": "room_castle_walce_1",
+    "height": 1200,
+    "index": 320,
+    "instances": 283,
+    "name": "room_castle_walce_1",
+    "tiles": 204,
+    "width": 10000
+  },
+  {
+    "file": "room_wejscie_do_pierwszego_zamku",
+    "height": 1200,
+    "index": 321,
+    "instances": 110,
+    "name": "room_wejscie_do_pierwszego_zamku",
+    "tiles": 157,
+    "width": 10000
+  },
+  {
+    "file": "room_title_screen",
+    "height": 600,
+    "index": 322,
+    "instances": 5,
+    "name": "room_title_screen",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "room_napis_tworcy",
+    "height": 600,
+    "index": 323,
+    "instances": 34,
+    "name": "room_napis_tworcy",
+    "tiles": 0,
+    "width": 800
+  },
+  {
+    "file": "room_wybierz_jezyk",
+    "height": 600,
+    "index": 324,
+    "instances": 81,
+    "name": "room_wybierz_jezyk",
+    "tiles": 0,
+    "width": 3000
+  },
+  {
+    "file": "room_desert_wejscie_do_zamku_pustuni_1",
+    "height": 1200,
+    "index": 325,
+    "instances": 119,
+    "name": "room_desert_wejscie_do_zamku_pustuni_1",
+    "tiles": 211,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_castle_part_2",
+    "height": 1200,
+    "index": 326,
+    "instances": 141,
+    "name": "room_desert_castle_part_2",
+    "tiles": 112,
+    "width": 6000
+  },
+  {
+    "file": "room_desert_castle_part_3",
+    "height": 5000,
+    "index": 327,
+    "instances": 207,
+    "name": "room_desert_castle_part_3",
+    "tiles": 154,
+    "width": 7000
+  },
+  {
+    "file": "room_desert_1_9_Castle_AFTER",
+    "height": 1200,
+    "index": 328,
+    "instances": 239,
+    "name": "room_desert_1_9_Castle_AFTER",
+    "tiles": 375,
+    "width": 10000
+  },
+  {
+    "file": "room_desert_lava_castle_2_Additional_SUBSTAGE",
+    "height": 1200,
+    "index": 329,
+    "instances": 305,
+    "name": "room_desert_lava_castle_2_Additional_SUBSTAGE",
+    "tiles": 259,
+    "width": 9000
+  },
+  {
+    "file": "room_water_wejscie_do_zamku_1",
+    "height": 1200,
+    "index": 330,
+    "instances": 190,
+    "name": "room_water_wejscie_do_zamku_1",
+    "tiles": 321,
+    "width": 7000
+  },
+  {
+    "file": "room_podniebny_zamek_entrance_1",
+    "height": 5000,
+    "index": 331,
+    "instances": 313,
+    "name": "room_podniebny_zamek_entrance_1",
+    "tiles": 501,
+    "width": 4000
+  },
+  {
+    "file": "room_TV_JOY",
+    "height": 600,
+    "index": 332,
+    "instances": 7,
+    "name": "room_TV_JOY",
+    "tiles": 0,
+    "width": 800
+  }
+]

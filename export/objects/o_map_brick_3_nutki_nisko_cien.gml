@@ -1,0 +1,13 @@
+#event create:0
+stream=random(1121)
+kierunek=random(15)-random(15)
+wielkosc=0.6+random(0.4)
+
+
+#event draw:0
+draw_sprite_ext(s_map_miniblocznikx_3,0,x,y,wielkosc+sin(stream)/20,wielkosc-sin(stream)/20,kierunek,c_white,1)
+draw_sprite_ext(s_map_shadow_1,0,x,y+30,1+sin(stream)/20,0.45-sin(stream)/20,kierunek,c_white,0.6)
+
+stream+=0.1
+
+

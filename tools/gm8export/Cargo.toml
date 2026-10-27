@@ -1,0 +1,10 @@
+[package]
+name = "gm8export"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0-only"
+
+[dependencies]
+gm8exe = { path = "../OpenGMK/gm8exe" }
+png = "0.17"
+serde_json = "1"

@@ -1,0 +1,18 @@
+#event create:0
+grawitacja=0
+sekwencja=0
+kierunek=-1
+stream=0
+rozdeptywalny=1
+kill=0
+seened=0
+
+energy=20
+niezjadywalny=1
+gwiazdker=0
+
+
+#event draw:0
+script_enemy_dry_bones_samestroujacy()
+
+
