@@ -4,6 +4,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
+import { REMOVED_OBJECTS } from "../compiler/patches.ts";
 
 const ROOT = join(import.meta.dirname, "..", "..");
 const EXPORT = join(ROOT, "export");
@@ -61,7 +62,7 @@ for (const r of roomsRaw) {
     backgrounds: room.backgrounds.map((b: any) => ({ ...b, bg: ref(bgIdx, b.bg) })),
     viewsEnabled: room.views_enabled,
     views: room.views.map((v: any) => ({ ...v, follow: ref(objIdx, v.follow) })),
-    instances: room.instances.filter((i: any) => i.obj != null).map((i: any) => ({
+    instances: room.instances.filter((i: any) => i.obj != null && !REMOVED_OBJECTS.includes(i.obj)).map((i: any) => ({
       x: i.x, y: i.y, obj: objIdx.get(i.obj), id: i.id, code: i.code.trim() ? 1 : 0,
       ...(i.xscale !== 1 ? { xs: i.xscale } : {}), ...(i.yscale !== 1 ? { ys: i.yscale } : {}),
       ...(i.angle ? { a: i.angle } : {}), ...(i.blend !== 0xffffffff ? { c: i.blend } : {}),
@@ -85,8 +86,24 @@ for (const d of ["m", "s", "t"]) refresh(join(CONTENT, "data", d), join(DATA, d)
 // PSF/PSF2 (PlayStation) tracks can't be decoded in the browser; transcode them when ffmpeg can.
 const psf = readdirSync(join(DATA, "m")).filter((f) => /\.psf2?$/i.test(f));
 
+// Playable stages per world, taken from the map buttons (multiplayer level picker). Item shops (DOME) are skipped.
+const levels: { map: number; room: number; name: string; title: string }[] = [];
+for (let map = 1; map <= 8; map++) {
+  const seen = new Set<number>();
+  for (const i of read(join("rooms", `room_map_${map}.json`)).instances) {
+    if (i.obj !== "o_button_map_1") continue;
+    const target = /goto_level\s*=\s*(room_\w+)/.exec(i.code)?.[1];
+    const room = target && !target.startsWith("room_DOME") ? roomIdx.get(target) : undefined;
+    if (room === undefined || seen.has(room)) continue;
+    seen.add(room);
+    const field = (k: string) => new RegExp(`${k}\\s*=\\s*"([^"]*)"`).exec(i.code)?.[1] ?? "";
+    levels.push({ map, room, name: field("level_name"), title: field("levek_full_name").replace(/_/g, " ").replace(/\//g, "'") || target!.replace(/^room_/, "") });
+  }
+}
+
 const manifest = {
   roomOrder: game.room_order.map((n: string) => roomIdx.get(n)),
+  levels,
   rooms: roomsRaw.map((r) => r && { name: r.name }),
   objects, sprites, backgrounds,
   fonts: fontsRaw,

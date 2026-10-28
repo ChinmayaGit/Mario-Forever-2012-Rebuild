@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { applyPatches } from "./patches.ts";
 
 export const EXPORT_DIR = join(import.meta.dirname, "..", "..", "export");
 
@@ -36,5 +37,6 @@ export function allCode(): { scripts: CodeUnit[]; events: CodeUnit[]; rooms: Cod
       if (inst.code.trim()) rooms.push({ id: `inst:${r.name}:${inst.id}`, src: inst.code });
     }
   }
+  applyPatches([...scripts, ...events, ...rooms]);
   return { scripts, events, rooms };
 }

@@ -9,10 +9,36 @@ function norm(path: string): string {
 
 interface Handle { path: string; data: Uint8Array; len: number; pos: number; dirty: boolean }
 
+export const SAVE_FORMAT = "mario-forever-2012-save";
+
+/** Every persisted save/settings file, base64-encoded, for download. */
+export function exportSaves(): { format: string; version: number; date: string; files: Record<string, string> } {
+  const files: Record<string, string> = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i)!;
+    if (k.startsWith(PREFIX)) files[k.slice(PREFIX.length)] = localStorage.getItem(k)!;
+  }
+  return { format: SAVE_FORMAT, version: 1, date: new Date().toISOString(), files };
+}
+
+/** Replace the persisted saves with a downloaded save file. Returns the number of files restored. */
+export function importSaves(json: unknown): number {
+  const d = json as ReturnType<typeof exportSaves>;
+  if (!d || d.format !== SAVE_FORMAT || typeof d.files !== "object") throw new Error("This is not a Mario Forever 2012 save file.");
+  const entries = Object.entries(d.files).filter(([k, v]) => typeof v === "string" && /^data\/gfx\/[\w.-]+$/.test(k));
+  if (!entries.length) throw new Error("The save file is empty.");
+  entries.forEach(([, v]) => atob(v));
+  for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX)) localStorage.removeItem(k);
+  for (const [k, v] of entries) localStorage.setItem(PREFIX + k, v);
+  return entries.length;
+}
+
 export class VFS {
   files = new Map<string, Uint8Array>();
   handles = new Map<number, Handle>();
   next = 1;
+  /** When false, writes stay in memory (multiplayer races must not touch the player's saves). */
+  persist = true;
 
   async preload(paths: string[]) {
     await Promise.all(paths.map(async (p) => {
@@ -80,7 +106,7 @@ export class VFS {
     const data = h.data.slice(0, h.len);
     this.files.set(h.path, data);
     // Only real save/settings files are worth persisting; scratch writes to decoded sprites are not.
-    if (/^data\/gfx\/(groundstomp\.png|beetlee(_h|_m)?\.jpg)$/.test(h.path)) {
+    if (this.persist && /^data\/gfx\/(groundstomp\.png|beetlee(_h|_m)?\.jpg)$/.test(h.path)) {
       let s = "";
       for (const b of data) s += String.fromCharCode(b);
       localStorage.setItem(PREFIX + h.path, btoa(s));

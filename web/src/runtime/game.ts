@@ -1,4 +1,4 @@
-import { Background, type Frame, type Manifest, type ObjectDef, Sprite, loadImage, maskHit } from "./assets.ts";
+import { BASE_H, BASE_W, Background, type Frame, type Manifest, type ObjectDef, Sprite, loadImage, maskHit } from "./assets.ts";
 import { Audio } from "./audio.ts";
 import { Instance } from "./instance.ts";
 import { Particles, type PartSystem } from "./particles.ts";
@@ -10,6 +10,10 @@ import { makeRt } from "./rt.ts";
 import { install } from "../generated/game.js";
 
 type Fn = (s: any, o: any, a: any[]) => any;
+
+const MAX_ASPECT = 2.4;
+/** Corner vignettes framed the 4:3 window; on a widened canvas they float in the middle of the screen. */
+const HIDDEN_SPRITES = new Set(["s_map_boczek", "s_map_boczek_2"]);
 
 export const EV = { CREATE: 0, DESTROY: 1, ALARM: 2, STEP: 3, COLLISION: 4, KEYBOARD: 5, MOUSE: 6, OTHER: 7, DRAW: 8, KEYPRESS: 9, KEYRELEASE: 10 };
 
@@ -99,6 +103,28 @@ export class Game {
   /** PNG data URL of the next drawn frame (debugging aid). */
   snapshot() { return new Promise<string>((res) => this.snapWaiters.push(res)); }
   onStatus: (msg: string) => void = () => {};
+  /** Title-menu entries handled outside the game (see compiler/patches.ts). */
+  onMenu: (kind: string) => void = () => {};
+  /** Called after every room change. */
+  onRoom: (name: string) => void = () => {};
+  /** Extra screen pixels drawn on each side of the 800-wide game window on wide screens (see applyView). */
+  margin = 0;
+  /** Horizontal extent of the current view as the game sees it (vx, vw) and as drawn (ex, ew). */
+  drawWin = { vx: 0, vw: BASE_W, ex: 0, ew: BASE_W };
+  /** Lets the web layer send a room change somewhere else. */
+  redirectRoom: (to: number) => number = (to) => to;
+  /** Called after every step (and its draw). */
+  onStep: () => void = () => {};
+  /** True while a room change waits on the network. */
+  onBusy: (busy: boolean) => void = () => {};
+  /** Called after the instances of each view are drawn, in room coordinates. */
+  onDrawWorld: () => void = () => {};
+  /** Called when `creator` runs instance_create. */
+  onSpawn: (creator: Instance, obj: number) => void = () => {};
+  /** Instance whose draw event is running. */
+  drawing: Instance | null = null;
+  /** Records every sprite drawn by `target` as [sprite, subimage, x, y, xscale, yscale, angle, colour, alpha]. */
+  spriteTap: { target: Instance | null; out: number[][] } | null = null;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -349,7 +375,11 @@ export class Game {
 
   // ---------------------------------------------------------------- rooms
   async gotoRoom(index: number) {
+    index = this.redirectRoom(index);
+    const slow = setTimeout(() => this.onBusy(true), 120);
     const data = await this.roomData(index);
+    clearTimeout(slow);
+    this.onBusy(false);
     this.log.push(`R ${this.frameCount} ${this.manifest.rooms[this.room]?.name ?? "-"} -> ${data.name}`);
     this.runOtherEvent(5); // room end
     this.sceneChange = null;
@@ -401,6 +431,7 @@ export class Game {
     this.runOtherEvent(4); // room start
     this.depthDirty = true;
     this.tilesSorted = false;
+    this.onRoom(data.name);
   }
 
   reinsert(i: Instance) {
@@ -490,6 +521,7 @@ export class Game {
       } else i.image_index = idx;
     }
     this.input.step();
+    this.onStep();
     this.frameCount++;
   }
 
@@ -607,24 +639,122 @@ export class Game {
     if (this.depthDirty || !this.tilesSorted) this.sortDrawList();
     const W = this.canvas.width, H = this.canvas.height;
     r.setTarget(null, W, H);
+    r.setView(0, 0, W, H, 0, 0, 0, W, H);
+    if (this.margin > 0 || this.viewsEnabled) r.clear(0);
     if (this.viewsEnabled) {
-      r.setView(0, 0, W, H, 0, 0, 0, W, H);
-      r.clear(0);
       const V = this.views;
       for (let v = 0; v < 8; v++) {
         if (!V.view_visible[v]) continue;
         this.followView(v);
         this.viewCurrent = v;
-        r.setView(V.view_xview[v], V.view_yview[v], V.view_wview[v] || 1, V.view_hview[v] || 1, V.view_angle[v],
-          V.view_xport[v], V.view_yport[v], V.view_wport[v] || W, V.view_hport[v] || H);
-        this.drawScene(V.view_xview[v], V.view_yview[v], V.view_wview[v], V.view_hview[v]);
+        const w = this.applyView(v);
+        this.drawScene(w.ex, V.view_yview[v], w.ew, V.view_hview[v]);
       }
     } else {
       this.viewCurrent = 0;
-      r.setView(0, 0, W, H, 0, 0, 0, W, H);
-      this.drawScene(0, 0, W, H);
+      this.applyView(-1);
+      this.drawScene(0, 0, BASE_W, BASE_H);
     }
+    if (this.margin > 0) this.coverMargins();
     r.flush();
+  }
+
+  /** Black out the sides of a wide canvas that no widened view reached (rooms not wider than the window). */
+  private coverMargins() {
+    let lo = Infinity, hi = -Infinity;
+    if (this.viewsEnabled) {
+      const V = this.views;
+      for (let v = 0; v < 8; v++) {
+        if (!V.view_visible[v]) continue;
+        const { left, right } = this.portSpan(v);
+        lo = Math.min(lo, left); hi = Math.max(hi, right);
+      }
+    }
+    if (!(lo < hi)) { lo = this.margin; hi = this.margin + BASE_W; }
+    const r = this.renderer, W = this.canvas.width, H = this.canvas.height;
+    r.setView(0, 0, W, H, 0, 0, 0, W, H);
+    r.setBlendMode(0);
+    const black = [0, 0, 0, 1];
+    const cols = [black, black, black, black];
+    if (lo > 0.5) r.rect(0, 0, lo, H, cols);
+    if (hi < W - 0.5) r.rect(hi, 0, W, H, cols);
+  }
+
+  private spanOut = { left: 0, right: 0 };
+  private portSpan(v: number) {
+    const w = this.applyView(v), V = this.views;
+    const pw = V.view_wport[v] || BASE_W, k = (V.view_wview[v] || 1) / pw;
+    const left = this.margin + V.view_xport[v] + (w.ex - w.vx) / k;
+    this.spanOut.left = left;
+    this.spanOut.right = left + w.ew / k;
+    return this.spanOut;
+  }
+
+  /**
+   * Point the renderer at view `v` (-1 when views are off). On screens wider than 4:3 the game still sees an
+   * 800x600 window, and the view is widened only for drawing: by `margin` screen pixels per side, kept inside
+   * the room where possible, with the game's own view staying centred on the canvas.
+   */
+  applyView(v: number) {
+    const V = this.views, m = this.margin, w = this.drawWin;
+    if (v < 0) {
+      Object.assign(w, { vx: 0, vw: BASE_W, ex: 0, ew: BASE_W });
+      this.renderer.setView(0, 0, BASE_W, BASE_H, 0, m, 0, BASE_W, BASE_H);
+      return w;
+    }
+    const vx = V.view_xview[v], vw = V.view_wview[v] || 1, vh = V.view_hview[v] || 1, angle = V.view_angle[v];
+    const px = V.view_xport[v], py = V.view_yport[v], pw = V.view_wport[v] || BASE_W, ph = V.view_hport[v] || BASE_H;
+    let ex = vx, ew = vw;
+    const k = vw / pw;
+    if (m > 0 && px <= 0 && px + pw >= BASE_W) {
+      ew = vw + 2 * m * k;
+      ex = vx - m * k;
+      if (angle === 0) {
+        if (ew > this.roomWidth) ew = Math.max(vw, this.roomWidth);
+        const lo = Math.max(vx + vw - ew, 0), hi = Math.min(vx, this.roomWidth - ew);
+        ex = lo <= hi ? Math.max(lo, Math.min(hi, vx - (ew - vw) / 2)) : vx - (ew - vw) / 2;
+      }
+    }
+    Object.assign(w, { vx, vw, ex, ew });
+    this.renderer.setView(ex, V.view_yview[v], ew, vh, angle, m + px + (ex - vx) / k, py, ew / k, ph);
+    return w;
+  }
+
+  /**
+   * Filled rectangles spanning (nearly) the whole view are widened with it (fades, dimmed menus), and edges on the
+   * view border are pushed out to the widened border (the iris wipe's side bars).
+   */
+  widenRect(l: number, r: number): [number, number] {
+    const w = this.drawWin;
+    if (w.ew === w.vw) return [l, r];
+    const left = w.vx - w.ex, right = w.ex + w.ew - w.vx - w.vw;
+    if (l <= w.vx + 16 && r >= w.vx + w.vw - 16) return [Math.min(l, w.vx) - left, Math.max(r, w.vx + w.vw) + right];
+    if (Math.abs(l - w.vx) < 1.5) l = w.ex;
+    if (Math.abs(r - (w.vx + w.vw)) < 1.5) r = w.ex + w.ew;
+    return [l, r];
+  }
+
+  /** A span covering the game's whole view is stretched over the widened view too (fog overlays). */
+  widenSpan(x: number, width: number): [number, number] {
+    const w = this.drawWin;
+    if (w.ew === w.vw || x > w.vx + 1.5 || x + width < w.vx + w.vw - 1.5) return [x, width];
+    const left = w.vx - w.ex, right = w.ex + w.ew - w.vx - w.vw;
+    return [x - left, width + left + right];
+  }
+
+  /** Left and right edges of what is drawn for the current view, for anchoring the HUD to the screen corners. */
+  hudLeft() { return this.drawWin.ex; }
+  hudRight() { return this.drawWin.ex + this.drawWin.ew; }
+
+  /** Widen the canvas for the window's aspect ratio (4:3 up to about 21:9). */
+  setAspect(aspect: number) {
+    const a = Math.max(BASE_W / BASE_H, Math.min(MAX_ASPECT, aspect));
+    this.margin = Math.round((BASE_H * a - BASE_W) / 2);
+    this.input.marginX = this.margin;
+    if (this.canvas.width !== BASE_W + 2 * this.margin) {
+      this.canvas.width = BASE_W + 2 * this.margin;
+      this.canvas.height = BASE_H;
+    }
   }
 
   followView(v: number) {
@@ -677,9 +807,11 @@ export class Game {
         if (item.destroyed || !item.visible) continue;
         const fn = this.resolveEvent(item.object_index, "8:0");
         if (fn) {
+          this.drawing = item;
           this.rt.eventStack.push({ obj: this.ownerOf(item.object_index, "8:0"), key: "8:0" });
           try { fn(item, item, []); } catch (e) { this.reportError(e, `${this.assets.objects[item.object_index]?.name} draw`); }
           this.rt.eventStack.pop();
+          this.drawing = null;
           if (this.sceneChange && "end" in this.sceneChange) return;
         } else this.drawSelf(item);
       } else if ("parts" in item) {
@@ -694,6 +826,7 @@ export class Game {
         r.drawFrame(bg.frame, t.left, t.top, t.w, t.h, t.x, t.y, 0, 0, t.xscale, t.yscale, 0, t.blend, t.alpha);
       }
     }
+    this.onDrawWorld();
     this.drawBackgrounds(true, vx, vy, vw, vh);
   }
 
@@ -705,9 +838,12 @@ export class Game {
 
   drawSprite(s: Sprite, sub: number, x: number, y: number, xs: number, ys: number, angle: number, colour: number, alpha: number) {
     const n = s.frames.length;
-    if (!n) return;
+    if (!n || HIDDEN_SPRITES.has(s.name)) return;
     const f = s.frames[((Math.floor(sub) % n) + n) % n];
     if (!f) return;
+    if (this.spriteTap && this.drawing && this.drawing === this.spriteTap.target) {
+      this.spriteTap.out.push([this.assets.sprites.indexOf(s), sub, x, y, xs, ys, angle, colour, alpha]);
+    }
     this.renderer.drawFrame(f, 0, 0, f.w, f.h, x, y, -s.ox, -s.oy, xs, ys, angle, colour, alpha);
   }
 
@@ -752,6 +888,9 @@ export class Game {
       acc += Math.min(now - last, 250);
       last = now;
       const stepMs = 1000 / Math.max(1, this.roomSpeed);
+      // When the display rate matches the room speed, timer jitter would otherwise alternate 0 and 2 steps per frame.
+      const whole = Math.round(acc / stepMs);
+      if (whole >= 1 && Math.abs(acc - whole * stepMs) < 2) acc = whole * stepMs;
       const budget = now + 14;
       let steps = 0;
       while (acc >= stepMs && performance.now() < budget) {

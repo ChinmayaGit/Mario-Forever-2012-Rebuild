@@ -12,11 +12,22 @@ npm run dev      # http://localhost:5173
 npm run build    # static site in web/dist
 ```
 
-Controls: arrows to move, Z jump, X fire, Enter for menus.
+Controls: arrows or WASD to move, Space jump, Q fire, Enter for menus. Keys can be changed in Settings (⚙,
+top right), which also has on-screen touch controls (show/hide, size, opacity, drag to move) and fullscreen.
+
+- **Save / Load**: on a world map the 💾 Save button downloads your progress as a `.json` file; LOAD GAME on
+  the title menu restores it (for moving to another browser or device).
+- **Multiplayer**: MULTIPLAYER on the title menu starts a peer-to-peer race. One player creates a room and
+  shares the 5-letter code (the public PeerJS server is only used to connect), picks a stage, and both play it
+  at once, seeing each other as a ghost. Score = coins × 50 + enemies (100–500 by type) + 3000 for finishing
+  + a time bonus − 500 per death. Races never write to your saves.
+- Changes to the original game code (menu entries, skipped intro screens, removed links) are listed in
+  `web/compiler/patches.ts`.
 
 ## Layout
 
 - `web/src/runtime/` – engine: room loading, GM8 frame order, collisions, drawing, input, audio, particles.
+- `web/src/ui/` – web layer: loading screen, settings, touch controls, save download, multiplayer race.
 - `web/compiler/` – GML parser and JavaScript code generator.
 - `web/src/generated/game.js` – compiled game code.
 - `web/public/` – game assets (sprites, backgrounds, rooms, music, sounds).

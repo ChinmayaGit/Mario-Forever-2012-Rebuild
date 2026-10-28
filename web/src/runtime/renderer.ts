@@ -18,6 +18,12 @@ void main() { o = texture(u_tex, v_uv) * v_col; }`;
 
 const FLOATS_PER_VERT = 8;
 const MAX_QUADS = 8192;
+const PAGE = 2048;
+/** Images up to this size share atlas pages, so consecutive draws rarely switch textures. */
+const PACK_MAX = 1024;
+
+interface TexEntry { tex: WebGLTexture; w: number; h: number; ox?: number; oy?: number; atlas?: boolean }
+interface AtlasPage { tex: WebGLTexture; shelves: { y: number; h: number; x: number }[]; nextY: number }
 
 export class Renderer {
   gl: WebGL2RenderingContext;
@@ -29,7 +35,8 @@ export class Renderer {
   curTex: WebGLTexture | null = null;
   white: WebGLTexture;
   uProj: WebGLUniformLocation;
-  texCache = new WeakMap<object, { tex: WebGLTexture; w: number; h: number }>();
+  texCache = new WeakMap<object, TexEntry>();
+  pages: AtlasPage[] = [];
   blend: [number, number] = [0, 0];
   interpolate = false;
   target: { fb: WebGLFramebuffer | null; w: number; h: number } = { fb: null, w: 800, h: 600 };
@@ -73,10 +80,80 @@ export class Renderer {
     this.setBlendMode(0);
   }
 
-  texture(f: Frame): { tex: WebGLTexture; w: number; h: number } {
+  private newPage(): AtlasPage {
+    const gl = this.gl;
+    const tex = gl.createTexture()!;
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, PAGE, PAGE, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    const filter = this.interpolate ? gl.LINEAR : gl.NEAREST;
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const p: AtlasPage = { tex, shelves: [], nextY: 0 };
+    if (!this.pages.length) {
+      // Solid white cell for untextured shapes, so they batch with sprites.
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 4, 4, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(64).fill(255));
+      p.shelves.push({ y: 0, h: 4, x: 4 });
+      p.nextY = 4;
+    }
+    this.pages.push(p);
+    gl.bindTexture(gl.TEXTURE_2D, this.curTex);
+    return p;
+  }
+
+  /** Shelf-pack a w*h cell into an atlas page. */
+  private allocate(w: number, h: number): { page: AtlasPage; x: number; y: number } {
+    for (const page of this.pages) {
+      for (const s of page.shelves) {
+        if (h <= s.h && h * 2 > s.h && s.x + w <= PAGE) { s.x += w; return { page, x: s.x - w, y: s.y }; }
+      }
+      if (page.nextY + h <= PAGE) {
+        page.shelves.push({ y: page.nextY, h, x: w });
+        page.nextY += h;
+        return { page, x: 0, y: page.nextY - h };
+      }
+    }
+    this.newPage();
+    return this.allocate(w, h);
+  }
+
+  /** Copy `src` into the atlas with a one-pixel border that repeats its edges, so filtering never reads a neighbour. */
+  private packIntoAtlas(src: TexImageSource, w: number, h: number): TexEntry {
+    const gl = this.gl;
+    const { page, x, y } = this.allocate(w + 2, h + 2);
+    gl.bindTexture(gl.TEXTURE_2D, page.tex);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    const put = (dx: number, dy: number, sx: number, sy: number, cw: number, ch: number) => {
+      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, sx);
+      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, sy);
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, x + dx, y + dy, cw, ch, gl.RGBA, gl.UNSIGNED_BYTE, src as any);
+    };
+    put(1, 1, 0, 0, w, h);
+    put(1, 0, 0, 0, w, 1);
+    put(1, h + 1, 0, h - 1, w, 1);
+    put(0, 1, 0, 0, 1, h);
+    put(w + 1, 1, w - 1, 0, 1, h);
+    put(0, 0, 0, 0, 1, 1);
+    put(w + 1, 0, w - 1, 0, 1, 1);
+    put(0, h + 1, 0, h - 1, 1, 1);
+    put(w + 1, h + 1, w - 1, h - 1, 1, 1);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
+    gl.bindTexture(gl.TEXTURE_2D, this.curTex);
+    return { tex: page.tex, w: PAGE, h: PAGE, ox: x + 1, oy: y + 1, atlas: true };
+  }
+
+  texture(f: Frame): TexEntry {
     const key = f.src as object;
     let t = this.texCache.get(key);
     if (!t) {
+      const src = f.src as { width: number; height: number };
+      if (src.width > 0 && src.height > 0 && src.width <= PACK_MAX && src.height <= PACK_MAX) {
+        t = this.packIntoAtlas(f.src, src.width, src.height);
+        this.texCache.set(key, t);
+        return t;
+      }
       const gl = this.gl;
       const tex = gl.createTexture()!;
       gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -87,7 +164,6 @@ export class Renderer {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      const src = f.src as { width: number; height: number };
       t = { tex, w: src.width, h: src.height };
       this.texCache.set(key, t);
       gl.bindTexture(gl.TEXTURE_2D, this.curTex);
@@ -97,7 +173,10 @@ export class Renderer {
 
   forget(src: object) {
     const t = this.texCache.get(src);
-    if (t) { this.flush(); this.gl.deleteTexture(t.tex); this.texCache.delete(src); }
+    if (!t) return;
+    this.flush();
+    if (!t.atlas) this.gl.deleteTexture(t.tex);
+    this.texCache.delete(src);
   }
 
   flush() {
@@ -126,6 +205,10 @@ export class Renderer {
 
   /** Arbitrary quad: corners in order top-left, top-right, bottom-right, bottom-left. */
   quad(tex: WebGLTexture, xs: number[], ys: number[], u0: number, v0: number, u1: number, v1: number, cols: number[][]) {
+    if (tex === this.white) {
+      tex = (this.pages[0] ?? this.newPage()).tex;
+      u0 = u1 = v0 = v1 = 2 / PAGE;
+    }
     this.bind(tex);
     const [c0, c1, c2, c3] = cols;
     this.v(xs[0], ys[0], u0, v0, c0[0], c0[1], c0[2], c0[3]);
@@ -143,19 +226,25 @@ export class Renderer {
   drawFrame(f: Frame, px: number, py: number, pw: number, ph: number, x: number, y: number, left: number, top: number,
     xs: number, ys: number, angle: number, colour: number, alpha: number) {
     const t = this.texture(f);
-    const u0 = (f.sx + px) / t.w, v0 = (f.sy + py) / t.h;
-    const u1 = (f.sx + px + pw) / t.w, v1 = (f.sy + py + ph) / t.h;
+    const sx = f.sx + px + (t.ox ?? 0), sy = f.sy + py + (t.oy ?? 0);
+    const u0 = sx / t.w, v0 = sy / t.h, u1 = (sx + pw) / t.w, v1 = (sy + ph) / t.h;
     const lx = left * xs, ty = top * ys, rx = (left + pw) * xs, by = (top + ph) * ys;
-    const cs = [(colour & 255) / 255, ((colour >> 8) & 255) / 255, ((colour >> 16) & 255) / 255, alpha];
-    const cols = [cs, cs, cs, cs];
-    if (angle === 0) {
-      this.quad(t.tex, [x + lx, x + rx, x + rx, x + lx], [y + ty, y + ty, y + by, y + by], u0, v0, u1, v1, cols);
-      return;
+    const r = (colour & 255) / 255, g = ((colour >> 8) & 255) / 255, b = ((colour >> 16) & 255) / 255;
+    this.bind(t.tex);
+    let x0 = x + lx, y0 = y + ty, x1 = x + rx, y1 = y0, x2 = x1, y2 = y + by, x3 = x0, y3 = y2;
+    if (angle !== 0) {
+      const a = (-angle * Math.PI) / 180, sn = Math.sin(a), c = Math.cos(a);
+      x0 = x + lx * c - ty * sn; y0 = y + lx * sn + ty * c;
+      x1 = x + rx * c - ty * sn; y1 = y + rx * sn + ty * c;
+      x2 = x + rx * c - by * sn; y2 = y + rx * sn + by * c;
+      x3 = x + lx * c - by * sn; y3 = y + lx * sn + by * c;
     }
-    const a = (-angle * Math.PI) / 180, sn = Math.sin(a), c = Math.cos(a);
-    const X = (dx: number, dy: number) => x + dx * c - dy * sn;
-    const Y = (dx: number, dy: number) => y + dx * sn + dy * c;
-    this.quad(t.tex, [X(lx, ty), X(rx, ty), X(rx, by), X(lx, by)], [Y(lx, ty), Y(rx, ty), Y(rx, by), Y(lx, by)], u0, v0, u1, v1, cols);
+    this.v(x0, y0, u0, v0, r, g, b, alpha);
+    this.v(x1, y1, u1, v0, r, g, b, alpha);
+    this.v(x2, y2, u1, v1, r, g, b, alpha);
+    this.v(x0, y0, u0, v0, r, g, b, alpha);
+    this.v(x2, y2, u1, v1, r, g, b, alpha);
+    this.v(x3, y3, u0, v1, r, g, b, alpha);
   }
 
   rect(x1: number, y1: number, x2: number, y2: number, cols: number[][]) {

@@ -1,3 +1,6 @@
+/** The window size the game was made for. */
+export const BASE_W = 800, BASE_H = 600;
+
 export interface Mask {
   w: number; h: number; l: number; r: number; t: number; b: number;
   bits: Uint8Array; off: number;
@@ -50,8 +53,11 @@ export interface ObjectDef {
   solid: boolean; visible: boolean; depth: number; persistent: boolean;
 }
 
+export interface LevelInfo { map: number; room: number; name: string; title: string }
+
 export interface Manifest {
   roomOrder: number[];
+  levels: LevelInfo[];
   rooms: ({ name: string } | null)[];
   objects: (ObjectDef | null)[];
   sprites: any[];

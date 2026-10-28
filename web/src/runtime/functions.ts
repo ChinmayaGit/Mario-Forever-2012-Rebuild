@@ -1,5 +1,5 @@
 // GM8 built-in functions. Every function receives (self, other, ...args), matching compiler/codegen.ts.
-import { Background, type Frame, Sprite, preciseMasks, processImage } from "./assets.ts";
+import { BASE_H, BASE_W, Background, type Frame, Sprite, preciseMasks, processImage } from "./assets.ts";
 import type { Game, Tile } from "./game.ts";
 import type { Instance } from "./instance.ts";
 import { PartType } from "./particles.ts";
@@ -255,7 +255,11 @@ export function makeFunctions(game: Game) {
     string_digits: (_s, _o, v) => str(v).replace(/[^0-9]/g, ""),
 
     // ---------------- instances
-    instance_create: (_s, _o, x, y, obj) => game.spawn(round(obj), x, y).id,
+    instance_create: (s, _o, x, y, obj) => {
+      const i = game.spawn(round(obj), x, y);
+      if (s && s !== game.dummy) game.onSpawn(s, round(obj));
+      return i.id;
+    },
     instance_destroy: (s) => { if (s && s !== game.dummy) game.destroy(s); return 0; },
     instance_exists: (s, o, obj) => (game.resolve(obj, s, o).length > 0 ? 1 : 0),
     instance_number: (s, o, obj) => game.resolve(obj, s, o).length,
@@ -312,7 +316,8 @@ export function makeFunctions(game: Game) {
     },
     room_get_name: (_s, _o, rm) => game.manifest.rooms[round(rm)]?.name ?? "",
     game_end: () => { game.sceneChange = { end: true }; return 0; },
-    execute_shell: (_s, _o, prog) => { if (/^https?:/.test(gmString(prog))) window.open(gmString(prog), "_blank"); return 0; },
+    execute_shell: () => 0,
+    web_menu: (_s, _o, kind) => { game.onMenu(str(kind)); return 0; },
 
     // ---------------- window / display
     window_set_fullscreen: (_s, _o, v) => {
@@ -320,8 +325,8 @@ export function makeFunctions(game: Game) {
       if (v < 0.5 && document.fullscreenElement) void document.exitFullscreen().catch(() => {});
       return 0;
     },
-    window_get_width: () => game.canvas.width,
-    window_get_height: () => game.canvas.height,
+    window_get_width: () => BASE_W,
+    window_get_height: () => BASE_H,
     window_set_position: () => 0,
     window_set_size: () => 0,
     window_set_visible: () => 0,
@@ -391,11 +396,17 @@ export function makeFunctions(game: Game) {
       const f = bg(b)?.frame; if (f) r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, xs, ys, rot, round(col), alpha); return 0;
     },
     draw_background_stretched: (_s, _o, b, x, y, w, h) => {
-      const f = bg(b)?.frame; if (f) r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, w / f.w, h / f.h, 0, 0xffffff, 1); return 0;
+      const f = bg(b)?.frame;
+      if (f) { [x, w] = game.widenSpan(x, w); r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, w / f.w, h / f.h, 0, 0xffffff, 1); }
+      return 0;
     },
     draw_background_stretched_ext: (_s, _o, b, x, y, w, h, col, alpha) => {
-      const f = bg(b)?.frame; if (f) r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, w / f.w, h / f.h, 0, round(col), alpha); return 0;
+      const f = bg(b)?.frame;
+      if (f) { [x, w] = game.widenSpan(x, w); r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, w / f.w, h / f.h, 0, round(col), alpha); }
+      return 0;
     },
+    web_hud_left: () => game.hudLeft(),
+    web_hud_right: () => game.hudRight(),
     draw_background_part_ext: (_s, _o, b, left, top, w, h, x, y, xs, ys, col, alpha) => {
       const f = bg(b)?.frame;
       if (!f) return 0;
@@ -405,7 +416,9 @@ export function makeFunctions(game: Game) {
     },
     draw_rectangle: (_s, _o, x1, y1, x2, y2, outline) => {
       const c = rgba(game.drawColour, game.drawAlpha);
-      const l = Math.min(x1, x2), t = Math.min(y1, y2), rr = Math.max(x1, x2), b = Math.max(y1, y2);
+      let l = Math.min(x1, x2), rr = Math.max(x1, x2);
+      const t = Math.min(y1, y2), b = Math.max(y1, y2);
+      if (outline < 0.5) [l, rr] = game.widenRect(l, rr);
       if (outline >= 0.5) {
         r.rect(l, t, rr + 1, t + 1, [c, c, c, c]); r.rect(l, b, rr + 1, b + 1, [c, c, c, c]);
         r.rect(l, t, l + 1, b + 1, [c, c, c, c]); r.rect(rr, t, rr + 1, b + 1, [c, c, c, c]);
@@ -476,9 +489,7 @@ export function makeFunctions(game: Game) {
     },
     surface_reset_target: () => {
       r.setTarget(null, game.canvas.width, game.canvas.height);
-      const V = game.views, v = game.viewCurrent;
-      if (game.viewsEnabled) r.setView(V.view_xview[v], V.view_yview[v], V.view_wview[v], V.view_hview[v], V.view_angle[v], V.view_xport[v], V.view_yport[v], V.view_wport[v], V.view_hport[v]);
-      else r.setView(0, 0, game.canvas.width, game.canvas.height, 0, 0, 0, game.canvas.width, game.canvas.height);
+      game.applyView(game.viewsEnabled ? game.viewCurrent : -1);
       return 0;
     },
     draw_surface_ext: (_s, _o, id, x, y, xs, ys, rot, col, alpha) => {

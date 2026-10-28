@@ -13492,10 +13492,10 @@ if(rt.t((rt.get(908,"$zaczyna_sie",s,o)<400?1:0))){if(rt.t((rt.t(rt.eq(rt.get(90
 {const _t1=908;rt.set(_t1,"$used_1",1,s,o);}}
 {const _t2=906;rt.set(_t2,"$zaczyna_sie",400,s,o);}}}
 if(rt.t(rt.eq((G.$english_or_polish??0),0))){{const _t3=[0,0];rt.aset(s,"$opcja",_t3[0],_t3[1],"START GAME");}
-{const _t4=[0,1];rt.aset(s,"$opcja",_t4[0],_t4[1],"OPTIONS");}
-{const _t5=[0,2];rt.aset(s,"$opcja",_t5[0],_t5[1],"EDIT LEVELS");}
-{const _t6=[0,3];rt.aset(s,"$opcja",_t6[0],_t6[1],"CLASSIC MARIO FOREVER");}
-{const _t7=[0,4];rt.aset(s,"$opcja",_t7[0],_t7[1],"QUIT");}}
+{const _t4=[0,1];rt.aset(s,"$opcja",_t4[0],_t4[1],"MULTIPLAYER");}
+{const _t5=[0,2];rt.aset(s,"$opcja",_t5[0],_t5[1],"LOAD GAME");}
+{const _t6=[0,3];rt.aset(s,"$opcja",_t6[0],_t6[1],"CREDITS");}
+{const _t7=[0,4];rt.aset(s,"$opcja",_t7[0],_t7[1],"OPTIONS");}}
 if(rt.t(rt.eq((G.$english_or_polish??0),1))){{const _t8=[0,0];rt.aset(s,"$opcja",_t8[0],_t8[1],"START");}
 {const _t9=[0,1];rt.aset(s,"$opcja",_t9[0],_t9[1],"OPCJE GRY");}
 {const _t10=[0,2];rt.aset(s,"$opcja",_t10[0],_t10[1],"EDYTOR ETAPÃW");}
@@ -13530,8 +13530,9 @@ S.SXMS_SFX_PlayExt(s,o,[409,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),
 if(rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.joystick_check_button(s,o,0,0))?0:1))&&rt.t((rt.t(F.joystick_check_button(s,o,0,1))?0:1))?1:0))&&rt.t((rt.t(F.joystick_check_button(s,o,0,2))?0:1))?1:0))&&rt.t((rt.t(F.joystick_check_button(s,o,0,3))?0:1))?1:0))&&rt.t((rt.t(F.joystick_check_button(s,o,0,4))?0:1))?1:0))&&rt.t((rt.t(F.keyboard_check(s,o,40))?0:1))?1:0))&&rt.t((rt.t(F.keyboard_check(s,o,38))?0:1))?1:0))&&rt.t((rt.t(F.keyboard_check(s,o,13))?0:1))?1:0))&&rt.t((rt.t(F.keyboard_check(s,o,16))?0:1))?1:0))&&rt.t((rt.t(F.keyboard_check(s,o,17))?0:1))?1:0))&&rt.t(rt.eq((s.$klik??0),1))?1:0))&&rt.t(rt.eq((s.$zniknij??0),0))?1:0))){s.$klik=0;}
 if(rt.t(((s.$wybor_opcji??0)>4?1:0))){s.$wybor_opcji=0;}
 if(rt.t(((s.$wybor_opcji??0)<0?1:0))){s.$wybor_opcji=4;}
-if(rt.t((rt.t((rt.t((rt.t(rt.eq((s.$wybor_opcji??0),3))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))&&rt.t(rt.eq((s.$start_game??0),0))?1:0))){S.SXMS_SFX_PlayExt(s,o,[408,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),(G.$glosnosc_dzwieku??0),(-1),0,0]);
-F.game_end(s,o);}
+if(rt.t((rt.t((rt.t((rt.t(rt.eq((s.$wybor_opcji??0),1))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))&&rt.t(rt.eq((s.$start_game??0),0))?1:0))){S.SXMS_SFX_PlayExt(s,o,[408,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),(G.$glosnosc_dzwieku??0),(-1),0,0]);
+F.web_menu(s,o,"load");
+s.$klik=1;}
 if(rt.t((rt.t((rt.t((rt.t(rt.eq((s.$wybor_opcji??0),0))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))&&rt.t(rt.eq((s.$start_game??0),0))?1:0))){if(rt.t(rt.eq((s.$run_game??0),0))){s.$run_game=1;}
 S.SXMS_C_Stop(s,o,[]);
 S.SXMS_SFX_PlayExt(s,o,[408,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),(G.$glosnosc_dzwieku??0),(-1),0,0]);
@@ -13540,19 +13541,19 @@ s.$start_game=1;
 s.$dodawacz1=720;}
 if(rt.t(((s.$linked??0)>=1?1:0))){s.$linked=(s.$linked??0)+1;}
 if(rt.t(((s.$linked??0)>10?1:0))){s.$linked=0;}
-if(rt.t(rt.eq((s.$wybor_opcji??0),4))){if(rt.t(((s.$mf_old_alpha??0)<1?1:0))){s.$mf_old_alpha=(s.$mf_old_alpha??0)+0.05;}
-if(rt.t(((s.$mf_old??0)<60?1:0))){s.$mf_old=(s.$mf_old??0)+3;}
-if(rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))&&rt.t(rt.eq((s.$linked??0),0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))){s.$zniknij=250;
+if(rt.t(rt.eq((s.$wybor_opcji??0),4))){if(rt.t(((s.$mf_old??0)<60?1:0))){s.$mf_old=(s.$mf_old??0)+3;}
+if(rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))&&rt.t(rt.eq((s.$linked??0),0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))){s.$zniknij=0;
 S.SXMS_SFX_PlayExt(s,o,[409,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),(G.$glosnosc_dzwieku??0),(-1),0,0]);
 s.$linked=1;
 s.$klik=1;
-F.execute_shell(s,o,"http://www.softendo.com/game/MF",0);}}
+F.web_menu(s,o,"credits");}}
 if(rt.t((rt.eq((s.$wybor_opcji??0),4)?0:1))){if(rt.t(((s.$mf_old_alpha??0)>0?1:0))){s.$mf_old_alpha=(s.$mf_old_alpha??0)-0.05;}
 if(rt.t(((s.$mf_old??0)>0?1:0))){s.$mf_old=(s.$mf_old??0)-4;}}
-if(rt.t((rt.t((rt.t((rt.t(rt.eq(F.instance_number(s,o,912),0))&&rt.t(rt.eq((s.$wybor_opcji??0),1))?1:0))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))){s.$klik=0;
-F.instance_create(s,o,s.x,s.y,912);
+if(rt.t((rt.t((rt.t((rt.t(rt.eq(F.instance_number(s,o,912),0))&&rt.t(rt.eq((s.$wybor_opcji??0),2))?1:0))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))){s.$klik=0;
+s.$klik=1;
+F.web_menu(s,o,"multiplayer");
 S.SXMS_SFX_PlayExt(s,o,[408,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),(G.$glosnosc_dzwieku??0),(-1),0,0]);}
-if(rt.t((rt.t((rt.t(rt.eq((s.$wybor_opcji??0),2))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))){s.$zmien_opcje=1;
+if(rt.t((rt.t((rt.t(rt.eq((s.$wybor_opcji??0),3))&&rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t((rt.t(F.keyboard_check(s,o,13))||rt.t(F.keyboard_check(s,o,16))?1:0))||rt.t(F.keyboard_check(s,o,17))?1:0))||rt.t(F.joystick_check_button(s,o,0,0))?1:0))||rt.t(F.joystick_check_button(s,o,0,1))?1:0))||rt.t(F.joystick_check_button(s,o,0,2))?1:0))||rt.t(F.joystick_check_button(s,o,0,3))?1:0))||rt.t(F.joystick_check_button(s,o,0,4))?1:0))?1:0))&&rt.t(rt.eq((s.$klik??0),0))?1:0))){s.$zmien_opcje=1;
 S.SXMS_SFX_PlayExt(s,o,[408,(rt.fdiv((s.x-(R.view_xview[rt.r(0)]??0)),800)*255),(G.$glosnosc_dzwieku??0),(-1),0,0]);}}
 if(rt.t(rt.eq((s.$zmien_opcje??0),1))){if(rt.t(((s.$anim??0)>0?1:0))){s.$anim=(s.$anim??0)-0.05;}
 if(rt.t(((s.$alpha_opcji_tlowych??0)<0.5?1:0))){s.$alpha_opcji_tlowych=(s.$alpha_opcji_tlowych??0)+0.01;}
@@ -23150,39 +23151,39 @@ if(rt.t(rt.eq(F.room_get_name(s,o,R.room),"room_title_screen_and_options"))){F.i
 if(rt.t(rt.eq(F.room_get_name(s,o,R.room),"room_wybierz_jezyk"))){F.instance_destroy(s,o);}
 if(rt.t(rt.eq(F.room_get_name(s,o,R.room),"room_napis_tworcy"))){F.instance_destroy(s,o);}
 return 0;},
-"8:0":function(s,o,a){if(rt.t(rt.eq((G.$rodzaj_mario??0),5))){F.draw_sprite_ext(s,o,156,0,(((R.view_xview[rt.r(0)]??0)+(800*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+(600*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0)))+rt.get(306,"$ducher_y",s,o)),(1*(G.$ekran_size_act??0)),(1*(G.$ekran_size_act??0)),(F.sin(s,o,F.degtorad(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),2)))*5),16777215,1);
-F.draw_sprite_ext(s,o,157,0,(((R.view_xview[rt.r(0)]??0)+(800*(G.$ekran_size_act??0)))-(72*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+(600*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0)))+rt.get(306,"$ducher_y",s,o)),((1*(G.$ekran_size_act??0))-rt.fdiv(F.cos(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),50)),15)),((1*(G.$ekran_size_act??0))+rt.fdiv(F.sin(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),50)),15)),((-F.cos(s,o,F.degtorad(s,o,rt.get(306,"$ducher_obracacz",s,o))))*5),16777215,rt.get(306,"$duch_alpha",s,o));
-F.draw_sprite_ext(s,o,158,0,(((R.view_xview[rt.r(0)]??0)+(800*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+(600*(G.$ekran_size_act??0)))-(20*(G.$ekran_size_act??0)))+rt.get(306,"$ducher_y",s,o)),(rt.fdiv((G.$ducher_energy??0),1000)*(G.$ekran_size_act??0)),(1*(G.$ekran_size_act??0)),(360+(F.sin(s,o,F.degtorad(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),2)))*2)),16777215,1);}
+"8:0":function(s,o,a){if(rt.t(rt.eq((G.$rodzaj_mario??0),5))){F.draw_sprite_ext(s,o,156,0,(((F.web_hud_right(s,o)-(R.view_wview[rt.r(0)]??0))+(800*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+(600*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0)))+rt.get(306,"$ducher_y",s,o)),(1*(G.$ekran_size_act??0)),(1*(G.$ekran_size_act??0)),(F.sin(s,o,F.degtorad(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),2)))*5),16777215,1);
+F.draw_sprite_ext(s,o,157,0,(((F.web_hud_right(s,o)-(R.view_wview[rt.r(0)]??0))+(800*(G.$ekran_size_act??0)))-(72*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+(600*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0)))+rt.get(306,"$ducher_y",s,o)),((1*(G.$ekran_size_act??0))-rt.fdiv(F.cos(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),50)),15)),((1*(G.$ekran_size_act??0))+rt.fdiv(F.sin(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),50)),15)),((-F.cos(s,o,F.degtorad(s,o,rt.get(306,"$ducher_obracacz",s,o))))*5),16777215,rt.get(306,"$duch_alpha",s,o));
+F.draw_sprite_ext(s,o,158,0,(((F.web_hud_right(s,o)-(R.view_wview[rt.r(0)]??0))+(800*(G.$ekran_size_act??0)))-(80*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+(600*(G.$ekran_size_act??0)))-(20*(G.$ekran_size_act??0)))+rt.get(306,"$ducher_y",s,o)),(rt.fdiv((G.$ducher_energy??0),1000)*(G.$ekran_size_act??0)),(1*(G.$ekran_size_act??0)),(360+(F.sin(s,o,F.degtorad(s,o,rt.fdiv(rt.get(306,"$ducher_obracacz",s,o),2)))*2)),16777215,1);}
 if(rt.t(rt.eq((G.$fog??0),1))){F.draw_set_alpha(s,o,1);
 F.draw_background_stretched(s,o,35,(R.view_xview[rt.r(0)]??0),(R.view_yview[rt.r(0)]??0),(R.view_wview[rt.r(0)]??0),(R.view_hview[rt.r(0)]??0));}
 if(rt.t(rt.eq((G.$fog??0),4))){F.draw_background_stretched_ext(s,o,(G.$background_ghosts_fog??0),(((R.view_xview[rt.r(0)]??0)-100)+(F.sin(s,o,rt.fdiv((s.$stream??0),10))*50)),(R.view_yview[rt.r(0)]??0),(((R.view_wview[rt.r(0)]??0)+200)+(F.sin(s,o,rt.fdiv((s.$stream??0),10))*50)),(R.view_hview[rt.r(0)]??0),16777215,(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),10)+0.2));}
 if(rt.t(rt.eq((G.$fog??0),2))){F.draw_background_stretched_ext(s,o,(G.$background_ghosts_fog??0),(((R.view_xview[rt.r(0)]??0)-100)+(F.sin(s,o,rt.fdiv((s.$stream??0),10))*50)),(R.view_yview[rt.r(0)]??0),(((R.view_wview[rt.r(0)]??0)+200)+(F.sin(s,o,rt.fdiv((s.$stream??0),10))*50)),(R.view_hview[rt.r(0)]??0),16777215,(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),10)+0.5));}
 if(rt.t(rt.eq((G.$fog??0),3))){F.draw_background_stretched_ext(s,o,(G.$background_ghosts_fog??0),(((R.view_xview[rt.r(0)]??0)-100)+(F.sin(s,o,rt.fdiv((s.$stream??0),10))*50)),(R.view_yview[rt.r(0)]??0),(((R.view_wview[rt.r(0)]??0)+200)+(F.sin(s,o,rt.fdiv((s.$stream??0),10))*50)),(R.view_hview[rt.r(0)]??0),32768,(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),5)+0.5));}
-F.draw_sprite_ext(s,o,405,0,(((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,235))*420)*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,235))*420)*(G.$ekran_size_act??0))),rt.fdiv((G.$ekran_size_act??0),1.2),rt.fdiv((G.$ekran_size_act??0),1.2),0,16777215,0.8);
+F.draw_sprite_ext(s,o,405,0,((F.web_hud_left(s,o)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,235))*420)*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,235))*420)*(G.$ekran_size_act??0))),rt.fdiv((G.$ekran_size_act??0),1.2),rt.fdiv((G.$ekran_size_act??0),1.2),0,16777215,0.8);
 F.draw_set_font(s,o,(G.$map_fonts_1??0));
 F.draw_set_color(s,o,16777215);
 F.draw_set_alpha(s,o,1);
 F.draw_set_halign(s,o,0);
 F.draw_set_halign(s,o,0);
-F.draw_text_ext_transformed(s,o,(((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,(235+3.9)))*(380+43.9))*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,(235+3.9)))*(380+43.9))*(G.$ekran_size_act??0))),("x"+F.string(s,o,(G.$zycia??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
-F.draw_sprite_ext(s,o,(G.$hud_coins??0),0,(((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,(205+39.2)))*(320+67))*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,(205+39.2)))*(320+67))*(G.$ekran_size_act??0)))+((F.sin(s,o,(s.$stream??0))*5)*(G.$ekran_size_act??0))),rt.fdiv((G.$ekran_size_act??0),1.2),rt.fdiv((G.$ekran_size_act??0),1.2),(F.sin(s,o,rt.fdiv((s.$stream??0),4))*20),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
+F.draw_text_ext_transformed(s,o,((F.web_hud_left(s,o)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,(235+3.9)))*(380+43.9))*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,(235+3.9)))*(380+43.9))*(G.$ekran_size_act??0))),("x"+F.string(s,o,(G.$zycia??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
+F.draw_sprite_ext(s,o,(G.$hud_coins??0),0,((F.web_hud_left(s,o)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,(205+39.2)))*(320+67))*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,(205+39.2)))*(320+67))*(G.$ekran_size_act??0)))+((F.sin(s,o,(s.$stream??0))*5)*(G.$ekran_size_act??0))),rt.fdiv((G.$ekran_size_act??0),1.2),rt.fdiv((G.$ekran_size_act??0),1.2),(F.sin(s,o,rt.fdiv((s.$stream??0),4))*20),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
 s.$stream=(s.$stream??0)+0.1;
 F.draw_set_font(s,o,(G.$map_fonts_1??0));
 F.draw_set_color(s,o,16777215);
 F.draw_set_alpha(s,o,1);
 F.draw_set_halign(s,o,0);
 F.draw_set_halign(s,o,0);
-F.draw_text_ext_transformed(s,o,(((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,((205+3.9)+39.2)))*((280+43.9)+67))*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,((205+3.9)+39.2)))*((280+43.9)+67))*(G.$ekran_size_act??0))),("x"+F.string(s,o,(G.$coins??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
+F.draw_text_ext_transformed(s,o,((F.web_hud_left(s,o)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+((F.sin(s,o,F.degtorad(s,o,((205+3.9)+39.2)))*((280+43.9)+67))*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))+((F.cos(s,o,F.degtorad(s,o,((205+3.9)+39.2)))*((280+43.9)+67))*(G.$ekran_size_act??0))),("x"+F.string(s,o,(G.$coins??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
 F.draw_set_alpha(s,o,1);
-F.draw_sprite_ext(s,o,336,0,(((rt.fdiv((-1000),(s.$dzielnik??0))+(R.view_xview[rt.r(0)]??0))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(340*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(80*(G.$ekran_size_act??0))),(G.$ekran_size_act??0),(G.$ekran_size_act??0),((F.sin(s,o,(rt.fdiv((s.$stream??0),4)+2))*20)-F.abs(s,o,(F.sin(s,o,rt.fdiv((s.$stream??0),2))*30))),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
-F.draw_sprite_ext(s,o,336,0,(((rt.fdiv((-1000),(s.$dzielnik??0))+(R.view_xview[rt.r(0)]??0))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(340*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(80*(G.$ekran_size_act??0))),(-(G.$ekran_size_act??0)),(G.$ekran_size_act??0),((F.sin(s,o,(rt.fdiv((s.$stream??0),4)+2))*20)+F.abs(s,o,(F.sin(s,o,rt.fdiv((s.$stream??0),2))*30))),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
-F.draw_sprite_ext(s,o,335,0,(((rt.fdiv((-1000),(s.$dzielnik??0))+(R.view_xview[rt.r(0)]??0))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(340*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(80*(G.$ekran_size_act??0))),(G.$ekran_size_act??0),(G.$ekran_size_act??0),(F.sin(s,o,(rt.fdiv((s.$stream??0),4)+2))*20),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
+F.draw_sprite_ext(s,o,336,0,(((rt.fdiv((-1000),(s.$dzielnik??0))+F.web_hud_left(s,o))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(340*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(80*(G.$ekran_size_act??0))),(G.$ekran_size_act??0),(G.$ekran_size_act??0),((F.sin(s,o,(rt.fdiv((s.$stream??0),4)+2))*20)-F.abs(s,o,(F.sin(s,o,rt.fdiv((s.$stream??0),2))*30))),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
+F.draw_sprite_ext(s,o,336,0,(((rt.fdiv((-1000),(s.$dzielnik??0))+F.web_hud_left(s,o))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(340*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(80*(G.$ekran_size_act??0))),(-(G.$ekran_size_act??0)),(G.$ekran_size_act??0),((F.sin(s,o,(rt.fdiv((s.$stream??0),4)+2))*20)+F.abs(s,o,(F.sin(s,o,rt.fdiv((s.$stream??0),2))*30))),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
+F.draw_sprite_ext(s,o,335,0,(((rt.fdiv((-1000),(s.$dzielnik??0))+F.web_hud_left(s,o))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(340*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(80*(G.$ekran_size_act??0))),(G.$ekran_size_act??0),(G.$ekran_size_act??0),(F.sin(s,o,(rt.fdiv((s.$stream??0),4)+2))*20),16777215,(0.75+rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),10)),4)));
 F.draw_set_font(s,o,(G.$map_fonts_1??0));
 F.draw_set_color(s,o,16777215);
 F.draw_set_alpha(s,o,1);
 F.draw_set_halign(s,o,0);
 F.draw_set_halign(s,o,0);
-F.draw_text_ext_transformed(s,o,(((rt.fdiv((-1000),(s.$dzielnik??0))+(R.view_xview[rt.r(0)]??0))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(360*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(60*(G.$ekran_size_act??0))),("x"+F.string(s,o,(G.$happy_stars??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
+F.draw_text_ext_transformed(s,o,(((rt.fdiv((-1000),(s.$dzielnik??0))+F.web_hud_left(s,o))+rt.fdiv((R.view_wview[rt.r(0)]??0),2))-(360*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(60*(G.$ekran_size_act??0))),("x"+F.string(s,o,(G.$happy_stars??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
 F.draw_set_alpha(s,o,1);
 if(rt.t((rt.t(((s.$dzielnik_timer??0)>0?1:0))&&rt.t(((s.$dzielnik??0)<1000?1:0))?1:0))){s.$dzielnik=(s.$dzielnik??0)+(1+rt.fdiv((s.$dzielnik??0),100));}
 if(rt.t(((s.$dzielnik_timer??0)<=0?1:0))){s.$dzielnik=(1+rt.fdiv((s.$dzielnik??0),1.3));}
@@ -23209,11 +23210,11 @@ F.draw_set_color(s,o,16777215);
 F.draw_set_alpha(s,o,1);
 F.draw_set_halign(s,o,2);
 F.draw_set_halign(s,o,0);
-F.draw_text_ext_transformed(s,o,((((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+(270*(G.$ekran_size_act??0)))+((s.$kokox??0)*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(270*(G.$ekran_size_act??0))),((s.$wafelix??0)+F.string(s,o,(G.$punkty??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
+F.draw_text_ext_transformed(s,o,(((F.web_hud_right(s,o)-rt.fdiv((R.view_wview[rt.r(0)]??0),2))+(270*(G.$ekran_size_act??0)))+((s.$kokox??0)*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(270*(G.$ekran_size_act??0))),((s.$wafelix??0)+F.string(s,o,(G.$punkty??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
 F.draw_set_alpha(s,o,1);
 if(rt.t(rt.eq((G.$notime??0),0))){if(rt.t((rt.t(((s.$timeup??0)>=1?1:0))&&rt.t(((s.$timeup??0)<=100?1:0))?1:0))){s.$migaj=(s.$migaj??0)+0.2;}
 if(rt.t(rt.eq((s.$timeup??0),121))){s.$migaj=rt.fdiv((s.$migaj??0),1.2);}}
-if(rt.t(rt.eq((G.$notime??0),0))){F.draw_sprite_ext(s,o,479,0,(((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+(290*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(270*(G.$ekran_size_act??0)))+((F.sin(s,o,rt.fdiv((s.$stream??0),2))*5)*(G.$ekran_size_act??0))),(((0.75*(G.$ekran_size_act??0))+(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),2)),40)*(G.$ekran_size_act??0)))+F.abs(s,o,F.sin(s,o,(s.$migaj??0)))),(((0.75*(G.$ekran_size_act??0))-(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),2)),40)*(G.$ekran_size_act??0)))+F.abs(s,o,F.sin(s,o,(s.$migaj??0)))),(F.sin(s,o,rt.fdiv((s.$stream??0),10))*40),16777215,1);}
+if(rt.t(rt.eq((G.$notime??0),0))){F.draw_sprite_ext(s,o,479,0,((F.web_hud_right(s,o)-rt.fdiv((R.view_wview[rt.r(0)]??0),2))+(290*(G.$ekran_size_act??0))),((((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(270*(G.$ekran_size_act??0)))+((F.sin(s,o,rt.fdiv((s.$stream??0),2))*5)*(G.$ekran_size_act??0))),(((0.75*(G.$ekran_size_act??0))+(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),2)),40)*(G.$ekran_size_act??0)))+F.abs(s,o,F.sin(s,o,(s.$migaj??0)))),(((0.75*(G.$ekran_size_act??0))-(rt.fdiv(F.sin(s,o,rt.fdiv((s.$stream??0),2)),40)*(G.$ekran_size_act??0)))+F.abs(s,o,F.sin(s,o,(s.$migaj??0)))),(F.sin(s,o,rt.fdiv((s.$stream??0),10))*40),16777215,1);}
 s.$fofo="";
 if(rt.t((rt.t((rt.t(((G.$time??0)>=10?1:0))&&rt.t(((G.$time??0)<=99?1:0))?1:0))&&rt.t(rt.eq((G.$notime??0),0))?1:0))){s.$fofo="0";}
 if(rt.t((rt.t((rt.t(((G.$time??0)>=0?1:0))&&rt.t(((G.$time??0)<=9?1:0))?1:0))&&rt.t(rt.eq((G.$notime??0),0))?1:0))){s.$fofo="00";}
@@ -23222,7 +23223,7 @@ F.draw_set_color(s,o,16777215);
 F.draw_set_alpha(s,o,1);
 F.draw_set_halign(s,o,0);
 F.draw_set_halign(s,o,0);
-F.draw_text_ext_transformed(s,o,(((R.view_xview[rt.r(0)]??0)+rt.fdiv((R.view_wview[rt.r(0)]??0),2))+(320*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(270*(G.$ekran_size_act??0))),((s.$fofo??0)+F.string(s,o,(G.$time??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
+F.draw_text_ext_transformed(s,o,((F.web_hud_right(s,o)-rt.fdiv((R.view_wview[rt.r(0)]??0),2))+(320*(G.$ekran_size_act??0))),(((R.view_yview[rt.r(0)]??0)+rt.fdiv((R.view_hview[rt.r(0)]??0),2))-(270*(G.$ekran_size_act??0))),((s.$fofo??0)+F.string(s,o,(G.$time??0))),0,0,rt.fdiv((G.$ekran_size_act??0),1),rt.fdiv((G.$ekran_size_act??0),1),0);
 F.draw_set_alpha(s,o,1);}
 return 0;}};
 E[305]={"0:0":function(s,o,a){s.$xscrooling_ixor=0;
@@ -38502,7 +38503,8 @@ s.x=s.x-0.1;}
 if(rt.t((rt.t(rt.eq((s.$sekwencja_idzie??0),1))&&rt.t(rt.eq((s.$sekwencja_daleko??0),0))?1:0))){s.$sekwencja_idzie=0;}}}
 return 0;}};
 RC[1]=function(s,o,a){G.$is_subplatforms=0;
-F.room_goto_next(s,o);
+G.$english_or_polish=0;
+F.room_goto(s,o,262);
 return 0;};
 RC[3]=function(s,o,a){S.script_keys_init(s,o,[]);
 G.$last_level_played=1;
@@ -95084,7 +95086,7 @@ s.$level_changer=263;
 s.$uzyj_w_nastepnym_etapie_rury_na_poczatku=1;
 return 0;};
 IC["311:180860"]=function(s,o,a){s.$generuj_dialog=1;
-s.$tekst="Mario congratulations! You have defeat Bowser army! We are very grateful! Now Bowser won/t be able to attack our kingdoms again! Mario now please take a look to the save game room and find new levels and stuff! Also I have one more information for you the Michael Gdaniec the author of this game should prepare new levels and games for you, check the updates and have fun! Cheers and thank you very much for playing this game! The latest informations you will find on www.softendo.com site, if you have ideas or want to support Michael Gdaniec games, just install Mario Forever toolbar or play our games! ";
+s.$tekst="Mario congratulations! You have defeat Bowser army! We are very grateful! Now Bowser won/t be able to attack our kingdoms again! Mario now please take a look to the save game room and find new levels and stuff! Also I have one more information for you the Michael Gdaniec the author of this game should prepare new levels and games for you, check the updates and have fun! Cheers and thank you very much for playing this game! ";
 s.$tekst2="Mario super mega gratulacje za to, że udało Ci się pokonać armię Bowsera! Dzięki temu już nie zagraża nam on ani jego poplecznicy! Cóż mogę więcej powiedzieć, wybierz się koniecznie do pomieszczenia z zapisami znajdziesz tam nowe światy i ciekawostki, aby wydłużyć Twoją zabawę z Mario Forever! Powiem Ci jeszcze jedno autor gry Michał Gdaniec na pewno przygotuję niedługo nowe etapy i gry fanowskie z Mario! Jeżeli masz pomysły na grę lub chcesz wspomóc autora gry, po prostu zainstaluj Mario Forever toolbar i nic więcej a będę Ci wdzięczny! Trzymaj się i Paparki dziękuję za granie w Mario Forever! ";
 s.$show_pic=0;
 s.$goto_level=0;

@@ -2,21 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Mario Forever 2012</title>
     <style>
       html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
       body { display: flex; align-items: center; justify-content: center; }
-      canvas { width: min(100vw, calc(100vh * 4 / 3)); aspect-ratio: 4 / 3; display: block; image-rendering: auto; }
-      #status { position: fixed; inset: auto 0 16px 0; text-align: center; color: #ccc; font: 14px system-ui, sans-serif; pointer-events: none; }
-      #fs { position: fixed; top: 8px; right: 8px; opacity: 0.4; background: #222; color: #ddd; border: 1px solid #555; border-radius: 4px; font: 12px system-ui; padding: 4px 8px; cursor: pointer; }
-      #fs:hover { opacity: 1; }
+      html, body { height: 100dvh; }
+      @media (orientation: portrait) { body { align-items: flex-start; padding-top: 52px; box-sizing: border-box; } }
+      canvas { display: block; image-rendering: auto; outline: none; touch-action: none; }
     </style>
   </head>
   <body>
     <canvas id="game" width="800" height="600" tabindex="0"></canvas>
-    <div id="status">Loading…</div>
-    <button id="fs" title="Fullscreen">⛶</button>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

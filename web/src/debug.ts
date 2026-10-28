@@ -38,18 +38,8 @@ export function installDebug(game: Game) {
       while (!f() && performance.now() - t0 < max) await sleep(100);
       return f();
     },
-    /** Language screen -> title -> save slot 2 pipe. */
+    /** Title -> save slot 2 pipe. */
     async newGame() {
-      await api.until(() => game.room === api.roomIndex("room_wybierz_jezyk") && game.frameCount > 60);
-      for (let k = 0; k < 5 && api.name() === "room_wybierz_jezyk"; k++) {
-        const f = api.find("o_plansza_flagi")[0];
-        await api.until(() => f.$timer > 45 && f.$timer < 350, 10000);
-        await api.click(300, 280);
-        await sleep(3000);
-      }
-      await api.until(() => api.name() === "room_TV_JOY");
-      await sleep(2000);
-      await api.press(13, 300);
       await api.until(() => api.name() === "room_title_screen_and_options", 60000);
       await sleep(3000);
       await api.press(13, 300); await sleep(2000); await api.press(13, 300);
