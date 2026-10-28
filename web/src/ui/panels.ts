@@ -2,7 +2,9 @@ import type { Game } from "../runtime/game.ts";
 import { ACTIONS, DEFAULT_BINDINGS, type Action } from "../runtime/input.ts";
 import { exportSaves, importSaves } from "../runtime/vfs.ts";
 import { h, openPanel, toast } from "./panel.ts";
-import { keyLabel, saveSettings, type Settings } from "./settings.ts";
+import { applyGraphics, GRAPHICS_TIERS, type GraphicsTier } from "./graphics.ts";
+import { keyLabel, saveSettings, type Settings, type TouchScheme } from "./settings.ts";
+import type { GestureControls } from "./gestures.ts";
 import type { TouchControls } from "./touch.ts";
 
 const ACTION_NAMES: Record<Action, string> = { up: "Up / Enter pipe", down: "Down / Crouch", left: "Left", right: "Right", jump: "Jump", fire: "Fire / Run" };
@@ -15,9 +17,10 @@ export function toggleFullscreen() {
   else void document.documentElement.requestFullscreen?.().catch(() => toast("Fullscreen is not available here."));
 }
 
-export function openSettings(game: Game, settings: Settings, touch: TouchControls) {
+export function openSettings(game: Game, settings: Settings, touch: TouchControls, gestures?: GestureControls) {
   const p = openPanel(game, "Settings");
   let listening: { action: Action; slot: number; el: HTMLElement } | null = null;
+  const refreshTouch = () => { touch.layout(); gestures?.layout(); };
 
   const grid = h("div", { class: "grid" });
   const renderKeys = () => {
@@ -61,13 +64,43 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
   const mode = h("select", {},
     ...([["auto", "Automatic (touch screens)"], ["on", "Always show"], ["off", "Never show"]] as const)
       .map(([v, l]) => h("option", { value: v, selected: t.mode === v }, l)));
-  mode.addEventListener("change", () => { t.mode = (mode as HTMLSelectElement).value as Settings["touch"]["mode"]; saveSettings(settings); touch.layout(); });
+  mode.addEventListener("change", () => { t.mode = (mode as HTMLSelectElement).value as Settings["touch"]["mode"]; saveSettings(settings); refreshTouch(); });
+  const scheme = h("select", {},
+    ...([["buttons", "Buttons"], ["swipe", "Swipe gestures"]] as const)
+      .map(([v, l]) => h("option", { value: v, selected: t.scheme === v }, l)));
+  scheme.addEventListener("change", () => {
+    t.scheme = (scheme as HTMLSelectElement).value as TouchScheme;
+    saveSettings(settings);
+    refreshTouch();
+    renderTouchExtras();
+  });
   const range = (min: number, max: number, step: number, get: () => number, set: (v: number) => void) => {
     const r = h("input", { type: "range", min, max, step, value: get() }) as HTMLInputElement;
-    r.addEventListener("input", () => { set(+r.value); touch.layout(); });
+    r.addEventListener("input", () => { set(+r.value); refreshTouch(); });
     r.addEventListener("change", () => saveSettings(settings));
     return r;
   };
+  const touchExtras = h("div", {});
+  const renderTouchExtras = () => {
+    touchExtras.replaceChildren();
+    if (t.scheme === "buttons") {
+      touchExtras.append(
+        h("label", { class: "field" }, h("span", {}, "Size"), range(0.5, 2, 0.05, () => t.scale, (v) => (t.scale = v))),
+        h("label", { class: "field" }, h("span", {}, "Opacity"), range(0.2, 1, 0.05, () => t.opacity, (v) => (t.opacity = v))),
+        h("div", { class: "row" },
+          h("button", { class: "btn", onclick: () => { p.close(); touch.edit(() => openSettings(game, settings, touch, gestures)); } }, "Move buttons…"),
+          h("button", { class: "btn", onclick: () => { t.pos = {}; t.scale = 1; t.opacity = 0.8; saveSettings(settings); refreshTouch(); p.close(); openSettings(game, settings, touch, gestures); } }, "Reset layout")),
+      );
+    } else {
+      touchExtras.append(
+        h("div", { class: "note" },
+          h("p", {}, "Left side: drag left/right to walk (hold), drag up/down for up/down."),
+          h("p", {}, "Right side: swipe up to jump (hold), tap to fire."),
+        ),
+      );
+    }
+  };
+  renderTouchExtras();
 
   p.body.append(
     h("h3", {}, "Keyboard"),
@@ -75,16 +108,37 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
     grid,
     h("div", { class: "row", style: "margin-top:10px" },
       h("button", { class: "btn", onclick: () => { settings.keys = structuredClone(DEFAULT_BINDINGS); game.input.bindings = settings.keys; saveSettings(settings); renderKeys(); } }, "Reset keys")),
-    h("h3", {}, "On-screen controls"),
+    h("h3", {}, "Touch controls"),
     h("label", { class: "field" }, h("span", {}, "Show"), mode),
-    h("label", { class: "field" }, h("span", {}, "Size"), range(0.5, 2, 0.05, () => t.scale, (v) => (t.scale = v))),
-    h("label", { class: "field" }, h("span", {}, "Opacity"), range(0.2, 1, 0.05, () => t.opacity, (v) => (t.opacity = v))),
-    h("div", { class: "row" },
-      h("button", { class: "btn", onclick: () => { p.close(); touch.edit(() => openSettings(game, settings, touch)); } }, "Move buttons…"),
-      h("button", { class: "btn", onclick: () => { t.pos = {}; t.scale = 1; t.opacity = 0.8; saveSettings(settings); touch.layout(); p.close(); openSettings(game, settings, touch); } }, "Reset layout")),
+    h("label", { class: "field" }, h("span", {}, "Style"), scheme),
+    touchExtras,
+    h("h3", {}, "Graphics"),
+    h("p", { class: "muted" },
+      game.mobilePerf
+        ? "Phone presets use a lower resolution than the same name on desktop (phone High ≈ desktop Low/Medium)."
+        : "Desktop can push higher detail. Change Mobile quality too if you also play on a phone in this browser."),
+    graphicsRow("This device", game.mobilePerf ? "mobile" : "desktop"),
+    graphicsRow(game.mobilePerf ? "Desktop (when on PC)" : "Mobile (when on phone)", game.mobilePerf ? "desktop" : "mobile"),
     h("h3", {}, "Display"),
     h("div", { class: "row" }, h("button", { class: "btn", onclick: toggleFullscreen }, "Toggle fullscreen")),
   );
+
+  function graphicsRow(label: string, which: "desktop" | "mobile") {
+    const sel = h("select", {},
+      ...GRAPHICS_TIERS.map((v) => h("option", {
+        value: v,
+        selected: settings.graphics[which] === v,
+      }, v[0].toUpperCase() + v.slice(1))));
+    sel.addEventListener("change", () => {
+      settings.graphics[which] = (sel as HTMLSelectElement).value as GraphicsTier;
+      saveSettings(settings);
+      const active = game.mobilePerf ? settings.graphics.mobile : settings.graphics.desktop;
+      applyGraphics(game, active);
+      // Refit CSS size after buffer scale changes.
+      dispatchEvent(new Event("resize"));
+    });
+    return h("label", { class: "field" }, h("span", {}, label), sel);
+  }
 }
 
 export function openCredits(game: Game) {

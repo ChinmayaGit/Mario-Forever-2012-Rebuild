@@ -1,5 +1,6 @@
 // GM8 built-in functions. Every function receives (self, other, ...args), matching compiler/codegen.ts.
 import { BASE_H, BASE_W, Background, type Frame, Sprite, preciseMasks, processImage } from "./assets.ts";
+import { FX_BG_NAME } from "./quality.ts";
 import type { Game, Tile } from "./game.ts";
 import type { Instance } from "./instance.ts";
 import { PartType } from "./particles.ts";
@@ -396,12 +397,16 @@ export function makeFunctions(game: Game) {
       const f = bg(b)?.frame; if (f) r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, xs, ys, rot, round(col), alpha); return 0;
     },
     draw_background_stretched: (_s, _o, b, x, y, w, h) => {
-      const f = bg(b)?.frame;
+      const asset = bg(b);
+      if (!game.gfx.fx && asset && FX_BG_NAME.test(asset.name)) return 0;
+      const f = asset?.frame;
       if (f) { [x, w] = game.widenSpan(x, w); r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, w / f.w, h / f.h, 0, 0xffffff, 1); }
       return 0;
     },
     draw_background_stretched_ext: (_s, _o, b, x, y, w, h, col, alpha) => {
-      const f = bg(b)?.frame;
+      const asset = bg(b);
+      if (!game.gfx.fx && asset && FX_BG_NAME.test(asset.name)) return 0;
+      const f = asset?.frame;
       if (f) { [x, w] = game.widenSpan(x, w); r.drawFrame(f, 0, 0, f.w, f.h, x, y, 0, 0, w / f.w, h / f.h, 0, round(col), alpha); }
       return 0;
     },
@@ -526,8 +531,16 @@ export function makeFunctions(game: Game) {
     part_type_speed: (_s, _o, t, mn, mx, inc, wig) => { const p = game.particles.types[t]; if (p) Object.assign(p, { speedMin: mn, speedMax: mx, speedIncr: inc, speedWiggle: wig }); return 0; },
     part_type_direction: (_s, _o, t, mn, mx, inc, wig) => { const p = game.particles.types[t]; if (p) Object.assign(p, { dirMin: mn, dirMax: mx, dirIncr: inc, dirWiggle: wig }); return 0; },
     part_type_gravity: (_s, _o, t, amt, dir) => { const p = game.particles.types[t]; if (p) Object.assign(p, { gravAmount: amt, gravDir: dir }); return 0; },
-    part_particles_create: (_s, _o, ps, x, y, t, n) => { game.particles.create(round(ps), x, y, round(t), round(n)); return 0; },
-    part_particles_create_color: (_s, _o, ps, x, y, t, c, n) => { game.particles.create(round(ps), x, y, round(t), round(n), round(c)); return 0; },
+    part_particles_create: (_s, _o, ps, x, y, t, n) => {
+      if (game.gfx.particles <= 0) return 0;
+      const count = game.gfx.particles < 1 ? Math.max(1, Math.round(n * game.gfx.particles)) : round(n);
+      game.particles.create(round(ps), x, y, round(t), count); return 0;
+    },
+    part_particles_create_color: (_s, _o, ps, x, y, t, c, n) => {
+      if (game.gfx.particles <= 0) return 0;
+      const count = game.gfx.particles < 1 ? Math.max(1, Math.round(n * game.gfx.particles)) : round(n);
+      game.particles.create(round(ps), x, y, round(t), count, round(c)); return 0;
+    },
     part_emitter_create: (_s, _o, ps) => {
       const s = game.particles.sys(ps);
       if (!s) return -1;

@@ -133,6 +133,18 @@ input[type="text"] { text-transform: uppercase; letter-spacing: 0.15em; font-fam
 /* ------------------------------------------------------------ touch controls */
 #touch { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
 #touch[hidden] { display: none; }
+
+#gestures {
+  position: fixed; inset: 0; z-index: 9; display: flex; pointer-events: none;
+  touch-action: none;
+}
+#gestures[hidden] { display: none; }
+.gz {
+  flex: 1; height: 100%; pointer-events: auto; touch-action: none;
+  -webkit-user-select: none; user-select: none;
+}
+.gz-left { /* left 50%: walk */ }
+.gz-right { /* right 50%: jump / fire */ }
 .tbtn {
   position: absolute; transform: translate(-50%, -50%); pointer-events: auto; touch-action: none; user-select: none;
   -webkit-user-select: none; display: flex; align-items: center; justify-content: center;

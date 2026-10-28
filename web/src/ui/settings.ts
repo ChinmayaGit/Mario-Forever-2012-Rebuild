@@ -1,5 +1,8 @@
 // Web-only preferences (key bindings, on-screen controls), kept apart from the game's own settings file.
 import { ACTIONS, DEFAULT_BINDINGS, type Action, type Bindings } from "../runtime/input.ts";
+import {
+  DEFAULT_GRAPHICS_DESKTOP, DEFAULT_GRAPHICS_MOBILE, GRAPHICS_TIERS, type GraphicsTier,
+} from "./graphics.ts";
 
 export type TouchKey = Action | "start" | "pause";
 
@@ -17,15 +20,31 @@ export const TOUCH_BUTTONS: TouchButtonDef[] = [
   { id: "start", label: "START", small: true, x: 0.6, y: 0.95 },
 ];
 
+export type TouchScheme = "buttons" | "swipe";
+export type { GraphicsTier };
+
 export interface Settings {
   keys: Bindings;
-  touch: { mode: "auto" | "on" | "off"; scale: number; opacity: number; pos: Partial<Record<TouchKey, { x: number; y: number }>> };
+  touch: {
+    mode: "auto" | "on" | "off";
+    /** Buttons = on-screen pad. Swipe = left stick + right jump/fire gestures. */
+    scheme: TouchScheme;
+    scale: number;
+    opacity: number;
+    pos: Partial<Record<TouchKey, { x: number; y: number }>>;
+  };
+  /** Separate tiers so phone "High" stays cheaper than desktop "High". */
+  graphics: { desktop: GraphicsTier; mobile: GraphicsTier };
 }
 
 const KEY = "mf2012:web-settings";
 
 function defaults(): Settings {
-  return { keys: structuredClone(DEFAULT_BINDINGS), touch: { mode: "auto", scale: 1, opacity: 0.8, pos: {} } };
+  return {
+    keys: structuredClone(DEFAULT_BINDINGS),
+    touch: { mode: "auto", scheme: "buttons", scale: 1, opacity: 0.8, pos: {} },
+    graphics: { desktop: DEFAULT_GRAPHICS_DESKTOP, mobile: DEFAULT_GRAPHICS_MOBILE },
+  };
 }
 
 export function loadSettings(): Settings {
@@ -35,8 +54,17 @@ export function loadSettings(): Settings {
     if (!s) return d;
     for (const a of ACTIONS) if (Array.isArray(s.keys?.[a])) d.keys[a] = s.keys[a].filter((c: unknown) => typeof c === "string");
     Object.assign(d.touch, s.touch ?? {});
+    if (d.touch.scheme !== "buttons" && d.touch.scheme !== "swipe") d.touch.scheme = "buttons";
+    if (s.graphics) {
+      if (GRAPHICS_TIERS.includes(s.graphics.desktop)) d.graphics.desktop = s.graphics.desktop;
+      if (GRAPHICS_TIERS.includes(s.graphics.mobile)) d.graphics.mobile = s.graphics.mobile;
+    }
   } catch { /* corrupt settings fall back to defaults */ }
   return d;
+}
+
+export function activeGraphicsTier(s: Settings, mobile: boolean): GraphicsTier {
+  return mobile ? s.graphics.mobile : s.graphics.desktop;
 }
 
 export function saveSettings(s: Settings) {

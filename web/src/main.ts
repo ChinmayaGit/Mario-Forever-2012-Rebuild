@@ -5,7 +5,9 @@ import { Loading } from "./ui/loading.ts";
 import { Multiplayer } from "./ui/multiplayer.ts";
 import { h, isPanelOpen } from "./ui/panel.ts";
 import { downloadSave, openCredits, openLoad, openSettings, toggleFullscreen } from "./ui/panels.ts";
-import { isTouchDevice, loadSettings } from "./ui/settings.ts";
+import { applyGraphics } from "./ui/graphics.ts";
+import { GestureControls } from "./ui/gestures.ts";
+import { activeGraphicsTier, isTouchDevice, loadSettings } from "./ui/settings.ts";
 import { TouchControls } from "./ui/touch.ts";
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
@@ -19,6 +21,7 @@ game.input.bindings = settings.keys;
 game.input.actionVk = (a: Action) => Number((game.G as Record<string, unknown>)[`$ster_${a}`]) || 0;
 game.onStatus = (m) => loading.set("boot", !/^Game ended/.test(m), m);
 game.onBusy = (busy) => loading.set("room", busy, "Loading", true);
+applyGraphics(game, activeGraphicsTier(settings, game.mobilePerf));
 if (import.meta.env.DEV) {
   (window as any).game = game;
   void import("./debug.ts").then((m) => m.installDebug(game));
@@ -45,11 +48,12 @@ const pulseKey = (vk: number) => {
 };
 
 const touch = new TouchControls(game, settings);
+const gestures = new GestureControls(game, settings);
 const saveBtn = h("button", { class: "hud-btn primary", title: "Download your progress", hidden: true, onclick: downloadSave }, "💾 Save");
 const fsBtn = h("button", { class: "hud-btn", title: "Fullscreen (F11)", onclick: toggleFullscreen }, "⛶");
 const hud = h("div", { id: "hud" },
   saveBtn,
-  h("button", { class: "hud-btn", title: "Settings", onclick: () => openSettings(game, settings, touch) }, "⚙"),
+  h("button", { class: "hud-btn", title: "Settings", onclick: () => openSettings(game, settings, touch, gestures) }, "⚙"),
   fsBtn);
 document.body.append(hud);
 document.addEventListener("fullscreenchange", () => { fsBtn.textContent = document.fullscreenElement ? "🗗" : "⛶"; });

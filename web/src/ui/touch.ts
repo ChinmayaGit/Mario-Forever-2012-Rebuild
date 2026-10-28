@@ -30,6 +30,8 @@ export class TouchControls {
 
   layout() {
     const t = this.settings.touch;
+    const want = t.mode === "on" || (t.mode === "auto" && isTouchDevice());
+    const buttons = t.scheme === "buttons" || this.editing;
     // Positions are relative to the window, so sizes follow its short side to keep the default layout from overlapping.
     const k = t.scale * Math.min(1.2, Math.max(0.6, Math.min(innerWidth, innerHeight) / 480));
     const size = BASE * k;
@@ -37,12 +39,15 @@ export class TouchControls {
       const el = this.buttons.get(def.id)!, p = this.pos(def.id);
       const w = def.small ? size * 1.3 : size, hgt = def.small ? size * 0.55 : size;
       const text = def.label.length > 1 ? 13 : 24;
+      const meta = def.id === "start" || def.id === "pause";
+      // Swipe mode still shows Start/Pause; the pad/jump/fire buttons are hidden.
+      el.hidden = !buttons && !meta;
       Object.assign(el.style, {
         left: `${p.x * 100}%`, top: `${p.y * 100}%`, width: `${w}px`, height: `${hgt}px`,
         fontSize: `${(def.small ? 11 : text) * k}px`, opacity: String(t.opacity),
       });
     }
-    this.root.hidden = !this.editing && !(t.mode === "on" || (t.mode === "auto" && isTouchDevice()));
+    this.root.hidden = !this.editing && !want;
   }
 
   private bind(el: HTMLElement, id: TouchKey) {

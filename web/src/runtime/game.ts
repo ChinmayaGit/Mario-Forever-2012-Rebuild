@@ -5,6 +5,7 @@ import { Particles, type PartSystem } from "./particles.ts";
 import { Renderer } from "./renderer.ts";
 import { VFS } from "./vfs.ts";
 import { Input } from "./input.ts";
+import { DECOR_NAME } from "./quality.ts";
 import { makeFunctions } from "./functions.ts";
 import { makeRt } from "./rt.ts";
 import { install } from "../generated/game.js";
@@ -110,12 +111,23 @@ export class Game {
   /** Extra screen pixels drawn on each side of the 800-wide game window on wide screens (see applyView). */
   margin = 0;
   /**
-   * Phones/tablets: 4:3 only, smaller GPU buffer, sim catch-up without extra redraws.
+   * Phones/tablets: lighter defaults and more aggressive culling.
    * (Capping to 1 tick/frame made jump/walk feel "heavy" — that was the game running in slow motion.)
    */
   mobilePerf = false;
-  /** Canvas pixels per game pixel (0.7 on phones). */
+  /** Canvas pixels per game pixel (from graphics preset). */
   renderScale = 1;
+  /** Active graphics profile (see ui/graphics.ts). */
+  gfx = {
+    tier: "high" as string,
+    scale: 1,
+    fx: true,
+    decor: true,
+    particles: 1,
+    backgrounds: 8,
+    cullLevels: false,
+    particleTick: 0,
+  };
   /** Cached view for culling (title/map pack hundreds of off-screen instances). */
   private cull = { on: false, vx: 0, vy: 0, vw: BASE_W, vh: BASE_H };
   /** Horizontal extent of the current view as the game sees it (vx, vw) and as drawn (ex, ew). */
@@ -369,9 +381,14 @@ export class Game {
     const holders = this.holders.get(`${type}:${sub}`);
     if (!holders) return;
     const cullSteps = this.cull.on && type === EV.STEP;
+    const skipDecorStep = type === EV.STEP && !this.gfx.decor;
     for (const obj of holders) {
       const list = this.byObject[obj];
       if (!list.length) continue;
+      if (skipDecorStep) {
+        const oname = this.assets.objects[obj]?.name ?? "";
+        if (DECOR_NAME.test(oname)) continue;
+      }
       for (const inst of list.slice()) {
         if (inst.destroyed) continue;
         if (cullSteps && this.isCulled(inst, 280)) continue;
@@ -388,9 +405,9 @@ export class Game {
   }
 
   private refreshCull() {
-    const heavy = this.mobilePerf && this.isHeavyUiRoom();
-    this.cull.on = heavy;
-    if (!heavy) return;
+    // Always cull huge map/title rooms; also cull levels when the graphics preset asks for it.
+    this.cull.on = this.isHeavyUiRoom() || this.gfx.cullLevels;
+    if (!this.cull.on) return;
     if (this.viewsEnabled) {
       const V = this.views;
       this.cull.vx = V.view_xview[0]; this.cull.vy = V.view_yview[0];
@@ -553,7 +570,11 @@ export class Game {
     }
     this.runObjectEvent(EV.STEP, 2);
     if (this.sceneChange) return;
-    for (const s of this.particles.systems) if (s && s.auto) this.particles.update(s);
+    this.gfx.particleTick++;
+    const part = this.gfx.particles;
+    if (part >= 1 || (part > 0 && (this.gfx.particleTick & 1))) {
+      for (const s of this.particles.systems) if (s && s.auto) this.particles.update(s);
+    }
     this.purge();
     if (doDraw) this.present();
     for (let b = 0; b < 8; b++) {
@@ -806,11 +827,11 @@ export class Game {
   hudLeft() { return this.drawWin.ex; }
   hudRight() { return this.drawWin.ex + this.drawWin.ew; }
 
-  /** Widen the canvas for the window's aspect ratio (4:3 up to about 21:9). Phones use the same aspect, at a lighter scale. */
+  /** Widen the canvas for the window's aspect ratio (4:3 up to about 21:9). Buffer scale comes from graphics preset. */
   setAspect(aspect: number) {
     const a = Math.max(BASE_W / BASE_H, Math.min(MAX_ASPECT, aspect));
     this.margin = Math.round((BASE_H * a - BASE_W) / 2);
-    this.renderScale = this.mobilePerf ? 0.7 : 1;
+    this.renderScale = this.gfx.scale;
     this.input.marginX = this.margin;
     this.input.logicalW = BASE_W + 2 * this.margin;
     this.input.logicalH = BASE_H;
@@ -870,10 +891,13 @@ export class Game {
     this.drawBackgrounds(false, vx, vy, vw, vh);
     // Instances added mid-frame are drawn next frame, exactly like a depth-sorted GM8 list rebuilt per step.
     const cullDraw = this.cull.on;
+    const skipDecor = !this.gfx.decor;
     for (const item of this.drawList) {
       if (item instanceof Instance) {
         if (item.destroyed || !item.visible) continue;
-        // Skip off-screen scenery on phones; controllers (no sprite) still draw HUD/menu scripts.
+        const oname = this.assets.objects[item.object_index]?.name ?? "";
+        if (skipDecor && DECOR_NAME.test(oname)) continue;
+        // Skip off-screen scenery; controllers (no sprite) still draw HUD/menu scripts.
         if (cullDraw && this.isCulled(item, 64)) continue;
         const fn = this.resolveEvent(item.object_index, "8:0");
         if (fn) {
@@ -885,7 +909,7 @@ export class Game {
           if (this.sceneChange && "end" in this.sceneChange) return;
         } else this.drawSelf(item);
       } else if ("parts" in item) {
-        if (item.autoDraw) this.particles.draw(item);
+        if (this.gfx.particles > 0 && item.autoDraw) this.particles.draw(item);
       } else {
         if (!item.visible) continue;
         const t = item;
@@ -919,10 +943,14 @@ export class Game {
 
   drawBackgrounds(foreground: boolean, vx: number, vy: number, vw: number, vh: number) {
     const B = this.bgs;
+    let drawn = 0;
+    const cap = this.gfx.backgrounds;
     for (let i = 0; i < 8; i++) {
       if (!B.background_visible[i] || !!B.background_foreground[i] !== foreground) continue;
+      if (drawn >= cap) continue;
       const bg = this.assets.backgrounds[B.background_index[i]];
       if (!bg?.frame) continue;
+      drawn++;
       const stretch = (B as any).stretch?.[i];
       const xs = stretch ? this.roomWidth / bg.w : B.background_xscale[i];
       const ys = stretch ? this.roomHeight / bg.h : B.background_yscale[i];
