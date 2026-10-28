@@ -25,6 +25,22 @@ button, select, input { font: inherit; color: inherit; }
 .hud-btn.primary { opacity: 0.95; border-color: var(--accent-2); color: #ffe3a8; }
 .hud-btn[hidden] { display: none; }
 
+/* World-map ITEMS / MAPS (game listens for keys 1 and 2). Large hit areas for phones. */
+.map-hot {
+  position: fixed; z-index: 15; pointer-events: auto; touch-action: manipulation;
+  min-width: 88px; min-height: 52px; padding: 10px 16px; border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.55); background: rgba(20, 22, 29, 0.45);
+  color: #fff; font-weight: 700; letter-spacing: 0.06em; font-size: 15px;
+  backdrop-filter: blur(3px); -webkit-tap-highlight-color: transparent;
+}
+.map-hot:active { background: rgba(232, 64, 42, 0.55); border-color: #fff; }
+.map-hot[hidden] { display: none; }
+.map-hot-items { right: max(12px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); }
+.map-hot-maps { right: max(12px, env(safe-area-inset-right)); bottom: calc(18px + 60px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 900px) {
+  .map-hot { min-width: 72px; min-height: 40px; font-size: 13px; opacity: 0.7; }
+}
+
 /* ------------------------------------------------------------ panels */
 .backdrop {
   position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, 0.62);

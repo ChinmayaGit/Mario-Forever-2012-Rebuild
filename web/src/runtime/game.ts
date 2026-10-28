@@ -109,6 +109,15 @@ export class Game {
   onRoom: (name: string) => void = () => {};
   /** Extra screen pixels drawn on each side of the 800-wide game window on wide screens (see applyView). */
   margin = 0;
+  /**
+   * Phones/tablets: 4:3 only, smaller GPU buffer, sim catch-up without extra redraws.
+   * (Capping to 1 tick/frame made jump/walk feel "heavy" — that was the game running in slow motion.)
+   */
+  mobilePerf = false;
+  /** Canvas pixels per game pixel (0.7 on phones). */
+  renderScale = 1;
+  /** Cached view for culling (title/map pack hundreds of off-screen instances). */
+  private cull = { on: false, vx: 0, vy: 0, vw: BASE_W, vh: BASE_H };
   /** Horizontal extent of the current view as the game sees it (vx, vw) and as drawn (ex, ew). */
   drawWin = { vx: 0, vw: BASE_W, ex: 0, ew: BASE_W };
   /** Lets the web layer send a room change somewhere else. */
@@ -359,14 +368,52 @@ export class Game {
   runObjectEvent(type: number, sub: number) {
     const holders = this.holders.get(`${type}:${sub}`);
     if (!holders) return;
+    const cullSteps = this.cull.on && type === EV.STEP;
     for (const obj of holders) {
       const list = this.byObject[obj];
       if (!list.length) continue;
       for (const inst of list.slice()) {
-        if (!inst.destroyed) this.runEvent(inst, type, sub, inst);
+        if (inst.destroyed) continue;
+        if (cullSteps && this.isCulled(inst, 280)) continue;
+        this.runEvent(inst, type, sub, inst);
         if (this.sceneChange) return;
       }
     }
+  }
+
+  /** Title / world-map rooms are huge and mostly off-screen; culling is safe for their scenery (not save slots — Mario walks there). */
+  private isHeavyUiRoom() {
+    const n = this.manifest.rooms[this.room]?.name ?? "";
+    return n.includes("title_screen") || n.startsWith("room_map_");
+  }
+
+  private refreshCull() {
+    const heavy = this.mobilePerf && this.isHeavyUiRoom();
+    this.cull.on = heavy;
+    if (!heavy) return;
+    if (this.viewsEnabled) {
+      const V = this.views;
+      this.cull.vx = V.view_xview[0]; this.cull.vy = V.view_yview[0];
+      this.cull.vw = V.view_wview[0] || BASE_W; this.cull.vh = V.view_hview[0] || BASE_H;
+    } else {
+      this.cull.vx = 0; this.cull.vy = 0; this.cull.vw = BASE_W; this.cull.vh = BASE_H;
+    }
+  }
+
+  /**
+   * True when a sprited instance is well outside the view. Objects with no sprite (controllers / HUD scripts)
+   * are never culled so menu and map logic still runs.
+   */
+  isCulled(i: Instance, pad: number) {
+    const name = this.assets.objects[i.object_index]?.name ?? "";
+    // Never cull the player or map walker — they must keep stepping/drawing even near the view edge.
+    if (/mario|map_player/i.test(name)) return false;
+    const s = i.sprite;
+    if (!s) return false;
+    const xs = Math.abs(i.image_xscale) || 1, ys = Math.abs(i.image_yscale) || 1;
+    const hw = s.w * xs * 0.5 + pad, hh = s.h * ys * 0.5 + pad;
+    const { vx, vy, vw, vh } = this.cull;
+    return i.x + hw < vx || i.y + hh < vy || i.x - hw > vx + vw || i.y - hh > vy + vh;
   }
 
   runOtherEvent(sub: number) {
@@ -485,7 +532,10 @@ export class Game {
   }
 
   // ---------------------------------------------------------------- frame
-  step() {
+  /** One simulation tick. Drawing is optional so the display loop can catch up without re-rendering every tick. */
+  step(doDraw = true) {
+    this.refreshCull();
+    const cullMove = this.cull.on;
     const insts = this.instances;
     for (const i of insts) { i.xprevious = i.x; i.yprevious = i.y; }
     this.runObjectEvent(EV.STEP, 1);
@@ -496,22 +546,23 @@ export class Game {
     if (this.sceneChange) return;
     this.runObjectEvent(EV.STEP, 0);
     if (this.sceneChange) return;
-    for (const i of this.instances) if (!i.destroyed) this.applyMotion(i);
+    for (const i of this.instances) {
+      if (i.destroyed) continue;
+      if (cullMove && this.isCulled(i, 280)) continue;
+      this.applyMotion(i);
+    }
     this.runObjectEvent(EV.STEP, 2);
     if (this.sceneChange) return;
     for (const s of this.particles.systems) if (s && s.auto) this.particles.update(s);
     this.purge();
-    this.draw();
-    if (this.snapWaiters.length) {
-      const url = this.canvas.toDataURL("image/png");
-      for (const w of this.snapWaiters.splice(0)) w(url);
-    }
+    if (doDraw) this.present();
     for (let b = 0; b < 8; b++) {
       this.bgs.background_x[b] += this.bgs.background_hspeed[b];
       this.bgs.background_y[b] += this.bgs.background_vspeed[b];
     }
     for (const i of this.instances) {
       if (i.destroyed) continue;
+      if (cullMove && this.isCulled(i, 280)) continue;
       const n = i.image_number;
       let idx = i.image_index + i.image_speed;
       if (n > 0 && idx >= n) {
@@ -523,6 +574,15 @@ export class Game {
     this.input.step();
     this.onStep();
     this.frameCount++;
+  }
+
+  /** Draw the current frame (and resolve any pending canvas screenshots). */
+  present() {
+    this.draw();
+    if (this.snapWaiters.length) {
+      const url = this.canvas.toDataURL("image/png");
+      for (const w of this.snapWaiters.splice(0)) w(url);
+    }
   }
 
   applyMotion(i: Instance) {
@@ -682,11 +742,11 @@ export class Game {
 
   private spanOut = { left: 0, right: 0 };
   private portSpan(v: number) {
-    const w = this.applyView(v), V = this.views;
+    const w = this.applyView(v), V = this.views, s = this.renderScale;
     const pw = V.view_wport[v] || BASE_W, k = (V.view_wview[v] || 1) / pw;
-    const left = this.margin + V.view_xport[v] + (w.ex - w.vx) / k;
+    const left = (this.margin + V.view_xport[v] + (w.ex - w.vx) / k) * s;
     this.spanOut.left = left;
-    this.spanOut.right = left + w.ew / k;
+    this.spanOut.right = left + (w.ew / k) * s;
     return this.spanOut;
   }
 
@@ -696,10 +756,10 @@ export class Game {
    * the room where possible, with the game's own view staying centred on the canvas.
    */
   applyView(v: number) {
-    const V = this.views, m = this.margin, w = this.drawWin;
+    const V = this.views, m = this.margin, w = this.drawWin, s = this.renderScale;
     if (v < 0) {
       Object.assign(w, { vx: 0, vw: BASE_W, ex: 0, ew: BASE_W });
-      this.renderer.setView(0, 0, BASE_W, BASE_H, 0, m, 0, BASE_W, BASE_H);
+      this.renderer.setView(0, 0, BASE_W, BASE_H, 0, m * s, 0, BASE_W * s, BASE_H * s);
       return w;
     }
     const vx = V.view_xview[v], vw = V.view_wview[v] || 1, vh = V.view_hview[v] || 1, angle = V.view_angle[v];
@@ -716,7 +776,7 @@ export class Game {
       }
     }
     Object.assign(w, { vx, vw, ex, ew });
-    this.renderer.setView(ex, V.view_yview[v], ew, vh, angle, m + px + (ex - vx) / k, py, ew / k, ph);
+    this.renderer.setView(ex, V.view_yview[v], ew, vh, angle, (m + px + (ex - vx) / k) * s, py * s, (ew / k) * s, ph * s);
     return w;
   }
 
@@ -746,14 +806,19 @@ export class Game {
   hudLeft() { return this.drawWin.ex; }
   hudRight() { return this.drawWin.ex + this.drawWin.ew; }
 
-  /** Widen the canvas for the window's aspect ratio (4:3 up to about 21:9). */
+  /** Widen the canvas for the window's aspect ratio (4:3 up to about 21:9). Phones use the same aspect, at a lighter scale. */
   setAspect(aspect: number) {
     const a = Math.max(BASE_W / BASE_H, Math.min(MAX_ASPECT, aspect));
     this.margin = Math.round((BASE_H * a - BASE_W) / 2);
+    this.renderScale = this.mobilePerf ? 0.7 : 1;
     this.input.marginX = this.margin;
-    if (this.canvas.width !== BASE_W + 2 * this.margin) {
-      this.canvas.width = BASE_W + 2 * this.margin;
-      this.canvas.height = BASE_H;
+    this.input.logicalW = BASE_W + 2 * this.margin;
+    this.input.logicalH = BASE_H;
+    const tw = Math.max(1, Math.round((BASE_W + 2 * this.margin) * this.renderScale));
+    const th = Math.max(1, Math.round(BASE_H * this.renderScale));
+    if (this.canvas.width !== tw || this.canvas.height !== th) {
+      this.canvas.width = tw;
+      this.canvas.height = th;
     }
   }
 
@@ -794,6 +859,8 @@ export class Game {
 
   drawScene(vx: number, vy: number, vw: number, vh: number) {
     const r = this.renderer;
+    // Keep cull rect in sync with the view being drawn (widened views use ex/ew).
+    if (this.cull.on) { this.cull.vx = vx; this.cull.vy = vy; this.cull.vw = vw; this.cull.vh = vh; }
     if (this.bgShowColour) {
       r.setBlendMode(0);
       const c = this.bgColour;
@@ -802,9 +869,12 @@ export class Game {
     }
     this.drawBackgrounds(false, vx, vy, vw, vh);
     // Instances added mid-frame are drawn next frame, exactly like a depth-sorted GM8 list rebuilt per step.
+    const cullDraw = this.cull.on;
     for (const item of this.drawList) {
       if (item instanceof Instance) {
         if (item.destroyed || !item.visible) continue;
+        // Skip off-screen scenery on phones; controllers (no sprite) still draw HUD/menu scripts.
+        if (cullDraw && this.isCulled(item, 64)) continue;
         const fn = this.resolveEvent(item.object_index, "8:0");
         if (fn) {
           this.drawing = item;
@@ -884,18 +954,27 @@ export class Game {
     let fpsCount = 0, fpsTime = last;
     const loop = async () => {
       if (this.ended) return;
+      // Background tabs: don't burn CPU or build a huge catch-up debt.
+      if (typeof document !== "undefined" && document.hidden) {
+        last = performance.now();
+        acc = 0;
+        requestAnimationFrame(() => void loop());
+        return;
+      }
       const now = performance.now();
-      acc += Math.min(now - last, 250);
+      acc += Math.min(now - last, 100);
       last = now;
       const stepMs = 1000 / Math.max(1, this.roomSpeed);
       // When the display rate matches the room speed, timer jitter would otherwise alternate 0 and 2 steps per frame.
       const whole = Math.round(acc / stepMs);
       if (whole >= 1 && Math.abs(acc - whole * stepMs) < 2) acc = whole * stepMs;
-      const budget = now + 14;
+      // Phones: catch up sim (keeps jump/walk at real speed) but never redraw more than once per display frame.
+      const maxSteps = this.mobilePerf ? 3 : (this.roomSpeed <= 60 ? 4 : 8);
+      const budget = now + (this.mobilePerf ? 12 : 14);
       let steps = 0;
-      while (acc >= stepMs && performance.now() < budget) {
+      while (acc >= stepMs && steps < maxSteps && performance.now() < budget) {
         acc -= stepMs;
-        this.step();
+        this.step(false);
         steps++; fpsCount++;
         if (this.sceneChange) {
           const sc = this.sceneChange;
@@ -906,8 +985,10 @@ export class Game {
           last = performance.now();
           break;
         }
-        if (this.roomSpeed <= 60 && steps >= 4) { acc = 0; break; }
       }
+      // Keep at most one extra tick of debt so we don't spiral, but don't freeze the game to slow-mo.
+      if (acc > stepMs * 2) acc = stepMs;
+      if (steps > 0) this.present();
       if (now - fpsTime >= 1000) { this.fps = fpsCount; fpsCount = 0; fpsTime = now; }
       requestAnimationFrame(() => void loop());
     };

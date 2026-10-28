@@ -30,8 +30,11 @@ export class Input {
   bindings: Bindings = structuredClone(DEFAULT_BINDINGS);
   /** The virtual key the game currently uses for an action (global.ster_*). */
   actionVk: (a: Action) => number = () => 0;
-  /** Canvas pixels left of the game's 800-wide window on wide screens. */
+  /** Game pixels left of the 800-wide window on wide screens. */
   marginX = 0;
+  /** Logical buffer size for mouse coords (canvas may be smaller when renderScale < 1). */
+  logicalW = 800;
+  logicalH = 600;
   /** False while an HTML overlay owns the keyboard. */
   enabled = true;
   /** Which virtual key each held source (a key code or a touch button) is holding. */
@@ -49,8 +52,8 @@ export class Input {
     addEventListener("blur", () => this.releaseAll());
     const pos = (e: PointerEvent) => {
       const r = canvas.getBoundingClientRect();
-      this.mouseX = ((e.clientX - r.left) / r.width) * canvas.width - this.marginX;
-      this.mouseY = ((e.clientY - r.top) / r.height) * canvas.height;
+      this.mouseX = ((e.clientX - r.left) / r.width) * this.logicalW - this.marginX;
+      this.mouseY = ((e.clientY - r.top) / r.height) * this.logicalH;
     };
     canvas.addEventListener("pointermove", pos);
     canvas.addEventListener("pointerdown", (e) => { pos(e); const b = e.button === 2 ? 2 : e.button === 1 ? 3 : 1; this.mouseDown.add(b); this.mousePressed.add(b); });
