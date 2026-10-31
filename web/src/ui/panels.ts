@@ -2,7 +2,7 @@ import type { Game } from "../runtime/game.ts";
 import { ACTIONS, DEFAULT_BINDINGS, type Action } from "../runtime/input.ts";
 import { exportSaves, importSaves } from "../runtime/vfs.ts";
 import { h, openPanel, toast } from "./panel.ts";
-import { applyGraphics, GRAPHICS_TIERS, type GraphicsTier } from "./graphics.ts";
+import { applyGraphics, GRAPHICS_HINTS, GRAPHICS_TIERS, type GraphicsTier } from "./graphics.ts";
 import {
   activeGraphicsTier, DEFAULT_TOUCH_OPACITY, detectMobileDevice, isMobileProfile, keyLabel, saveSettings,
   type DeviceMode, type Settings, type TouchScheme,
@@ -27,7 +27,7 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
   const mobileUi = isMobileProfile(settings);
 
   const applyActiveGraphics = () => {
-    applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings));
+    applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings), settings.frameSkip);
     dispatchEvent(new Event("resize"));
     refreshTouch();
   };
@@ -177,8 +177,18 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
       value: v,
       selected: settings.graphics.mobile === v,
     }, v[0].toUpperCase() + v.slice(1))));
+  const gfxHint = h("p", { class: "muted" }, GRAPHICS_HINTS[settings.graphics.mobile]);
   gfxSel.addEventListener("change", () => {
     settings.graphics.mobile = (gfxSel as HTMLSelectElement).value as GraphicsTier;
+    gfxHint.textContent = GRAPHICS_HINTS[settings.graphics.mobile];
+    saveSettings(settings);
+    applyActiveGraphics();
+  });
+
+  const skip = h("input", { type: "checkbox" }) as HTMLInputElement;
+  skip.checked = settings.frameSkip;
+  skip.addEventListener("change", () => {
+    settings.frameSkip = skip.checked;
     saveSettings(settings);
     applyActiveGraphics();
   });
@@ -190,6 +200,13 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
     touchExtras,
     h("h3", {}, "Graphics"),
     h("label", { class: "field" }, h("span", {}, "Quality"), gfxSel),
+    gfxHint,
+    h("label", { class: "field check" },
+      skip,
+      h("span", {}, "Frame skip"),
+    ),
+    h("p", { class: "muted" },
+      "When on: keep game speed if the phone lags, and lower resolution further only while frames are slow. Turn off for a fixed Quality image."),
     h("h3", {}, "Display"),
     h("div", { class: "row" }, h("button", { class: "btn", onclick: toggleFullscreen }, "Toggle fullscreen")),
   );

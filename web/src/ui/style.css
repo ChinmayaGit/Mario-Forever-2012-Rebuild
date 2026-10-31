@@ -82,6 +82,9 @@ button, select, input { font: inherit; color: inherit; }
 .key.empty { color: var(--muted); }
 label.field { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
 label.field > span:first-child { min-width: 92px; color: var(--muted); }
+label.field.check { justify-content: flex-start; }
+label.field.check > span { min-width: 0; color: var(--text); }
+label.field.check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 input[type="range"] { flex: 1; accent-color: var(--accent); }
 select, input[type="text"] {
   background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px;

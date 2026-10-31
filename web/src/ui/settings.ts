@@ -55,6 +55,11 @@ export interface Settings {
   };
   /** Separate tiers so phone quality never rewrites desktop quality. */
   graphics: { desktop: GraphicsTier; mobile: GraphicsTier };
+  /**
+   * Mobile performance mode: skip redraws while catching up, and drop resolution further
+   * when frames are slow (adaptive). Off = Quality scale only, exact image.
+   */
+  frameSkip: boolean;
 }
 
 const KEY = "mf2012:web-settings";
@@ -65,6 +70,7 @@ function defaults(): Settings {
     deviceMode: "auto",
     touch: { mode: "auto", scheme: "buttons", scale: 1, opacity: DEFAULT_TOUCH_OPACITY, pos: {} },
     graphics: { desktop: DEFAULT_GRAPHICS_DESKTOP, mobile: DEFAULT_GRAPHICS_MOBILE },
+    frameSkip: true,
   };
 }
 
@@ -84,6 +90,7 @@ export function loadSettings(): Settings {
       if (GRAPHICS_TIERS.includes(s.graphics.desktop)) d.graphics.desktop = s.graphics.desktop;
       if (GRAPHICS_TIERS.includes(s.graphics.mobile)) d.graphics.mobile = s.graphics.mobile;
     }
+    if (typeof s.frameSkip === "boolean") d.frameSkip = s.frameSkip;
   } catch { /* corrupt settings fall back to defaults */ }
   return d;
 }

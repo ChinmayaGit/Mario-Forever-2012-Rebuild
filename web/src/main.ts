@@ -20,7 +20,7 @@ game.input.actionVk = (a: Action) => Number((game.G as Record<string, unknown>)[
 game.onStatus = (m) => loading.set("boot", !/^Game ended/.test(m), m);
 game.onBusy = (busy) => loading.set("room", busy, "Loading", true);
 // Desktop vs mobile graphics are independent; deviceMode can override a bad auto-detect.
-applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings));
+applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings), settings.frameSkip);
 if (import.meta.env.DEV) {
   (window as any).game = game;
   void import("./debug.ts").then((m) => m.installDebug(game));

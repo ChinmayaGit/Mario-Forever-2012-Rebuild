@@ -144,11 +144,16 @@ export class Game {
    * (Capping to 1 tick/frame made jump/walk feel "heavy" — that was the game running in slow motion.)
    */
   mobilePerf = false;
+  /**
+   * When on: catch up game ticks without extra redraws, and adaptively lower resolution if
+   * frames are slow. Controlled by Settings → Frame skip.
+   */
+  frameSkip = false;
   /** Canvas pixels per game pixel (graphics preset × adaptive fallback). */
   renderScale = 1;
   /**
-   * Adaptive resolution multiplier (phones only). Drops below 1 only while frames are slow but
-   * JS work is small (fill-rate bound); reverted if dropping didn't speed frames up.
+   * Adaptive resolution multiplier (when frameSkip is on). Drops below 1 only while frames
+   * are slow but JS work is small; reverted if dropping didn't help.
    */
   dynScale = 1;
   private aspect = 4 / 3;
@@ -1022,7 +1027,7 @@ export class Game {
     const a = Math.max(BASE_W / BASE_H, Math.min(MAX_ASPECT, aspect));
     this.aspect = aspect;
     this.margin = Math.round((BASE_H * a - BASE_W) / 2);
-    if (!this.mobilePerf) this.dynScale = 1;
+    if (!this.frameSkip) this.dynScale = 1;
     this.renderScale = this.gfx.scale * this.dynScale;
     // Smooth upscale at full res; pixelated only when the buffer is intentionally small.
     if (this.canvas.style) this.canvas.style.imageRendering = this.renderScale < 0.95 ? "pixelated" : "auto";
@@ -1192,9 +1197,9 @@ export class Game {
       // When the display rate matches the room speed, timer jitter would otherwise alternate 0 and 2 steps per frame.
       const whole = Math.round(acc / stepMs);
       if (whole >= 1 && Math.abs(acc - whole * stepMs) < 2) acc = whole * stepMs;
-      // Phones: catch up sim (keeps jump/walk at real speed) but never redraw more than once per display frame.
-      const maxSteps = this.mobilePerf ? 3 : (this.roomSpeed <= 60 ? 4 : 8);
-      const budget = now + (this.mobilePerf ? 12 : 14);
+      // Frame skip: catch up sim (keeps jump/walk at real speed) but redraw at most once per display frame.
+      const maxSteps = this.frameSkip ? 3 : (this.roomSpeed <= 60 ? 4 : 8);
+      const budget = now + (this.frameSkip ? 12 : 14);
       let steps = 0;
       while (acc >= stepMs && steps < maxSteps && performance.now() < budget) {
         acc -= stepMs;
@@ -1215,7 +1220,7 @@ export class Game {
       if (acc > stepMs * 2) acc = stepMs;
       if (steps > 0) this.present();
       if (now - fpsTime >= 1000) { this.fps = fpsCount; fpsCount = 0; fpsTime = now; }
-      if (this.mobilePerf) {
+      if (this.frameSkip) {
         winFrames++;
         winCpu += performance.now() - now;
         if (now - winStart >= 1000) {
