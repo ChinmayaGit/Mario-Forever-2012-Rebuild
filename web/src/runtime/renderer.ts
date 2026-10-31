@@ -1,22 +1,32 @@
 import type { Frame } from "./assets.ts";
 
+/** Textures one batch can sample, so switching between atlas pages / big images doesn't end the batch. */
+const UNITS = 8;
+/** Texture uploads happen on this unit so they never disturb the units a batch is sampling. */
+const SCRATCH_UNIT = UNITS;
+
 const VS = `#version 300 es
-in vec2 a_pos; in vec2 a_uv; in vec4 a_col;
+in vec2 a_pos; in vec2 a_uv; in vec4 a_col; in float a_ti;
 uniform mat3 u_proj;
-out vec2 v_uv; out vec4 v_col;
+out vec2 v_uv; out vec4 v_col; flat out int v_ti;
 void main() {
   vec3 p = u_proj * vec3(a_pos, 1.0);
   gl_Position = vec4(p.xy, 0.0, 1.0);
-  v_uv = a_uv; v_col = a_col;
+  v_uv = a_uv; v_col = a_col; v_ti = int(a_ti + 0.5);
 }`;
+// Sampler arrays can only be indexed by constants in GLSL ES 3.00, hence the branch chain.
 const FS = `#version 300 es
 precision mediump float;
-uniform sampler2D u_tex;
-in vec2 v_uv; in vec4 v_col;
+uniform sampler2D u_tex[${UNITS}];
+in vec2 v_uv; in vec4 v_col; flat in int v_ti;
 out vec4 o;
-void main() { o = texture(u_tex, v_uv) * v_col; }`;
+void main() {
+  vec4 c;
+  ${Array.from({ length: UNITS }, (_, i) => `${i ? "else " : ""}${i < UNITS - 1 ? `if (v_ti == ${i}) ` : ""}c = textureLod(u_tex[${i}], v_uv, 0.0);`).join("\n  ")}
+  o = c * v_col;
+}`;
 
-const FLOATS_PER_VERT = 8;
+const FLOATS_PER_VERT = 9;
 const MAX_QUADS = 8192;
 const PAGE = 2048;
 /** Images up to this size share atlas pages, so consecutive draws rarely switch textures. */
@@ -32,7 +42,12 @@ export class Renderer {
   buf: WebGLBuffer;
   data = new Float32Array(MAX_QUADS * 6 * FLOATS_PER_VERT);
   count = 0;
+  /** Texture bound on the scratch unit (uploads only). */
   curTex: WebGLTexture | null = null;
+  /** Textures sampled by the current batch, by unit. */
+  private units: (WebGLTexture | null)[] = new Array(UNITS).fill(null);
+  private unitCount = 0;
+  private curUnit = 0;
   white: WebGLTexture;
   uProj: WebGLUniformLocation;
   texCache = new WeakMap<object, TexEntry>();
@@ -75,6 +90,9 @@ export class Renderer {
     attr("a_pos", 2, 0);
     attr("a_uv", 2, 2);
     attr("a_col", 4, 4);
+    attr("a_ti", 1, 8);
+    gl.uniform1iv(gl.getUniformLocation(p, "u_tex"), Array.from({ length: UNITS }, (_, i) => i));
+    gl.activeTexture(gl.TEXTURE0 + SCRATCH_UNIT);
     this.white = gl.createTexture()!;
     gl.bindTexture(gl.TEXTURE_2D, this.white);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
@@ -177,7 +195,10 @@ export class Renderer {
     const t = this.texCache.get(src);
     if (!t) return;
     this.flush();
-    if (!t.atlas) this.gl.deleteTexture(t.tex);
+    if (!t.atlas) {
+      if (this.units.includes(t.tex)) this.releaseUnits();
+      this.gl.deleteTexture(t.tex);
+    }
     this.texCache.delete(src);
   }
 
@@ -190,18 +211,39 @@ export class Renderer {
     this.count = 0;
   }
 
-  bind(tex: WebGLTexture) {
-    if (tex !== this.curTex) {
-      this.flush();
-      this.curTex = tex;
-      this.gl.bindTexture(this.gl.TEXTURE_2D, tex);
+  /** Unbind every sampling unit (a surface must never be sampled while it is the render target). */
+  private releaseUnits() {
+    const gl = this.gl;
+    for (let i = 0; i < UNITS; i++) {
+      if (!this.units[i]) continue;
+      gl.activeTexture(gl.TEXTURE0 + i);
+      gl.bindTexture(gl.TEXTURE_2D, null);
+      this.units[i] = null;
     }
+    gl.activeTexture(gl.TEXTURE0 + SCRATCH_UNIT);
+    this.unitCount = 0;
+  }
+
+  bind(tex: WebGLTexture) {
     if (this.count + 6 > MAX_QUADS * 6) this.flush();
+    const u = this.units;
+    if (u[this.curUnit] === tex) return;
+    for (let i = 0; i < this.unitCount; i++) if (u[i] === tex) { this.curUnit = i; return; }
+    // All units busy with other textures: draw what we have and start over from unit 0.
+    if (this.unitCount === UNITS) { this.flush(); this.unitCount = 0; }
+    const i = this.unitCount++;
+    const gl = this.gl;
+    gl.activeTexture(gl.TEXTURE0 + i);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.activeTexture(gl.TEXTURE0 + SCRATCH_UNIT);
+    u[i] = tex;
+    this.curUnit = i;
   }
 
   private v(x: number, y: number, u: number, w: number, r: number, g: number, b: number, a: number) {
     const d = this.data, i = this.count * FLOATS_PER_VERT;
     d[i] = x; d[i + 1] = y; d[i + 2] = u; d[i + 3] = w; d[i + 4] = r; d[i + 5] = g; d[i + 6] = b; d[i + 7] = a;
+    d[i + 8] = this.curUnit;
     this.count++;
   }
 
@@ -311,6 +353,7 @@ export class Renderer {
 
   setTarget(fb: WebGLFramebuffer | null, w: number, h: number) {
     this.flush();
+    if (fb !== this.target.fb) this.releaseUnits();
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, fb);
     this.target = { fb, w, h };
   }

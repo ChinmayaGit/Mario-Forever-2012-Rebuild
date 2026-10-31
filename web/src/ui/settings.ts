@@ -4,7 +4,7 @@ import {
   DEFAULT_GRAPHICS_DESKTOP, DEFAULT_GRAPHICS_MOBILE, GRAPHICS_TIERS, type GraphicsTier,
 } from "./graphics.ts";
 
-export type TouchKey = Action | "start" | "pause";
+export type TouchKey = Action;
 
 export interface TouchButtonDef { id: TouchKey; label: string; small?: boolean; x: number; y: number }
 
@@ -16,9 +16,25 @@ export const TOUCH_BUTTONS: TouchButtonDef[] = [
   { id: "down", label: "▼", x: 0.14, y: 0.93 },
   { id: "fire", label: "FIRE", x: 0.78, y: 0.86 },
   { id: "jump", label: "JUMP", x: 0.91, y: 0.73 },
-  { id: "pause", label: "PAUSE", small: true, x: 0.4, y: 0.95 },
-  { id: "start", label: "START", small: true, x: 0.6, y: 0.95 },
 ];
+
+/** Same visibility as the MAP / ITEMS buttons; the Opacity slider can only lower it. */
+export const DEFAULT_TOUCH_OPACITY = 1;
+
+/** Top-centre of the screen (over the game HUD) acts as the pause key. */
+export function inPauseZone(x: number, y: number) {
+  return y < innerHeight * 0.18 && x > innerWidth * 0.3 && x < innerWidth * 0.7;
+}
+
+/** Title, options, world map, cutscenes: navigated with arrows + Enter rather than jump / fire. */
+export const MENU_ROOM =
+  /^room_title_screen|^room_map_|^room_end_map$|napis_tworcy|wybierz_jezyk|TV_JOY|END_GAME_ANIM|start_animation_game_room|initialize|^game_initialize$/;
+
+/** Hold a key for a short pulse on behalf of a tap. */
+export function pulseKey(input: { press(src: string, k: number): void; release(src: string): void }, src: string, vk: number) {
+  input.press(src, vk);
+  setTimeout(() => input.release(src), 120);
+}
 
 export type TouchScheme = "buttons" | "swipe";
 /** Which performance/graphics profile to use. Auto guesses; Desktop/Mobile force it. */
@@ -47,7 +63,7 @@ function defaults(): Settings {
   return {
     keys: structuredClone(DEFAULT_BINDINGS),
     deviceMode: "auto",
-    touch: { mode: "auto", scheme: "buttons", scale: 1, opacity: 0.8, pos: {} },
+    touch: { mode: "auto", scheme: "buttons", scale: 1, opacity: DEFAULT_TOUCH_OPACITY, pos: {} },
     graphics: { desktop: DEFAULT_GRAPHICS_DESKTOP, mobile: DEFAULT_GRAPHICS_MOBILE },
   };
 }
@@ -61,6 +77,9 @@ export function loadSettings(): Settings {
     if (s.deviceMode === "auto" || s.deviceMode === "desktop" || s.deviceMode === "mobile") d.deviceMode = s.deviceMode;
     Object.assign(d.touch, s.touch ?? {});
     if (d.touch.scheme !== "buttons" && d.touch.scheme !== "swipe") d.touch.scheme = "buttons";
+    // 0.8 was the old default, which looked faded next to MAP / ITEMS.
+    if (d.touch.opacity === 0.8) d.touch.opacity = DEFAULT_TOUCH_OPACITY;
+    d.touch.pos = Object.fromEntries(Object.entries(d.touch.pos).filter(([k]) => (ACTIONS as readonly string[]).includes(k)));
     if (s.graphics) {
       if (GRAPHICS_TIERS.includes(s.graphics.desktop)) d.graphics.desktop = s.graphics.desktop;
       if (GRAPHICS_TIERS.includes(s.graphics.mobile)) d.graphics.mobile = s.graphics.mobile;
@@ -102,6 +121,12 @@ export function wantTouchAuto(s: Settings) {
   if (s.deviceMode === "desktop") return false;
   if (s.deviceMode === "mobile") return true;
   return isTouchDevice();
+}
+
+/** Whether any on-screen touch UI (buttons, swipe zones, MAP / ITEMS) should be shown. */
+export function touchUiWanted(s: Settings) {
+  const t = s.touch;
+  return t.mode === "on" || (t.mode === "auto" && wantTouchAuto(s));
 }
 
 /** "KeyQ" -> "Q", "ArrowLeft" -> "←". */

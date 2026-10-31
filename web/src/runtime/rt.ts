@@ -28,7 +28,8 @@ export function makeRt(game: Game) {
     fdiv: (a: number, b: number) => (b === 0 ? 0 : a / b),
     div: (a: number, b: number) => (b === 0 ? 0 : Math.trunc(a / b)),
     mod: (a: number, b: number) => (b === 0 ? 0 : a % b),
-    eq: (a: any, b: any) => (a === b ? 1 : 0),
+    // GM8 compares reals with a tolerance: 20 × 0.05 must equal 1 (the map-select fade relies on it).
+    eq: (a: any, b: any) => (a === b || (typeof a === "number" && typeof b === "number" && Math.abs(a - b) < 1e-9) ? 1 : 0),
     sw: (v: any) => v,
     nop: () => {},
     get(target: number, key: string, s: Instance, o: Instance) {

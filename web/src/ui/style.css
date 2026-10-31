@@ -35,8 +35,9 @@ button, select, input { font: inherit; color: inherit; }
 }
 .map-hot:active { background: rgba(232, 64, 42, 0.55); border-color: #fff; }
 .map-hot[hidden] { display: none; }
-.map-hot-items { right: max(12px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); }
-.map-hot-maps { right: max(12px, env(safe-area-inset-right)); bottom: calc(18px + 60px + env(safe-area-inset-bottom, 0px)); }
+/* Bottom centre, where PAUSE / START used to be. */
+.map-hot-maps { left: 40%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%); }
+.map-hot-items { left: 60%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%); }
 @media (min-width: 900px) {
   .map-hot { min-width: 72px; min-height: 40px; font-size: 13px; opacity: 0.7; }
 }
@@ -148,11 +149,11 @@ input[type="text"] { text-transform: uppercase; letter-spacing: 0.15em; font-fam
 .tbtn {
   position: absolute; transform: translate(-50%, -50%); pointer-events: auto; touch-action: none; user-select: none;
   -webkit-user-select: none; display: flex; align-items: center; justify-content: center;
-  border-radius: 50%; background: rgba(255, 255, 255, 0.16); border: 2px solid rgba(255, 255, 255, 0.45);
-  color: #fff; font-weight: 700; text-shadow: 0 1px 2px #000;
+  border-radius: 50%; background: rgba(20, 22, 29, 0.45); border: 2px solid rgba(255, 255, 255, 0.55);
+  color: #fff; font-weight: 700; text-shadow: 0 1px 2px #000; backdrop-filter: blur(3px);
 }
 .tbtn.small { border-radius: 12px; font-size: 12px; letter-spacing: 0.06em; }
-.tbtn.held { background: rgba(255, 255, 255, 0.42); }
+.tbtn.held { background: rgba(232, 64, 42, 0.55); border-color: #fff; }
 #touch.editing .tbtn { border-style: dashed; border-color: var(--accent-2); cursor: grab; }
 .edit-bar {
   position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 45; display: flex; gap: 8px 12px; align-items: center;

@@ -4,7 +4,7 @@ import { exportSaves, importSaves } from "../runtime/vfs.ts";
 import { h, openPanel, toast } from "./panel.ts";
 import { applyGraphics, GRAPHICS_TIERS, type GraphicsTier } from "./graphics.ts";
 import {
-  activeGraphicsTier, detectMobileDevice, isMobileProfile, keyLabel, saveSettings,
+  activeGraphicsTier, DEFAULT_TOUCH_OPACITY, detectMobileDevice, isMobileProfile, keyLabel, saveSettings,
   type DeviceMode, type Settings, type TouchScheme,
 } from "./settings.ts";
 import type { GestureControls } from "./gestures.ts";
@@ -155,13 +155,17 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
         h("label", { class: "field" }, h("span", {}, "Opacity"), range(0.2, 1, 0.05, () => t.opacity, (v) => (t.opacity = v))),
         h("div", { class: "row" },
           h("button", { class: "btn", onclick: () => { p.close(); touch.edit(() => openSettings(game, settings, touch, gestures)); } }, "Move buttons…"),
-          h("button", { class: "btn", onclick: () => { t.pos = {}; t.scale = 1; t.opacity = 0.8; saveSettings(settings); refreshTouch(); p.close(); openSettings(game, settings, touch, gestures); } }, "Reset layout")),
+          h("button", { class: "btn", onclick: () => { t.pos = {}; t.scale = 1; t.opacity = DEFAULT_TOUCH_OPACITY; saveSettings(settings); refreshTouch(); p.close(); openSettings(game, settings, touch, gestures); } }, "Reset layout")),
+        h("div", { class: "note" },
+          h("p", {}, "In menus and on the map, JUMP becomes SELECT (or tap the screen). Tap the top centre to pause."),
+        ),
       );
     } else {
       touchExtras.append(
         h("div", { class: "note" },
           h("p", {}, "Left side: drag left/right to walk (hold), drag up/down for up/down."),
           h("p", {}, "Right side: swipe up to jump (hold), tap to fire."),
+          h("p", {}, "In menus and on the map, any tap selects. Tap the top centre to pause."),
         ),
       );
     }

@@ -97,17 +97,54 @@ export function makeFunctions(game: Game) {
   }
 
   // ---- collision helpers
-  function anyCollision(s: I, obj: number, test: (i: I) => boolean, notme = true): I | null {
-    for (const i of game.resolve(obj, s, s)) {
-      if (notme && i === s) continue;
-      if (test(i)) return i;
+  // Collision kinds for `collision` below (avoids a closure per call).
+  const C_INST = 0, C_POINT = 1, C_RECT = 2, C_CIRCLE = 3;
+  /**
+   * First instance of `obj` (in creation order) hitting the query, or null. Object targets go through the
+   * collision grid; instance ids / keywords keep the plain list. `any` stops at the first hit (boolean tests).
+   */
+  function collision(s: I, obj: number, kind: number, notme: boolean, any: boolean,
+    x1: number, y1: number, x2: number, y2: number, precise: boolean): I | null {
+    obj = round(obj);
+    let l: number, t: number, r: number, b: number;
+    if (kind === C_INST) {
+      if (!s.maskSprite) return null;
+      s.updateBBox();
+      l = s._bl; r = s._br; t = s._bt; b = s._bb;
+    } else if (kind === C_POINT) { l = r = x1; t = b = y1; }
+    else if (kind === C_RECT) { l = Math.min(x1, x2); r = Math.max(x1, x2); t = Math.min(y1, y2); b = Math.max(y1, y2); }
+    else { l = x1 - x2; r = x1 + x2; t = y1 - x2; b = y1 + x2; }
+    const hit = (i: I) =>
+      kind === C_INST ? game.collide(s, i)
+      : kind === C_POINT ? game.collidePoint(i, x1, y1, precise)
+      : kind === C_RECT ? game.collideRect(i, x1, y1, x2, y2, precise)
+      : game.collideCircle(i, x1, y1, x2, precise);
+    if (obj < 0 || obj >= A.objects.length) {
+      for (const i of game.resolve(obj, s, s)) {
+        if (notme && i === s) continue;
+        if (hit(i)) return i;
+      }
+      return null;
     }
-    return null;
+    const cands = game.gridQuery(obj, l - 1, t - 1, r + 1, b + 1);
+    let best: I | null = null;
+    try {
+      for (let k = 0; k < cands.length; k++) {
+        const i = cands[k];
+        if (notme && i === s) continue;
+        if (best && i.order > best.order) continue;
+        if (!hit(i)) continue;
+        best = i;
+        if (any) break;
+      }
+    } finally { game.gridDone(); }
+    return best;
   }
+  /** Test `s` as if it stood at (x, y). Raw fields: a probe must not queue `s` for grid re-filing. */
   function atPosition<T>(s: I, x: number, y: number, fn: () => T): T {
-    const ox = s.x, oy = s.y;
-    s.x = x; s.y = y;
-    try { return fn(); } finally { s.x = ox; s.y = oy; }
+    const ox = s._x, oy = s._y;
+    s._x = x; s._y = y;
+    try { return fn(); } finally { s._x = ox; s._y = oy; }
   }
 
   // ---- text
@@ -262,20 +299,20 @@ export function makeFunctions(game: Game) {
       return i.id;
     },
     instance_destroy: (s) => { if (s && s !== game.dummy) game.destroy(s); return 0; },
-    instance_exists: (s, o, obj) => (game.resolve(obj, s, o).length > 0 ? 1 : 0),
-    instance_number: (s, o, obj) => game.resolve(obj, s, o).length,
+    instance_exists: (s, o, obj) => (game.countOf(obj, s, o, 1) > 0 ? 1 : 0),
+    instance_number: (s, o, obj) => game.countOf(obj, s, o),
     instance_nearest: (s, o, x, y, obj) => {
       let best: I | null = null, bd = Infinity;
       for (const i of game.resolve(obj, s, o)) { const d = Math.hypot(i.x - x, i.y - y); if (d < bd) { bd = d; best = i; } }
       return best ? best.id : NOONE;
     },
-    place_meeting: (s, _o, x, y, obj) => atPosition(s, x, y, () => (anyCollision(s, obj, (i) => game.collide(s, i)) ? 1 : 0)),
-    instance_place: (s, _o, x, y, obj) => atPosition(s, x, y, () => anyCollision(s, obj, (i) => game.collide(s, i))?.id ?? NOONE),
-    collision_point: (s, _o, x, y, obj, prec, notme) => anyCollision(s, obj, (i) => game.collidePoint(i, x, y, prec >= 0.5), notme >= 0.5)?.id ?? NOONE,
+    place_meeting: (s, _o, x, y, obj) => atPosition(s, x, y, () => (collision(s, obj, C_INST, true, true, 0, 0, 0, 0, true) ? 1 : 0)),
+    instance_place: (s, _o, x, y, obj) => atPosition(s, x, y, () => collision(s, obj, C_INST, true, false, 0, 0, 0, 0, true)?.id ?? NOONE),
+    collision_point: (s, _o, x, y, obj, prec, notme) => collision(s, obj, C_POINT, notme >= 0.5, false, x, y, 0, 0, prec >= 0.5)?.id ?? NOONE,
     collision_rectangle: (s, _o, x1, y1, x2, y2, obj, prec, notme) =>
-      anyCollision(s, obj, (i) => game.collideRect(i, x1, y1, x2, y2, prec >= 0.5), notme >= 0.5)?.id ?? NOONE,
+      collision(s, obj, C_RECT, notme >= 0.5, false, x1, y1, x2, y2, prec >= 0.5)?.id ?? NOONE,
     collision_circle: (s, _o, x, y, rad, obj, prec, notme) =>
-      anyCollision(s, obj, (i) => game.collideCircle(i, x, y, rad, prec >= 0.5), notme >= 0.5)?.id ?? NOONE,
+      collision(s, obj, C_CIRCLE, notme >= 0.5, false, x, y, rad, 0, prec >= 0.5)?.id ?? NOONE,
     motion_add: (s, _o, dir, sp) => { s.setHV(s.hspeed + Math.cos(dir * DEG) * sp, s.vspeed - Math.sin(dir * DEG) * sp); return 0; },
     motion_set: (s, _o, dir, sp) => { s.direction = dir; s.speed = sp; return 0; },
     variable_local_exists: (s, _o, name) => (("$" + name) in s ? 1 : 0),
@@ -348,12 +385,17 @@ export function makeFunctions(game: Game) {
       const s = sprite(ind);
       if (!s) return 0;
       fillSprite(s, fname, imgnumb, removeback, smooth, xo, yo);
+      game.spritesChanged();
       return 0;
     },
     sprite_exists: (_s, _o, ind) => (sprite(ind) && sprite(ind).frames.length ? 1 : 0),
     sprite_get_width: (_s, _o, ind) => sprite(ind)?.w ?? 0,
     sprite_get_height: (_s, _o, ind) => sprite(ind)?.h ?? 0,
-    sprite_set_offset: (_s, _o, ind, x, y) => { const s = sprite(ind); if (s) { s.ox = round(x); s.oy = round(y); } return 0; },
+    sprite_set_offset: (_s, _o, ind, x, y) => {
+      const s = sprite(ind);
+      if (s && (s.ox !== round(x) || s.oy !== round(y))) { s.ox = round(x); s.oy = round(y); game.spritesChanged(); }
+      return 0;
+    },
     background_add: (_s, _o, fname) => {
       const img = imageFor(fname);
       if (!img) return -1;

@@ -7,7 +7,7 @@ import { h, isPanelOpen } from "./ui/panel.ts";
 import { downloadSave, openCredits, openLoad, openSettings, toggleFullscreen } from "./ui/panels.ts";
 import { applyGraphics } from "./ui/graphics.ts";
 import { GestureControls } from "./ui/gestures.ts";
-import { activeGraphicsTier, isMobileProfile, loadSettings } from "./ui/settings.ts";
+import { activeGraphicsTier, isMobileProfile, loadSettings, MENU_ROOM, pulseKey as pulse } from "./ui/settings.ts";
 import { TouchControls } from "./ui/touch.ts";
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
@@ -40,11 +40,7 @@ screen.orientation?.addEventListener("change", fit);
 fit();
 
 /** Hold a virtual key for a short pulse (map HUD uses keys 1 / 2 for ITEMS / MAPS). */
-const pulseKey = (vk: number) => {
-  const src = `ui:pulse:${vk}`;
-  game.input.press(src, vk);
-  setTimeout(() => game.input.release(src), 120);
-};
+const pulseKey = (vk: number) => pulse(game.input, `ui:pulse:${vk}`, vk);
 
 const touch = new TouchControls(game, settings);
 const gestures = new GestureControls(game, settings);
@@ -67,6 +63,14 @@ const mapMapsBtn = h("button", {
   onpointerdown: (e: PointerEvent) => { e.preventDefault(); pulseKey(50); },
 }, "MAPS");
 document.body.append(mapItemsBtn, mapMapsBtn);
+// MAP / ITEMS are touch-only: keyboard players press 1 / 2.
+let onMap = false;
+const syncMapButtons = () => {
+  const show = onMap && touch.visible;
+  mapItemsBtn.hidden = !show;
+  mapMapsBtn.hidden = !show;
+};
+touch.onLayout = syncMapButtons;
 
 loading.set("boot", true, "Loading");
 try {
@@ -82,10 +86,12 @@ try {
   // The boot rooms only load sounds and settings; keep the loading screen up until the title menu appears.
   game.onRoom = (name) => {
     loading.set("boot", name.startsWith("room_initialize") || name === "debug_mode_for_development" || name === "initialize_maps_values" || name === "game_initialize", "Loading");
-    const onMap = name.startsWith("room_map_");
+    onMap = name.startsWith("room_map_");
     saveBtn.hidden = !onMap;
-    mapItemsBtn.hidden = !onMap;
-    mapMapsBtn.hidden = !onMap;
+    const menu = MENU_ROOM.test(name);
+    touch.setMenu(menu);
+    gestures.setMenu(menu);
+    syncMapButtons();
   };
   canvas.focus();
   await game.start();

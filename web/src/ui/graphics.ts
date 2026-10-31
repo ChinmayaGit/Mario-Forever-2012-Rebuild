@@ -21,24 +21,28 @@ export interface GraphicsProfile {
   cullLevels: boolean;
 }
 
-/** Desktop stays sharp; only Low/Medium drop resolution. */
+/** Desktop stays sharp; only Low/Medium drop resolution. Never cull stage objects. */
 const DESKTOP: Record<GraphicsTier, GraphicsProfile> = {
-  low: { scale: 0.7, fx: false, decor: false, particles: 0, backgrounds: 2, cullLevels: true },
-  medium: { scale: 0.85, fx: true, decor: true, particles: 0.5, backgrounds: 4, cullLevels: false },
+  low: { scale: 0.7, fx: false, decor: false, particles: 0, backgrounds: 4, cullLevels: false },
+  medium: { scale: 0.85, fx: true, decor: true, particles: 0.5, backgrounds: 6, cullLevels: false },
   high: { scale: 1, fx: true, decor: true, particles: 1, backgrounds: 8, cullLevels: false },
   ultra: { scale: 1, fx: true, decor: true, particles: 1, backgrounds: 8, cullLevels: false },
 };
 
-/** Phone tiers are cheaper than the same name on desktop (phone High ≈ desktop Low). */
+/**
+ * Phones render at native game resolution from Medium up; the game loop lowers it on its own
+ * only if the GPU can't keep up (see Game.adaptScale). Low is for very old devices.
+ * cullLevels stays off in stages (only map/title cull); decor false only skips pure parallax draw.
+ */
 const MOBILE: Record<GraphicsTier, GraphicsProfile> = {
-  low: { scale: 0.4, fx: false, decor: false, particles: 0, backgrounds: 1, cullLevels: true },
-  medium: { scale: 0.5, fx: false, decor: false, particles: 0, backgrounds: 2, cullLevels: true },
-  high: { scale: 0.65, fx: false, decor: true, particles: 0.5, backgrounds: 3, cullLevels: true },
-  ultra: { scale: 0.8, fx: true, decor: true, particles: 1, backgrounds: 6, cullLevels: false },
+  low: { scale: 0.75, fx: false, decor: false, particles: 0.25, backgrounds: 4, cullLevels: false },
+  medium: { scale: 1, fx: false, decor: true, particles: 0.5, backgrounds: 6, cullLevels: false },
+  high: { scale: 1, fx: true, decor: true, particles: 1, backgrounds: 8, cullLevels: false },
+  ultra: { scale: 1, fx: true, decor: true, particles: 1, backgrounds: 8, cullLevels: false },
 };
 
 export const DEFAULT_GRAPHICS_DESKTOP: GraphicsTier = "ultra";
-export const DEFAULT_GRAPHICS_MOBILE: GraphicsTier = "medium";
+export const DEFAULT_GRAPHICS_MOBILE: GraphicsTier = "high";
 
 export function profileFor(tier: GraphicsTier, mobile: boolean): GraphicsProfile {
   return (mobile ? MOBILE : DESKTOP)[tier];
@@ -50,8 +54,6 @@ export function applyGraphics(game: Game, tier: GraphicsTier, mobile = game.mobi
   game.gfx = { tier, ...p, particleTick: 0 };
   // Re-apply canvas size for the new scale.
   const aspect = (typeof innerWidth === "number" && innerHeight) ? innerWidth / innerHeight : 4 / 3;
+  game.dynScale = 1;
   game.setAspect(aspect);
-  // Smooth upscale on desktop full-res; pixelated only when the buffer is intentionally small.
-  const crisp = p.scale < 0.95;
-  game.canvas.style.imageRendering = crisp ? "pixelated" : "auto";
 }

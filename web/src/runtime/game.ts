@@ -5,7 +5,7 @@ import { Particles, type PartSystem } from "./particles.ts";
 import { Renderer } from "./renderer.ts";
 import { VFS } from "./vfs.ts";
 import { Input } from "./input.ts";
-import { DECOR_NAME } from "./quality.ts";
+import { isSkipDecorName } from "./quality.ts";
 import { makeFunctions } from "./functions.ts";
 import { makeRt } from "./rt.ts";
 import { install } from "../generated/game.js";
@@ -32,6 +32,12 @@ interface RoomData {
 }
 
 interface StoredRoom { instances: Instance[]; tiles: Tile[]; state: any }
+interface EvEntry { fn: Fn; frame: { obj: number; key: string } }
+
+const CELL_SHIFT = 7; // 128px cells
+/** Instances covering more cells than this go in the always-checked list. */
+const GRID_MAX_CELLS = 48;
+const cellKey = (cx: number, cy: number) => (cx + 32768) * 65536 + (cy + 32768);
 
 const VIEW_KEYS = ["view_visible", "view_xview", "view_yview", "view_wview", "view_hview", "view_xport", "view_yport",
   "view_wport", "view_hport", "view_angle", "view_hborder", "view_vborder", "view_hspeed", "view_vspeed", "view_object"] as const;
@@ -66,6 +72,29 @@ export class Game {
   descendants: number[][] = [];
   holders = new Map<string, number[]>();
   eventCache = new Map<string, Fn | null>();
+  /** (type, sub, object) -> resolved event plus its reusable event-stack frame; avoids per-call strings / Sets. */
+  private evTable = new Map<number, EvEntry | null>();
+  /** Keyboard-style holders, parsed once (key strings were split on every step). */
+  private keyHolders: { t: number; s: number; holders: number[] }[] = [];
+  private hasAlarms = false;
+  /** Per object index: 1 = never culled (player, lifts, pipes). */
+  private noCull = new Uint8Array(0);
+  /** Per object index: 1 = pure scenery skipped on low graphics. */
+  private decorObj = new Uint8Array(0);
+  /** Per target object: which object indices count as it (itself + children). */
+  private descMasks = new Map<number, Uint8Array>();
+
+  // Collision grid: instances filed by bounding box in CELL-sized cells, re-filed lazily when they move.
+  private grid = new Map<number, Instance[]>();
+  /** Instances too large for the grid (huge water / wall masks); always checked. */
+  private gridBig: Instance[] = [];
+  /** Instances whose geometry changed since they were last filed. */
+  gridMoved: Instance[] = [];
+  private gridStamp = 0;
+  /** Bumped when sprite offsets / masks change, invalidating cached bounding boxes. */
+  spriteVersion = 0;
+  private scratch: Instance[][] = [];
+  private scratchDepth = 0;
   nextId = 1000000;
   nextOrder = 0;
   depthDirty = true;
@@ -115,8 +144,15 @@ export class Game {
    * (Capping to 1 tick/frame made jump/walk feel "heavy" — that was the game running in slow motion.)
    */
   mobilePerf = false;
-  /** Canvas pixels per game pixel (from graphics preset). */
+  /** Canvas pixels per game pixel (graphics preset × adaptive fallback). */
   renderScale = 1;
+  /**
+   * Adaptive resolution multiplier (phones only). Drops below 1 only while frames are slow but
+   * JS work is small (fill-rate bound); reverted if dropping didn't speed frames up.
+   */
+  dynScale = 1;
+  private aspect = 4 / 3;
+  private adapt = { prev: 1, before: 0, judge: false, settle: 0, smooth: 0, blockDown: 0, blockUp: 0 };
   /** Active graphics profile (see ui/graphics.ts). */
   gfx = {
     tier: "high" as string,
@@ -234,8 +270,14 @@ export class Game {
     const objs = this.assets.objects;
     this.descendants = objs.map(() => []);
     this.byObject = objs.map(() => []);
+    this.noCull = new Uint8Array(objs.length);
+    this.decorObj = new Uint8Array(objs.length);
+    this.descMasks.clear();
     objs.forEach((o, i) => {
       if (!o) return;
+      // Origin can sit far from the visible body for lifts / pipes; never cull the player or map walker.
+      if (/mario|map_player|lift|rura|ruraz|pipe|platform|subplatform/i.test(o.name)) this.noCull[i] = 1;
+      if (isSkipDecorName(o.name)) this.decorObj[i] = 1;
       let p: number = i;
       const seen = new Set<number>();
       while (p >= 0 && objs[p] && !seen.has(p)) {
@@ -244,6 +286,32 @@ export class Game {
         p = objs[p].parent;
       }
     });
+  }
+
+  /** Object indices that count as `target` (itself and its children). */
+  descMask(target: number) {
+    let m = this.descMasks.get(target);
+    if (!m) {
+      m = new Uint8Array(this.assets.objects.length);
+      for (const d of this.descendants[target] ?? []) m[d] = 1;
+      this.descMasks.set(target, m);
+    }
+    return m;
+  }
+
+  /** Resolved event for (object, type, sub), cached with its event-stack frame. */
+  evEntry(obj: number, type: number, sub: number): EvEntry | null {
+    const cacheable = obj >= 0 && obj < 4096 && sub >= 0 && sub < 4096;
+    const nk = (type * 4096 + sub) * 4096 + obj;
+    if (cacheable) {
+      const hit = this.evTable.get(nk);
+      if (hit !== undefined) return hit;
+    }
+    const key = `${type}:${sub}`;
+    const fn = this.resolveEvent(obj, key);
+    const e = fn ? { fn, frame: { obj: this.ownerOf(obj, key), key } } : null;
+    if (cacheable) this.evTable.set(nk, e);
+    return e;
   }
 
   /** Find an event for an object, walking up the parent chain like GM8. */
@@ -277,6 +345,13 @@ export class Game {
       this.assets.objects.forEach((o, i) => { if (o && this.resolveEvent(i, k)) list.push(i); });
       this.holders.set(k, list);
     }
+    this.keyHolders = [];
+    this.hasAlarms = false;
+    for (const [key, holders] of this.holders) {
+      const [t, s] = key.split(":").map(Number);
+      if (t === EV.ALARM) this.hasAlarms = true;
+      if (t === EV.KEYBOARD || t === EV.KEYPRESS || t === EV.KEYRELEASE) this.keyHolders.push({ t, s, holders });
+    }
   }
 
   async roomData(index: number): Promise<RoomData> {
@@ -294,6 +369,8 @@ export class Game {
     this.instances.push(inst);
     this.byObject[obj]?.push(inst);
     this.byId.set(inst.id, inst);
+    inst._live = true;
+    inst.markMoved();
     this.depthDirty = true;
     return inst;
   }
@@ -309,7 +386,112 @@ export class Game {
     if (inst.destroyed) return;
     if (runEvent) this.runEvent(inst, EV.DESTROY, 0, inst);
     inst.destroyed = true;
+    inst._live = false;
+    this.gridRemove(inst);
     this.byId.delete(inst.id);
+  }
+
+  // ---------------------------------------------------------------- collision grid
+  private gridRemove(i: Instance) {
+    if (!i._gIn) return;
+    i._gIn = false;
+    const drop = (l: Instance[] | undefined) => {
+      if (!l) return;
+      const k = l.indexOf(i);
+      if (k >= 0) { l[k] = l[l.length - 1]; l.pop(); }
+    };
+    if (i._gBig) { drop(this.gridBig); return; }
+    for (let cx = i._gx0; cx <= i._gx1; cx++) for (let cy = i._gy0; cy <= i._gy1; cy++) drop(this.grid.get(cellKey(cx, cy)));
+  }
+
+  /** (Re)file one instance under the cells its bounding box covers. */
+  private gridFile(i: Instance) {
+    if (!i._live || i.destroyed || !i.maskSprite) { this.gridRemove(i); return; }
+    i.updateBBox();
+    const x0 = i._bl >> CELL_SHIFT, x1 = i._br >> CELL_SHIFT, y0 = i._bt >> CELL_SHIFT, y1 = i._bb >> CELL_SHIFT;
+    const big = (x1 - x0 + 1) * (y1 - y0 + 1) > GRID_MAX_CELLS;
+    if (i._gIn && big === i._gBig && (big || (x0 === i._gx0 && x1 === i._gx1 && y0 === i._gy0 && y1 === i._gy1))) return;
+    this.gridRemove(i);
+    i._gIn = true; i._gBig = big;
+    i._gx0 = x0; i._gx1 = x1; i._gy0 = y0; i._gy1 = y1;
+    if (big) { this.gridBig.push(i); return; }
+    for (let cx = x0; cx <= x1; cx++) {
+      for (let cy = y0; cy <= y1; cy++) {
+        const k = cellKey(cx, cy);
+        const l = this.grid.get(k);
+        if (l) l.push(i); else this.grid.set(k, [i]);
+      }
+    }
+  }
+
+  private gridFlush() {
+    const m = this.gridMoved;
+    for (let k = 0; k < m.length; k++) { const i = m[k]; i._moved = false; this.gridFile(i); }
+    m.length = 0;
+  }
+
+  /** Drop every filing and queue all live instances (room change, sprite data changed). */
+  gridReset() {
+    for (const l of this.grid.values()) for (const i of l) i._gIn = false;
+    for (const i of this.gridBig) i._gIn = false;
+    for (const i of this.gridMoved) i._moved = false;
+    this.grid.clear();
+    this.gridBig.length = 0;
+    this.gridMoved.length = 0;
+    for (const i of this.instances) if (i._live) i.markMoved();
+  }
+
+  /** Sprite offsets / masks changed at runtime: cached boxes and filings are stale. */
+  spritesChanged() {
+    this.spriteVersion++;
+    this.gridReset();
+  }
+
+  /**
+   * Live instances of object `target` (or a child) whose boxes may overlap the room rectangle l..r × t..b.
+   * Returns a scratch array — call gridDone() after iterating it.
+   */
+  gridQuery(target: number, l: number, t: number, r: number, b: number): Instance[] {
+    this.gridFlush();
+    const out = this.scratch[this.scratchDepth] ??= [];
+    this.scratchDepth++;
+    out.length = 0;
+    const want = this.descMask(target);
+    const stamp = ++this.gridStamp;
+    for (const i of this.gridBig) if (want[i.object_index] && !i.destroyed && i._qs !== stamp) { i._qs = stamp; out.push(i); }
+    const x0 = Math.floor(l) >> CELL_SHIFT, x1 = Math.floor(r) >> CELL_SHIFT;
+    const y0 = Math.floor(t) >> CELL_SHIFT, y1 = Math.floor(b) >> CELL_SHIFT;
+    if ((x1 - x0 + 1) * (y1 - y0 + 1) > 4096) {
+      // Huge query (whole-room rectangles): scan the object lists instead.
+      for (const d of this.descendants[target] ?? []) for (const i of this.byObject[d]) if (!i.destroyed && i._qs !== stamp) { i._qs = stamp; out.push(i); }
+      return out;
+    }
+    for (let cx = x0; cx <= x1; cx++) {
+      for (let cy = y0; cy <= y1; cy++) {
+        const cell = this.grid.get(cellKey(cx, cy));
+        if (!cell) continue;
+        for (let k = 0; k < cell.length; k++) {
+          const i = cell[k];
+          if (want[i.object_index] && !i.destroyed && i._qs !== stamp) { i._qs = stamp; out.push(i); }
+        }
+      }
+    }
+    return out;
+  }
+  gridDone() { this.scratchDepth--; }
+
+  /** Number of live instances matching `target`, stopping early at `limit` (no array is built). */
+  countOf(target: number, s: Instance | null, o: Instance | null, limit = Infinity): number {
+    target = Math.round(target);
+    if (target >= 0 && target < this.assets.objects.length) {
+      let n = 0;
+      for (const d of this.descendants[target]) {
+        const l = this.byObject[d];
+        for (let k = 0; k < l.length; k++) if (!l[k].destroyed && ++n >= limit) return n;
+      }
+      return n;
+    }
+    return this.resolve(target, s, o).length;
   }
 
   purge() {
@@ -343,12 +525,12 @@ export class Game {
   // ---------------------------------------------------------------- events
   runEvent(inst: Instance, type: number, sub: number, other: Instance): boolean {
     if (inst.destroyed && type !== EV.DESTROY) return false;
-    const fn = this.resolveEvent(inst.object_index, `${type}:${sub}`);
-    if (!fn) return false;
+    const ev = this.evEntry(inst.object_index, type, sub);
+    if (!ev) return false;
     const prev = this.rt.eventStack.length;
-    this.rt.eventStack.push({ obj: this.ownerOf(inst.object_index, `${type}:${sub}`), key: `${type}:${sub}` });
+    this.rt.eventStack.push(ev.frame);
     try {
-      fn(inst, other, []);
+      ev.fn(inst, other, []);
     } catch (e) {
       this.reportError(e, `${this.assets.objects[inst.object_index]?.name} event ${type}:${sub}`);
     } finally {
@@ -380,16 +562,14 @@ export class Game {
   runObjectEvent(type: number, sub: number) {
     const holders = this.holders.get(`${type}:${sub}`);
     if (!holders) return;
+    // Never skip STEP for "decor" — walkable clouds / lifts / pipe logic must keep running.
+    // Low graphics only skips drawing pure scenery (see drawScene).
     const cullSteps = this.cull.on && type === EV.STEP;
-    const skipDecorStep = type === EV.STEP && !this.gfx.decor;
     for (const obj of holders) {
+      // Lists only grow during events (purge replaces them after the step), so a length snapshot = a copy.
       const list = this.byObject[obj];
-      if (!list.length) continue;
-      if (skipDecorStep) {
-        const oname = this.assets.objects[obj]?.name ?? "";
-        if (DECOR_NAME.test(oname)) continue;
-      }
-      for (const inst of list.slice()) {
+      for (let k = 0, n = list.length; k < n; k++) {
+        const inst = list[k];
         if (inst.destroyed) continue;
         if (cullSteps && this.isCulled(inst, 280)) continue;
         this.runEvent(inst, type, sub, inst);
@@ -420,17 +600,20 @@ export class Game {
   /**
    * True when a sprited instance is well outside the view. Objects with no sprite (controllers / HUD scripts)
    * are never culled so menu and map logic still runs.
+   * Bounds use the sprite origin (GM style), not a fake center — tall pipes / wide lifts break otherwise.
    */
   isCulled(i: Instance, pad: number) {
-    const name = this.assets.objects[i.object_index]?.name ?? "";
-    // Never cull the player or map walker — they must keep stepping/drawing even near the view edge.
-    if (/mario|map_player/i.test(name)) return false;
+    if (this.noCull[i.object_index]) return false;
     const s = i.sprite;
     if (!s) return false;
     const xs = Math.abs(i.image_xscale) || 1, ys = Math.abs(i.image_yscale) || 1;
-    const hw = s.w * xs * 0.5 + pad, hh = s.h * ys * 0.5 + pad;
-    const { vx, vy, vw, vh } = this.cull;
-    return i.x + hw < vx || i.y + hh < vy || i.x - hw > vx + vw || i.y - hh > vy + vh;
+    const w = s.w * xs, h = s.h * ys;
+    const ox = (i.image_xscale < 0 ? s.w - s.ox : s.ox) * xs;
+    const oy = (i.image_yscale < 0 ? s.h - s.oy : s.oy) * ys;
+    const left = i.x - ox - pad, top = i.y - oy - pad;
+    const right = left + w + pad * 2, bottom = top + h + pad * 2;
+    const c = this.cull;
+    return right < c.vx || bottom < c.vy || left > c.vx + c.vw || top > c.vy + c.vh;
   }
 
   runOtherEvent(sub: number) {
@@ -456,7 +639,9 @@ export class Game {
         state: this.saveRoomState(),
       });
     }
+    for (const i of this.instances) i._live = false;
     this.instances = [];
+    this.gridReset();
     this.byObject = this.assets.objects.map(() => []);
     this.byId.clear();
 
@@ -502,6 +687,8 @@ export class Game {
     this.instances.push(i);
     this.byObject[i.object_index]?.push(i);
     this.byId.set(i.id, i);
+    i._live = true;
+    i.markMoved();
   }
 
   callTop(fn: Fn | undefined, s: Instance, o: Instance, where: string) {
@@ -620,8 +807,10 @@ export class Game {
   }
 
   runAlarms() {
-    if (!this.holders.has("2:0") && ![...this.holders.keys()].some((k) => k.startsWith("2:"))) return;
-    for (const inst of this.instances.slice()) {
+    if (!this.hasAlarms) return;
+    const list = this.instances;
+    for (let k = 0, n = list.length; k < n; k++) {
+      const inst = list[k];
       for (let a = 0; a < 12; a++) {
         if (inst.alarm[a] > 0) {
           inst.alarm[a] = Math.round(inst.alarm[a]) - 1;
@@ -632,12 +821,13 @@ export class Game {
   }
 
   runKeyboardEvents() {
-    for (const [key, holders] of this.holders) {
-      const [t, s] = key.split(":").map(Number);
-      if (t !== EV.KEYBOARD && t !== EV.KEYPRESS && t !== EV.KEYRELEASE) continue;
+    for (const { t, s, holders } of this.keyHolders) {
       const active = t === EV.KEYBOARD ? this.input.check(s) : t === EV.KEYPRESS ? this.input.pressed(s) : this.input.released(s);
       if (!active) continue;
-      for (const obj of holders) for (const inst of this.byObject[obj].slice()) if (!inst.destroyed) this.runEvent(inst, t, s, inst);
+      for (const obj of holders) {
+        const list = this.byObject[obj];
+        for (let k = 0, n = list.length; k < n; k++) if (!list[k].destroyed) this.runEvent(list[k], t, s, list[k]);
+      }
     }
   }
 
@@ -830,8 +1020,12 @@ export class Game {
   /** Widen the canvas for the window's aspect ratio (4:3 up to about 21:9). Buffer scale comes from graphics preset. */
   setAspect(aspect: number) {
     const a = Math.max(BASE_W / BASE_H, Math.min(MAX_ASPECT, aspect));
+    this.aspect = aspect;
     this.margin = Math.round((BASE_H * a - BASE_W) / 2);
-    this.renderScale = this.gfx.scale;
+    if (!this.mobilePerf) this.dynScale = 1;
+    this.renderScale = this.gfx.scale * this.dynScale;
+    // Smooth upscale at full res; pixelated only when the buffer is intentionally small.
+    if (this.canvas.style) this.canvas.style.imageRendering = this.renderScale < 0.95 ? "pixelated" : "auto";
     this.input.marginX = this.margin;
     this.input.logicalW = BASE_W + 2 * this.margin;
     this.input.logicalH = BASE_H;
@@ -895,15 +1089,15 @@ export class Game {
     for (const item of this.drawList) {
       if (item instanceof Instance) {
         if (item.destroyed || !item.visible) continue;
-        const oname = this.assets.objects[item.object_index]?.name ?? "";
-        if (skipDecor && DECOR_NAME.test(oname)) continue;
+        // Draw-only skip for pure parallax/fog — never hide platforms, pipes, lifts, etc.
+        if (skipDecor && this.decorObj[item.object_index]) continue;
         // Skip off-screen scenery; controllers (no sprite) still draw HUD/menu scripts.
         if (cullDraw && this.isCulled(item, 64)) continue;
-        const fn = this.resolveEvent(item.object_index, "8:0");
-        if (fn) {
+        const ev = this.evEntry(item.object_index, EV.DRAW, 0);
+        if (ev) {
           this.drawing = item;
-          this.rt.eventStack.push({ obj: this.ownerOf(item.object_index, "8:0"), key: "8:0" });
-          try { fn(item, item, []); } catch (e) { this.reportError(e, `${this.assets.objects[item.object_index]?.name} draw`); }
+          this.rt.eventStack.push(ev.frame);
+          try { ev.fn(item, item, []); } catch (e) { this.reportError(e, `${this.assets.objects[item.object_index]?.name} draw`); }
           this.rt.eventStack.pop();
           this.drawing = null;
           if (this.sceneChange && "end" in this.sceneChange) return;
@@ -980,12 +1174,14 @@ export class Game {
     let last = performance.now();
     let acc = 0;
     let fpsCount = 0, fpsTime = last;
+    let winFrames = 0, winCpu = 0, winStart = last;
     const loop = async () => {
       if (this.ended) return;
       // Background tabs: don't burn CPU or build a huge catch-up debt.
       if (typeof document !== "undefined" && document.hidden) {
         last = performance.now();
         acc = 0;
+        winFrames = 0; winCpu = 0; winStart = last;
         requestAnimationFrame(() => void loop());
         return;
       }
@@ -1011,6 +1207,7 @@ export class Game {
           await this.gotoRoom(sc.room);
           acc = 0;
           last = performance.now();
+          winFrames = 0; winCpu = 0; winStart = last;
           break;
         }
       }
@@ -1018,8 +1215,57 @@ export class Game {
       if (acc > stepMs * 2) acc = stepMs;
       if (steps > 0) this.present();
       if (now - fpsTime >= 1000) { this.fps = fpsCount; fpsCount = 0; fpsTime = now; }
+      if (this.mobilePerf) {
+        winFrames++;
+        winCpu += performance.now() - now;
+        if (now - winStart >= 1000) {
+          this.adaptScale((now - winStart) / winFrames, winCpu / winFrames, now);
+          winFrames = 0; winCpu = 0; winStart = now;
+        }
+      }
       requestAnimationFrame(() => void loop());
     };
     requestAnimationFrame(() => void loop());
+  }
+
+  /**
+   * Called once a second on phones with the average frame interval and JS time per frame.
+   * Frames slower than ~50 Hz while JS is under half the frame mean the GPU/compositor is the
+   * bottleneck, so try a smaller buffer; if the next window isn't faster (CPU-bound, or the
+   * display is capped, e.g. battery saver at 30 Hz) restore it and don't retry for a minute.
+   * After 10 smooth seconds, step back up toward full resolution.
+   */
+  private adaptScale(interval: number, cpu: number, now: number) {
+    const A = this.adapt, MIN = 0.55, STEP = 0.15;
+    const slow = interval > 20;
+    const set = (s: number) => {
+      if (s === this.dynScale) return;
+      this.dynScale = s;
+      this.setAspect(this.aspect);
+      A.settle = 1; // skip the window that contains the buffer reallocation
+    };
+    if (A.settle > 0) { A.settle--; return; }
+    if (A.judge) {
+      A.judge = false;
+      if (A.prev > this.dynScale) {
+        // Went down: keep it only if frames got meaningfully faster.
+        if (interval > A.before * 0.9) { set(A.prev); A.blockDown = now + 60000; }
+      } else if (slow) {
+        // Went up and it got slow again: back down, stay there a while.
+        set(A.prev); A.blockUp = now + 60000;
+      }
+      A.smooth = 0;
+      return;
+    }
+    if (slow) {
+      A.smooth = 0;
+      if (cpu < interval * 0.5 && this.dynScale > MIN && now >= A.blockDown) {
+        A.prev = this.dynScale; A.before = interval; A.judge = true;
+        set(Math.max(MIN, Math.round((this.dynScale - STEP) * 100) / 100));
+      }
+    } else if (this.dynScale < 1 && ++A.smooth >= 10 && now >= A.blockUp) {
+      A.prev = this.dynScale; A.before = interval; A.judge = true; A.smooth = 0;
+      set(Math.min(1, Math.round((this.dynScale + STEP) * 100) / 100));
+    }
   }
 }

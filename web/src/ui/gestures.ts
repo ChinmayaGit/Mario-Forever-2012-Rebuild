@@ -3,7 +3,7 @@
 import type { Game } from "../runtime/game.ts";
 import type { Action } from "../runtime/input.ts";
 import { h } from "./panel.ts";
-import { wantTouchAuto, type Settings } from "./settings.ts";
+import { inPauseZone, pulseKey, touchUiWanted, type Settings } from "./settings.ts";
 
 const DEAD = 18;
 const SWIPE = 28;
@@ -23,6 +23,10 @@ export class GestureControls {
   private right = h("div", { class: "gz gz-right", "data-side": "right" });
   private tracks = new Map<number, Track>();
   private held = new Set<Action>();
+  /** Menus and the world map: every tap is Select (Enter). */
+  private menu = false;
+
+  setMenu(menu: boolean) { this.menu = menu; }
 
   constructor(private game: Game, private settings: Settings) {
     this.root.append(this.left, this.right);
@@ -39,8 +43,7 @@ export class GestureControls {
 
   layout() {
     const t = this.settings.touch;
-    const want = t.mode === "on" || (t.mode === "auto" && wantTouchAuto(this.settings));
-    this.root.hidden = !want || t.scheme !== "swipe";
+    this.root.hidden = !touchUiWanted(this.settings) || t.scheme !== "swipe";
     if (this.root.hidden) this.clearAll();
   }
 
@@ -96,6 +99,13 @@ export class GestureControls {
     if (!t) return;
     this.tracks.delete(e.pointerId);
 
+    const pause = inPauseZone(t.x0, t.y0);
+    if (!t.moved && !t.jump && (pause || this.menu)) {
+      // Top-centre tap pauses; in menus any other tap is Select (no PAUSE / START buttons).
+      if (t.side === "left" && ![...this.tracks.values()].some((x) => x.side === "left")) this.clearDir();
+      pulseKey(this.game.input, `gesture:tap:${e.pointerId}`, pause ? 27 : 13);
+      return;
+    }
     if (t.side === "left") {
       // Drop move keys from this finger; other left fingers may still be active.
       if (![...this.tracks.values()].some((x) => x.side === "left")) this.clearDir();
