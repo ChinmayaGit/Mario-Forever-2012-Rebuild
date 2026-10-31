@@ -3,7 +3,7 @@
 import type { Game } from "../runtime/game.ts";
 import type { Action } from "../runtime/input.ts";
 import { h } from "./panel.ts";
-import { isTouchDevice, type Settings } from "./settings.ts";
+import { wantTouchAuto, type Settings } from "./settings.ts";
 
 const DEAD = 18;
 const SWIPE = 28;
@@ -39,7 +39,7 @@ export class GestureControls {
 
   layout() {
     const t = this.settings.touch;
-    const want = t.mode === "on" || (t.mode === "auto" && isTouchDevice());
+    const want = t.mode === "on" || (t.mode === "auto" && wantTouchAuto(this.settings));
     this.root.hidden = !want || t.scheme !== "swipe";
     if (this.root.hidden) this.clearAll();
   }

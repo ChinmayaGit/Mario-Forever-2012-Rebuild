@@ -9,7 +9,8 @@
       body { display: flex; align-items: center; justify-content: center; }
       html, body { height: 100dvh; }
       @media (orientation: portrait) { body { align-items: center; padding-top: 0; box-sizing: border-box; } }
-      canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; outline: none; touch-action: none; }
+      /* image-rendering is set by applyGraphics (smooth on desktop High/Ultra, pixelated on low-res mobile). */
+      canvas { display: block; outline: none; touch-action: none; }
     </style>
   </head>
   <body>

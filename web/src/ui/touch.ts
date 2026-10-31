@@ -1,7 +1,7 @@
 // On-screen buttons for touch screens. Layout (position, size, opacity) is user-editable and saved in settings.
 import type { Game } from "../runtime/game.ts";
 import { h } from "./panel.ts";
-import { TOUCH_BUTTONS, isTouchDevice, saveSettings, type Settings, type TouchKey } from "./settings.ts";
+import { TOUCH_BUTTONS, saveSettings, wantTouchAuto, type Settings, type TouchKey } from "./settings.ts";
 
 const BASE = 68;
 const VK: Partial<Record<TouchKey, number>> = { start: 13, pause: 27 };
@@ -30,7 +30,7 @@ export class TouchControls {
 
   layout() {
     const t = this.settings.touch;
-    const want = t.mode === "on" || (t.mode === "auto" && isTouchDevice());
+    const want = t.mode === "on" || (t.mode === "auto" && wantTouchAuto(this.settings));
     const buttons = t.scheme === "buttons" || this.editing;
     // Positions are relative to the window, so sizes follow its short side to keep the default layout from overlapping.
     const k = t.scale * Math.min(1.2, Math.max(0.6, Math.min(innerWidth, innerHeight) / 480));

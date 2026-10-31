@@ -3,7 +3,10 @@ import { ACTIONS, DEFAULT_BINDINGS, type Action } from "../runtime/input.ts";
 import { exportSaves, importSaves } from "../runtime/vfs.ts";
 import { h, openPanel, toast } from "./panel.ts";
 import { applyGraphics, GRAPHICS_TIERS, type GraphicsTier } from "./graphics.ts";
-import { keyLabel, saveSettings, type Settings, type TouchScheme } from "./settings.ts";
+import {
+  activeGraphicsTier, detectMobileDevice, isMobileProfile, keyLabel, saveSettings,
+  type DeviceMode, type Settings, type TouchScheme,
+} from "./settings.ts";
 import type { GestureControls } from "./gestures.ts";
 import type { TouchControls } from "./touch.ts";
 
@@ -21,45 +24,108 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
   const p = openPanel(game, "Settings");
   let listening: { action: Action; slot: number; el: HTMLElement } | null = null;
   const refreshTouch = () => { touch.layout(); gestures?.layout(); };
+  const mobileUi = isMobileProfile(settings);
 
-  const grid = h("div", { class: "grid" });
-  const renderKeys = () => {
-    grid.replaceChildren();
-    for (const a of ACTIONS) {
-      grid.append(h("span", {}, ACTION_NAMES[a]));
-      for (let slot = 0; slot < 2; slot++) {
-        const code = settings.keys[a][slot];
-        const b = h("button", { class: "key" + (code ? "" : " empty"), title: "Click, then press a key. Backspace clears." }, code ? keyLabel(code) : "—");
-        b.addEventListener("click", () => {
-          listening?.el.classList.remove("listening");
-          listening = { action: a, slot, el: b };
-          b.classList.add("listening");
-          b.textContent = "Press a key…";
-        });
-        grid.append(b);
-      }
-    }
+  const applyActiveGraphics = () => {
+    applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings));
+    dispatchEvent(new Event("resize"));
+    refreshTouch();
   };
-  p.onKey = (e) => {
-    if (!listening) return false;
-    const { action, slot } = listening;
-    listening = null;
-    if (e.code !== "Escape") {
-      const list = settings.keys[action];
-      if (e.code === "Backspace" || e.code === "Delete") list.splice(slot, 1);
-      else {
-        for (const a of ACTIONS) settings.keys[a] = settings.keys[a].filter((c) => c !== e.code);
-        const l = settings.keys[action];
-        if (slot < l.length) l[slot] = e.code; else l.push(e.code);
+
+  // Device profile first — switching rebuilds this panel with desktop-only or mobile-only options.
+  const deviceOpts: [DeviceMode, string][] = [
+    ["auto", "Auto detect"],
+    ["desktop", "Desktop"],
+    ["mobile", "Mobile"],
+  ];
+  const deviceSel = h("select", {},
+    ...deviceOpts.map(([v, l]) => h("option", { value: v, selected: settings.deviceMode === v }, l)));
+  deviceSel.addEventListener("change", () => {
+    settings.deviceMode = (deviceSel as HTMLSelectElement).value as DeviceMode;
+    saveSettings(settings);
+    applyActiveGraphics();
+    p.close();
+    openSettings(game, settings, touch, gestures);
+  });
+  p.body.append(
+    h("h3", {}, "Device"),
+    h("p", { class: "muted" },
+      settings.deviceMode === "auto"
+        ? (detectMobileDevice()
+          ? "Auto picked Mobile. Switch to Desktop for PC graphics."
+          : "Auto picked Desktop. Switch to Mobile for phone controls & lighter graphics.")
+        : mobileUi
+          ? "Mobile settings only — touch controls and phone graphics."
+          : "Desktop settings only — keyboard and full PC graphics."),
+    h("label", { class: "field" }, h("span", {}, "Profile"), deviceSel),
+  );
+
+  if (!mobileUi) {
+    // ——— Desktop settings ———
+    const grid = h("div", { class: "grid" });
+    const renderKeys = () => {
+      grid.replaceChildren();
+      for (const a of ACTIONS) {
+        grid.append(h("span", {}, ACTION_NAMES[a]));
+        for (let slot = 0; slot < 2; slot++) {
+          const code = settings.keys[a][slot];
+          const b = h("button", { class: "key" + (code ? "" : " empty"), title: "Click, then press a key. Backspace clears." }, code ? keyLabel(code) : "—");
+          b.addEventListener("click", () => {
+            listening?.el.classList.remove("listening");
+            listening = { action: a, slot, el: b };
+            b.classList.add("listening");
+            b.textContent = "Press a key…";
+          });
+          grid.append(b);
+        }
       }
-      game.input.bindings = settings.keys;
-      saveSettings(settings);
-    }
+    };
+    p.onKey = (e) => {
+      if (!listening) return false;
+      const { action, slot } = listening;
+      listening = null;
+      if (e.code !== "Escape") {
+        const list = settings.keys[action];
+        if (e.code === "Backspace" || e.code === "Delete") list.splice(slot, 1);
+        else {
+          for (const a of ACTIONS) settings.keys[a] = settings.keys[a].filter((c) => c !== e.code);
+          const l = settings.keys[action];
+          if (slot < l.length) l[slot] = e.code; else l.push(e.code);
+        }
+        game.input.bindings = settings.keys;
+        saveSettings(settings);
+      }
+      renderKeys();
+      return true;
+    };
     renderKeys();
-    return true;
-  };
-  renderKeys();
 
+    const gfxSel = h("select", {},
+      ...GRAPHICS_TIERS.map((v) => h("option", {
+        value: v,
+        selected: settings.graphics.desktop === v,
+      }, v[0].toUpperCase() + v.slice(1))));
+    gfxSel.addEventListener("change", () => {
+      settings.graphics.desktop = (gfxSel as HTMLSelectElement).value as GraphicsTier;
+      saveSettings(settings);
+      applyActiveGraphics();
+    });
+
+    p.body.append(
+      h("h3", {}, "Keyboard"),
+      h("p", { class: "muted" }, "Enter confirms in menus. Click a key to change it."),
+      grid,
+      h("div", { class: "row", style: "margin-top:10px" },
+        h("button", { class: "btn", onclick: () => { settings.keys = structuredClone(DEFAULT_BINDINGS); game.input.bindings = settings.keys; saveSettings(settings); renderKeys(); } }, "Reset keys")),
+      h("h3", {}, "Graphics"),
+      h("label", { class: "field" }, h("span", {}, "Quality"), gfxSel),
+      h("h3", {}, "Display"),
+      h("div", { class: "row" }, h("button", { class: "btn", onclick: toggleFullscreen }, "Toggle fullscreen")),
+    );
+    return;
+  }
+
+  // ——— Mobile settings ———
   const t = settings.touch;
   const mode = h("select", {},
     ...([["auto", "Automatic (touch screens)"], ["on", "Always show"], ["off", "Never show"]] as const)
@@ -102,43 +168,27 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
   };
   renderTouchExtras();
 
+  const gfxSel = h("select", {},
+    ...GRAPHICS_TIERS.map((v) => h("option", {
+      value: v,
+      selected: settings.graphics.mobile === v,
+    }, v[0].toUpperCase() + v.slice(1))));
+  gfxSel.addEventListener("change", () => {
+    settings.graphics.mobile = (gfxSel as HTMLSelectElement).value as GraphicsTier;
+    saveSettings(settings);
+    applyActiveGraphics();
+  });
+
   p.body.append(
-    h("h3", {}, "Keyboard"),
-    h("p", { class: "muted" }, "Enter confirms in menus. Click a key to change it."),
-    grid,
-    h("div", { class: "row", style: "margin-top:10px" },
-      h("button", { class: "btn", onclick: () => { settings.keys = structuredClone(DEFAULT_BINDINGS); game.input.bindings = settings.keys; saveSettings(settings); renderKeys(); } }, "Reset keys")),
     h("h3", {}, "Touch controls"),
     h("label", { class: "field" }, h("span", {}, "Show"), mode),
     h("label", { class: "field" }, h("span", {}, "Style"), scheme),
     touchExtras,
     h("h3", {}, "Graphics"),
-    h("p", { class: "muted" },
-      game.mobilePerf
-        ? "Phone presets use a lower resolution than the same name on desktop (phone High ≈ desktop Low/Medium)."
-        : "Desktop can push higher detail. Change Mobile quality too if you also play on a phone in this browser."),
-    graphicsRow("This device", game.mobilePerf ? "mobile" : "desktop"),
-    graphicsRow(game.mobilePerf ? "Desktop (when on PC)" : "Mobile (when on phone)", game.mobilePerf ? "desktop" : "mobile"),
+    h("label", { class: "field" }, h("span", {}, "Quality"), gfxSel),
     h("h3", {}, "Display"),
     h("div", { class: "row" }, h("button", { class: "btn", onclick: toggleFullscreen }, "Toggle fullscreen")),
   );
-
-  function graphicsRow(label: string, which: "desktop" | "mobile") {
-    const sel = h("select", {},
-      ...GRAPHICS_TIERS.map((v) => h("option", {
-        value: v,
-        selected: settings.graphics[which] === v,
-      }, v[0].toUpperCase() + v.slice(1))));
-    sel.addEventListener("change", () => {
-      settings.graphics[which] = (sel as HTMLSelectElement).value as GraphicsTier;
-      saveSettings(settings);
-      const active = game.mobilePerf ? settings.graphics.mobile : settings.graphics.desktop;
-      applyGraphics(game, active);
-      // Refit CSS size after buffer scale changes.
-      dispatchEvent(new Event("resize"));
-    });
-    return h("label", { class: "field" }, h("span", {}, label), sel);
-  }
 }
 
 export function openCredits(game: Game) {

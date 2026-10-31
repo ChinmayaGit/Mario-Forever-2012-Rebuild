@@ -7,7 +7,7 @@ import { h, isPanelOpen } from "./ui/panel.ts";
 import { downloadSave, openCredits, openLoad, openSettings, toggleFullscreen } from "./ui/panels.ts";
 import { applyGraphics } from "./ui/graphics.ts";
 import { GestureControls } from "./ui/gestures.ts";
-import { activeGraphicsTier, isTouchDevice, loadSettings } from "./ui/settings.ts";
+import { activeGraphicsTier, isMobileProfile, loadSettings } from "./ui/settings.ts";
 import { TouchControls } from "./ui/touch.ts";
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
@@ -15,13 +15,12 @@ const loading = new Loading();
 const settings = loadSettings();
 
 const game = new Game(canvas);
-// Phones/tablets get a lighter render path (see Game.mobilePerf).
-game.mobilePerf = isTouchDevice() || Math.min(innerWidth, innerHeight) < 700;
 game.input.bindings = settings.keys;
 game.input.actionVk = (a: Action) => Number((game.G as Record<string, unknown>)[`$ster_${a}`]) || 0;
 game.onStatus = (m) => loading.set("boot", !/^Game ended/.test(m), m);
 game.onBusy = (busy) => loading.set("room", busy, "Loading", true);
-applyGraphics(game, activeGraphicsTier(settings, game.mobilePerf));
+// Desktop vs mobile graphics are independent; deviceMode can override a bad auto-detect.
+applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings));
 if (import.meta.env.DEV) {
   (window as any).game = game;
   void import("./debug.ts").then((m) => m.installDebug(game));
