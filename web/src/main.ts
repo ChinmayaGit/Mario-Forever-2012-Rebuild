@@ -99,6 +99,7 @@ try {
     syncMapButtons();
     if (!isBoot && !mobileNoticeShown) {
       mobileNoticeShown = true;
+      applyGraphics(game, activeGraphicsTier(settings), isMobileProfile(settings), settings.frameSkip);
       if (detectMobileDevice() && !sessionStorage.getItem("mf2012:mobile-notice-dismissed")) {
         sessionStorage.setItem("mf2012:mobile-notice-dismissed", "1");
         openMobileNotice(game);

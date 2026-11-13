@@ -1027,7 +1027,7 @@ export class Game {
     const a = Math.max(BASE_W / BASE_H, Math.min(MAX_ASPECT, aspect));
     this.aspect = aspect;
     this.margin = Math.round((BASE_H * a - BASE_W) / 2);
-    if (!this.frameSkip) this.dynScale = 1;
+    if (!this.frameSkip || !this.mobilePerf) this.dynScale = 1;
     this.renderScale = this.gfx.scale * this.dynScale;
     // Smooth upscale at full res; pixelated only when the buffer is intentionally small.
     if (this.canvas.style) this.canvas.style.imageRendering = this.renderScale < 0.95 ? "pixelated" : "auto";
@@ -1220,7 +1220,7 @@ export class Game {
       if (acc > stepMs * 2) acc = stepMs;
       if (steps > 0) this.present();
       if (now - fpsTime >= 1000) { this.fps = fpsCount; fpsCount = 0; fpsTime = now; }
-      if (this.frameSkip) {
+      if (this.mobilePerf && this.frameSkip) {
         winFrames++;
         winCpu += performance.now() - now;
         if (now - winStart >= 1000) {
@@ -1241,6 +1241,13 @@ export class Game {
    * After 10 smooth seconds, step back up toward full resolution.
    */
   private adaptScale(interval: number, cpu: number, now: number) {
+    if (!this.mobilePerf || !this.frameSkip) {
+      if (this.dynScale !== 1) {
+        this.dynScale = 1;
+        this.setAspect(this.aspect);
+      }
+      return;
+    }
     const A = this.adapt, MIN = 0.55, STEP = 0.15;
     const slow = interval > 20;
     const set = (s: number) => {

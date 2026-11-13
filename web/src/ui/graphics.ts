@@ -64,7 +64,9 @@ export function applyGraphics(
 ) {
   const p = profileFor(tier, mobile);
   game.mobilePerf = mobile;
-  game.frameSkip = frameSkip;
+  // Frame skip & dynamic downscaling are strictly mobile-only optimizations.
+  // Desktop always gets full 1.0 scale and unconstrained 60fps simulation.
+  game.frameSkip = mobile ? frameSkip : false;
   game.gfx = { tier, ...p, particleTick: 0 };
   // Re-apply canvas size for the new scale (and reset any adaptive drop).
   const aspect = (typeof innerWidth === "number" && innerHeight) ? innerWidth / innerHeight : 4 / 3;
