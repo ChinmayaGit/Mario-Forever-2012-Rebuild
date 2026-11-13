@@ -95,15 +95,35 @@ export function loadSettings(): Settings {
   return d;
 }
 
-/** True when this browser looks like a phone/tablet (not a touch laptop with a mouse). */
-export function detectMobileDevice() {
-  const coarse = matchMedia("(pointer: coarse)").matches;
-  const fine = matchMedia("(pointer: fine)").matches;
-  const noHover = matchMedia("(hover: none)").matches;
-  // Phones: coarse pointer and no hover. Ignore maxTouchPoints alone (Surface / touch laptops).
-  if (coarse && noHover) return true;
-  if (coarse && !fine) return true;
-  if (typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return true;
+/** True when this browser looks like a phone/tablet (not a desktop or laptop). */
+export function detectMobileDevice(): boolean {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+
+  const ua = navigator.userAgent || "";
+  // Check for common mobile OS and phone identifiers
+  const isMobileUA = /Android|iPhone|iPod|webOS|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  if (isMobileUA) return true;
+
+  // Modern iPad / iPadOS (reports Macintosh in UA, but has multi-touch and coarse/touch pointer without hover)
+  const isIPad = (/iPad/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) &&
+    window.matchMedia("(hover: none)").matches &&
+    window.matchMedia("(pointer: coarse)").matches;
+  if (isIPad) return true;
+
+  // Desktops and laptops have hover capability and a fine pointer (mouse or trackpad)
+  const hasHover = window.matchMedia("(hover: hover)").matches;
+  const hasFinePointer = window.matchMedia("(pointer: fine)").matches || window.matchMedia("(any-pointer: fine)").matches;
+  if (hasHover && hasFinePointer) {
+    return false;
+  }
+
+  // Pure coarse pointer with no hover (smartphones, basic tablets without mouse)
+  const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+  const hasNoHover = window.matchMedia("(hover: none)").matches;
+  if (isCoarse && hasNoHover) {
+    return true;
+  }
+
   return false;
 }
 
@@ -122,7 +142,14 @@ export function saveSettings(s: Settings) {
   localStorage.setItem(KEY, JSON.stringify(s));
 }
 
-export const isTouchDevice = () => detectMobileDevice() || navigator.maxTouchPoints > 0;
+/** True only when primary input is touch (mobile/tablet), not simply any trackpad or touch laptop with mouse. */
+export const isTouchDevice = () => {
+  if (detectMobileDevice()) return true;
+  if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches && window.matchMedia("(pointer: fine)").matches) {
+    return false;
+  }
+  return typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
+};
 
 /** Whether on-screen touch/swipe UI should appear in "auto" mode (respects Device profile). */
 export function wantTouchAuto(s: Settings) {

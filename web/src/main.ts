@@ -7,7 +7,7 @@ import { h, isPanelOpen } from "./ui/panel.ts";
 import { downloadSave, openCredits, openLoad, openMobileNotice, openSettings, toggleFullscreen } from "./ui/panels.ts";
 import { applyGraphics } from "./ui/graphics.ts";
 import { GestureControls } from "./ui/gestures.ts";
-import { activeGraphicsTier, isMobileProfile, loadSettings, MENU_ROOM, pulseKey as pulse } from "./ui/settings.ts";
+import { activeGraphicsTier, detectMobileDevice, isMobileProfile, loadSettings, MENU_ROOM, pulseKey as pulse } from "./ui/settings.ts";
 import { TouchControls } from "./ui/touch.ts";
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
@@ -99,7 +99,8 @@ try {
     syncMapButtons();
     if (!isBoot && !mobileNoticeShown) {
       mobileNoticeShown = true;
-      if (isMobileProfile(settings)) {
+      if (detectMobileDevice() && !sessionStorage.getItem("mf2012:mobile-notice-dismissed")) {
+        sessionStorage.setItem("mf2012:mobile-notice-dismissed", "1");
         openMobileNotice(game);
       }
     }
