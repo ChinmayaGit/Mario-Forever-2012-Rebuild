@@ -45,9 +45,11 @@ const pulseKey = (vk: number) => pulse(game.input, `ui:pulse:${vk}`, vk);
 const touch = new TouchControls(game, settings);
 const gestures = new GestureControls(game, settings);
 const saveBtn = h("button", { class: "hud-btn primary", title: "Download your progress", hidden: true, onclick: downloadSave }, "💾 Save");
+const loadBtn = h("button", { class: "hud-btn primary", title: "Load saved progress", hidden: true, onclick: () => openLoad(game) }, "📂 Load");
 const fsBtn = h("button", { class: "hud-btn", title: "Fullscreen (F11)", onclick: toggleFullscreen }, "⛶");
 const hud = h("div", { id: "hud" },
   saveBtn,
+  loadBtn,
   h("button", { class: "hud-btn", title: "Settings", onclick: () => openSettings(game, settings, touch, gestures) }, "⚙"),
   fsBtn);
 document.body.append(hud);
@@ -90,6 +92,7 @@ try {
     loading.set("boot", isBoot, "Loading");
     onMap = name.startsWith("room_map_");
     saveBtn.hidden = !onMap;
+    loadBtn.hidden = !onMap;
     const menu = MENU_ROOM.test(name);
     touch.setMenu(menu);
     gestures.setMenu(menu);

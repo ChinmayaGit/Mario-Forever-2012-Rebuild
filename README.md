@@ -8,6 +8,10 @@ A modern browser port of *New Super Mario Forever 2012* (GameMaker 8.1). The ori
 
 ## 📸 Screenshots & Highlights
 
+| Gameplay - Overworld Stage | Gameplay - Underground Stage |
+| :---: | :---: |
+| ![Gameplay Overworld](PICS/09-gameplay-stage-1.png) | ![Gameplay Underground](PICS/10-gameplay-stage-2.png) |
+
 | Title & Intro | World Map & Touch HUD |
 | :---: | :---: |
 | ![Title Screen](PICS/01-title-screen.png) | ![World Map HUD](PICS/05-world-map-hud.png) |
@@ -16,7 +20,7 @@ A modern browser port of *New Super Mario Forever 2012* (GameMaker 8.1). The ori
 | :---: | :---: |
 | ![Desktop Settings](PICS/02-settings-desktop.png) | ![Mobile Settings](PICS/03-settings-mobile.png) |
 
-| Drag & Move Buttons Anywhere | Top Bar HUD Controls |
+| Drag & Move Buttons Anywhere | World Map HUD (Save & Load) |
 | :---: | :---: |
 | ![Move Buttons Anywhere](PICS/04-touch-controls-layout.png) | ![HUD Controls](PICS/08-hud-controls.png) |
 
@@ -26,7 +30,9 @@ A modern browser port of *New Super Mario Forever 2012* (GameMaker 8.1). The ori
 
 ### 💾 1. Save & Load Progress
 - **Save Progress (`💾 Save`)**: Whenever you are on a World Map, a gold **💾 Save** button appears on the top-right HUD bar. Click it anytime to download your full game state as a `.json` backup file (`mario-forever-2012-save-YYYY-MM-DD.json`).
-- **Load Progress (`LOAD GAME`)**: On the main Title Menu, select **LOAD GAME** to import your previously downloaded save file and restore all unlocked worlds, stages, and progress across any browser or device.
+- **Load Progress (`📂 Load` & `LOAD GAME`)**:
+  - **World Map HUD**: A convenient **📂 Load** button is located directly beside **💾 Save** on all world maps, allowing you to quickly import and restore your save file on the fly without returning to the title menu.
+  - **Title Screen**: Select **LOAD GAME** on the main Title Menu to upload your previously downloaded save file and restore all unlocked worlds, stages, and progress across any browser or device.
 
 ### 🗺️ 2. World Map Controls (ITEMS & MAPS)
 - **Touch Devices**: Large, accessible **MAPS** and **ITEMS** buttons appear automatically at the bottom of the screen on world maps.
