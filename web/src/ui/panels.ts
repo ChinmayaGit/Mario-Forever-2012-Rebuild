@@ -212,6 +212,24 @@ export function openSettings(game: Game, settings: Settings, touch: TouchControl
   );
 }
 
+export function openMobileNotice(game: Game) {
+  const p = openPanel(game, "Desktop Recommended");
+  p.body.append(
+    h("p", { style: "font-size: 15px; margin: 8px 0 12px; font-weight: 600; color: #fff;" },
+      "Get a better experience on a desktop device!"
+    ),
+    h("p", { style: "margin-bottom: 12px; line-height: 1.5;" },
+      "For the best performance, full visual quality, and precise keyboard controls, this game is recommended to be played on a desktop computer or laptop."
+    ),
+    h("div", { class: "note", style: "margin: 14px 0 18px;" },
+      "You can still play on this mobile device using on-screen touch controls."
+    ),
+    h("div", { class: "row", style: "justify-content: flex-end; margin-top: 16px;" },
+      h("button", { class: "btn accent", onclick: () => p.close() }, "Continue to Game")
+    )
+  );
+}
+
 export function openCredits(game: Game) {
   const p = openPanel(game, "Credits");
   p.body.append(h("div", { class: "credits" },

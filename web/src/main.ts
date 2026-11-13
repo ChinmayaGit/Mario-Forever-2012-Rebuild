@@ -4,7 +4,7 @@ import type { Action } from "./runtime/input.ts";
 import { Loading } from "./ui/loading.ts";
 import { Multiplayer } from "./ui/multiplayer.ts";
 import { h, isPanelOpen } from "./ui/panel.ts";
-import { downloadSave, openCredits, openLoad, openSettings, toggleFullscreen } from "./ui/panels.ts";
+import { downloadSave, openCredits, openLoad, openMobileNotice, openSettings, toggleFullscreen } from "./ui/panels.ts";
 import { applyGraphics } from "./ui/graphics.ts";
 import { GestureControls } from "./ui/gestures.ts";
 import { activeGraphicsTier, isMobileProfile, loadSettings, MENU_ROOM, pulseKey as pulse } from "./ui/settings.ts";
@@ -84,14 +84,22 @@ try {
     else if (kind === "multiplayer") multiplayer.open();
   };
   // The boot rooms only load sounds and settings; keep the loading screen up until the title menu appears.
+  let mobileNoticeShown = false;
   game.onRoom = (name) => {
-    loading.set("boot", name.startsWith("room_initialize") || name === "debug_mode_for_development" || name === "initialize_maps_values" || name === "game_initialize", "Loading");
+    const isBoot = name.startsWith("room_initialize") || name === "debug_mode_for_development" || name === "initialize_maps_values" || name === "game_initialize";
+    loading.set("boot", isBoot, "Loading");
     onMap = name.startsWith("room_map_");
     saveBtn.hidden = !onMap;
     const menu = MENU_ROOM.test(name);
     touch.setMenu(menu);
     gestures.setMenu(menu);
     syncMapButtons();
+    if (!isBoot && !mobileNoticeShown) {
+      mobileNoticeShown = true;
+      if (isMobileProfile(settings)) {
+        openMobileNotice(game);
+      }
+    }
   };
   canvas.focus();
   await game.start();

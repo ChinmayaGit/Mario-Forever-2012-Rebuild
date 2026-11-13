@@ -103,6 +103,7 @@ export function detectMobileDevice() {
   // Phones: coarse pointer and no hover. Ignore maxTouchPoints alone (Surface / touch laptops).
   if (coarse && noHover) return true;
   if (coarse && !fine) return true;
+  if (typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return true;
   return false;
 }
 
